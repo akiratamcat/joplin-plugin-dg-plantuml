@@ -1,0 +1,8 @@
+dist/
+node_modules/
+publish/
+
+# dg-plantuml
+coverage/
+# Throwaway spike code lives on the spike/* branches only.
+/spike/
