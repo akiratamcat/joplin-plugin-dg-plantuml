@@ -47,6 +47,14 @@ export interface RenderedBlock {
 	errorTitle: string;
 	errorMessage: string;
 	note: string;
+	/** Scale the viewer applied to the diagram (design 8.7), or null. */
+	scale: number | null;
+	/** Displayed width of the diagram in px, or null. */
+	svgWidth: number | null;
+	/** Width of the output (the pane for the diagram) in px. */
+	outputWidth: number;
+	/** The output scrolls sideways. */
+	scrolls: boolean;
 }
 
 export interface PageRun {
@@ -66,8 +74,8 @@ export interface PageRun {
 
 const TYPES: Record<string, string> = { '.js': 'text/javascript', '.css': 'text/css' };
 
-async function openContext(browser: Browser, html: string, run: PageRun): Promise<BrowserContext> {
-	const context = await browser.newContext({ viewport: { width: 900, height: 800 } });
+async function openContext(browser: Browser, html: string, run: PageRun, width: number): Promise<BrowserContext> {
+	const context = await browser.newContext({ viewport: { width, height: 800 } });
 	await context.route('**/*', (route) => {
 		const url = new URL(route.request().url());
 		if (url.origin === ORIGIN) {
@@ -100,6 +108,12 @@ export interface RenderOptions {
 	 * Joplin). Without it there is no webviewApi and the viewer uses its defaults.
 	 */
 	config?: unknown;
+	/** Width of the browser window (default 900). */
+	width?: number;
+	/** Font size of the note text (body), e.g. '20px'. */
+	bodyFontSize?: string;
+	/** After rendering, resize the window to this width and wait for the diagrams to refit. */
+	resizeTo?: number;
 }
 
 /** Renders a note in a page. */
@@ -110,10 +124,10 @@ export async function renderNote(browser: Browser, markdown: string, options: Re
 <meta http-equiv="Content-Security-Policy" content="${CSP}">
 <link rel="icon" href="data:,">
 <link rel="stylesheet" href="plantuml.css">
-<style>body { background: ${colors.bg}; color: ${colors.fg}; }</style>
+<style>body { background: ${colors.bg}; color: ${colors.fg};${options.bodyFontSize ? ` font-size: ${options.bodyFontSize};` : ''} }</style>
 </head><body>${renderMarkdown(markdown)}
 <script src="viewer.js"></script></body></html>`;
-	const context = await openContext(browser, html, run);
+	const context = await openContext(browser, html, run, options.width || 900);
 	try {
 		const page = await context.newPage();
 		await page.addInitScript(() => {
@@ -142,6 +156,11 @@ export async function renderNote(browser: Browser, markdown: string, options: Re
 		// Everything the page needs has been loaded: from now on, the page is offline too.
 		await context.setOffline(true);
 		await waitForBlocks(page);
+		if (options.resizeTo) {
+			const before = await page.evaluate(() => Array.from(document.querySelectorAll('.joplin-plantuml-output > svg')).map((s) => (s as SVGElement).style.width).join());
+			await page.setViewportSize({ width: options.resizeTo, height: 800 });
+			await page.waitForFunction((b) => Array.from(document.querySelectorAll('.joplin-plantuml-output > svg')).map((s) => (s as SVGElement).style.width).join() !== b, before, { timeout: 5000, polling: 50 }).catch(() => undefined);
+		}
 		run.cspViolations = await page.evaluate(() => (window as unknown as { __csp?: string[] }).__csp || []);
 		run.messages = await page.evaluate(() => (window as unknown as { __messages?: unknown[] }).__messages || []);
 		run.settingsVersion = await page.evaluate(() => {
@@ -161,6 +180,10 @@ export async function renderNote(browser: Browser, markdown: string, options: Re
 				errorTitle: text('.joplin-plantuml-error-title'),
 				errorMessage: text('.joplin-plantuml-error-message'),
 				note: text('.joplin-plantuml-note'),
+				scale: svg && svg.getAttribute('data-plantuml-scale') ? Number(svg.getAttribute('data-plantuml-scale')) : null,
+				svgWidth: svg && (svg as SVGElement).style.width ? parseFloat((svg as SVGElement).style.width) : null,
+				outputWidth: out ? (out as HTMLElement).clientWidth : 0,
+				scrolls: out ? (out as HTMLElement).scrollWidth > (out as HTMLElement).clientWidth + 1 : false,
 			};
 		}));
 	} finally {

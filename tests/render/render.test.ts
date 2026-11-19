@@ -188,8 +188,10 @@ describe('settings from the main script (getConfig)', () => {
 		const custom = { [KEYS.lightPreset]: 'custom', [KEYS.lightCustomPreamble]: 'skinparam backgroundColor #FFAAAA' };
 		const on = await renderNote(browser, note, { config: buildViewerConfig({ ...custom, [KEYS.transparentBackground]: true }) });
 		const off = await renderNote(browser, note, { config: buildViewerConfig({ ...custom, [KEYS.transparentBackground]: false }) });
-		expect(on.blocks[0].svgMarkup).not.toMatch(/background-color:#FFAAAA/i);
-		expect(off.blocks[0].svgMarkup).toMatch(/background-color:#FFAAAA/i);
+		// The viewer writes the size into the style, so the browser may write the colour as rgb().
+		const pink = /#FFAAAA|rgb\(255, 170, 170\)/i;
+		expect(on.blocks[0].svgMarkup).not.toMatch(pink);
+		expect(off.blocks[0].svgMarkup).toMatch(pink);
 	});
 
 	test('built-in theme (builtin:<name>) for the light and the dark theme', async () => {
@@ -208,6 +210,52 @@ describe('settings from the main script (getConfig)', () => {
 		expectNoNetwork(run);
 		expect(run.blocks[0].state).toBe('done');
 		expect(run.blocks[0].svgMarkup).toBe(defaults.blocks[0].svgMarkup);
+	});
+});
+
+describe('font size (design 8.7)', () => {
+	// 24 participants: much wider than the pane.
+	const wide = fence(Array.from({ length: 24 }, (_, i) => `Participant${i} -> Participant${i + 1} : message ${i}`).join('\n'));
+	const narrow = fence('Alice -> Bob : hi');
+	const smallestFont = (svgMarkup: string) => Math.min(...(svgMarkup.match(/font-size="([\d.]+)"/g) || []).map((m) => parseFloat(m.slice(11))));
+
+	test('the base font size follows the note text', async () => {
+		const run = await renderNote(browser, narrow, { bodyFontSize: '20px' });
+		expect(run.blocks[0].svgMarkup).toMatch(/font-size="20"/);
+		const off = await renderNote(browser, narrow, { bodyFontSize: '20px', config: buildViewerConfig({ [KEYS.matchNoteFontSize]: false }) });
+		expect(off.blocks[0].svgMarkup).not.toMatch(/font-size="20"/);
+	});
+
+	test('a narrow diagram keeps its natural size', async () => {
+		const run = await renderNote(browser, narrow);
+		expect(run.blocks[0].scale).toBe(1);
+		expect(run.blocks[0].scrolls).toBe(false);
+	});
+
+	test('a wide diagram is scaled down, but its text stays at least at the minimum size and it scrolls', async () => {
+		const run = await renderNote(browser, wide, { width: 600 });
+		expectNoNetwork(run);
+		const b = run.blocks[0];
+		const scale = b.scale as number;
+		expect(scale).toBeLessThan(1);
+		expect(smallestFont(b.svgMarkup) * scale).toBeGreaterThanOrEqual(11 - 0.05);
+		expect(b.svgWidth as number).toBeGreaterThan(b.outputWidth);
+		expect(b.scrolls).toBe(true);
+	});
+
+	test('minimum 0: the wide diagram fits the pane', async () => {
+		const run = await renderNote(browser, wide, { width: 600, config: buildViewerConfig({ [KEYS.minFontSizePx]: 0 }) });
+		const b = run.blocks[0];
+		expect(Math.abs((b.svgWidth as number) - b.outputWidth)).toBeLessThanOrEqual(1);
+		expect(b.scrolls).toBe(false);
+	});
+
+	test('when the pane gets narrower, the diagram is fitted again', async () => {
+		const config = buildViewerConfig({ [KEYS.minFontSizePx]: 0 });
+		const run = await renderNote(browser, wide, { width: 900, resizeTo: 500, config });
+		const b = run.blocks[0];
+		expect(b.outputWidth).toBeLessThan(500);
+		expect(Math.abs((b.svgWidth as number) - b.outputWidth)).toBeLessThanOrEqual(1);
 	});
 });
 

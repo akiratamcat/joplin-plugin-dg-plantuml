@@ -6,6 +6,7 @@ import { MARKDOWN_IT_SCRIPT_ID } from '../shared/messages';
 import { ViewerController } from './controller';
 import { importModuleNative, loadScriptElement, PlantUmlEngine } from './engine';
 import { sanitizeSvg } from './sanitize';
+import { noteFontSizePx } from './fontSize';
 import { isDarkBackground } from './theme';
 import { DEFAULT_VIEWER_CONFIG, normalizeConfig, ViewerConfig } from './viewerConfig';
 
@@ -67,6 +68,7 @@ function start(): void {
 		config: DEFAULT_VIEWER_CONFIG,
 		sanitize: (svg) => sanitizeSvg(svg, window),
 		isDark: () => isDarkBackground(document),
+		noteFontSize: () => noteFontSizePx(document),
 	});
 	window.__dgPlantumlViewer = controller;
 
