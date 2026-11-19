@@ -171,6 +171,37 @@ describe('settings from the main script (getConfig)', () => {
 		expect(run.blocks[0].svgMarkup).toMatch(/fill="#FF0000"/i);
 	});
 
+	test('preset joplin-light: Joplin colours, meaningful colours kept', async () => {
+		const config = buildViewerConfig({ [KEYS.lightPreset]: 'joplin-light' });
+		const activity = fence('start\n:Step;\nstop');
+		const cls = fence('class Customer\ninterface Payable');
+		const run = await renderNote(browser, `${note}\n\n${activity}\n\n${cls}`, { config });
+		expectNoNetwork(run);
+		expect(run.blocks.map((b) => b.state)).toEqual(['done', 'done', 'done']);
+		expect(run.blocks[0].svgMarkup).toMatch(/fill="#32373F"/); // text colour
+		expect(run.blocks[0].svgMarkup).toMatch(/fill="#F4F5F6"/); // participants
+		expect(run.blocks[1].svgMarkup).toMatch(/fill="#222222"/); // start node stays filled
+		expect(run.blocks[2].svgMarkup).toMatch(/fill="#ADD1B2"/); // class icon colour
+	});
+
+	test('"transparent background" wins over a background in the preset', async () => {
+		const custom = { [KEYS.lightPreset]: 'custom', [KEYS.lightCustomPreamble]: 'skinparam backgroundColor #FFAAAA' };
+		const on = await renderNote(browser, note, { config: buildViewerConfig({ ...custom, [KEYS.transparentBackground]: true }) });
+		const off = await renderNote(browser, note, { config: buildViewerConfig({ ...custom, [KEYS.transparentBackground]: false }) });
+		expect(on.blocks[0].svgMarkup).not.toMatch(/background-color:#FFAAAA/i);
+		expect(off.blocks[0].svgMarkup).toMatch(/background-color:#FFAAAA/i);
+	});
+
+	test('built-in theme (builtin:<name>) for the light and the dark theme', async () => {
+		const defaults = await renderNote(browser, note);
+		for (const [key, colors] of [[KEYS.lightPreset, undefined], [KEYS.darkPreset, { bg: 'rgb(29, 32, 36)', fg: '#dddddd' }]] as const) {
+			const run = await renderNote(browser, note, { config: buildViewerConfig({ [key]: 'builtin:cerulean' }), colors });
+			expectNoNetwork(run);
+			expect(run.blocks[0].state).toBe('done');
+			expect(run.blocks[0].svgMarkup).not.toBe(defaults.blocks[0].svgMarkup);
+		}
+	});
+
 	test('a broken answer falls back to the defaults', async () => {
 		const defaults = await renderNote(browser, note);
 		const run = await renderNote(browser, note, { config: { themeMode: 42, presets: 'x' } });

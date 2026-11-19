@@ -5,7 +5,7 @@
 import { cacheKey, LruCache } from './cache';
 import { RenderEngine, RenderResult } from './engine';
 import { PreparedSource, prepareSource, splitLines, toUserLine } from './preamble';
-import { ViewerConfig } from './viewerConfig';
+import { PresetConfig, ViewerConfig } from './viewerConfig';
 import { parseInfo } from '../shared/fence';
 
 export const BLOCK_SELECTOR = '.joplin-plantuml';
@@ -150,9 +150,10 @@ export class ViewerController {
 		const source = pre ? pre.textContent || '' : '';
 		const options = parseInfo(pre ? pre.getAttribute('data-joplin-language') || '' : '').options;
 		const theme = options.theme || (config.themeMode === 'auto' ? (dark ? 'dark' : 'light') : config.themeMode);
-		const preset = theme === 'none' ? { lines: [], engineDark: false } : config.presets[theme];
+		const preset: PresetConfig = theme === 'none' ? { lines: [], engineDark: false } : config.presets[theme];
 		const prepared = prepareSource(source, {
 			presetLines: preset.lines,
+			presetTheme: preset.theme,
 			transparentBackground: config.transparentBackground,
 			fontFamily: config.fontFamily,
 			fontSizePx: 0,

@@ -11,6 +11,8 @@ export interface PresetConfig {
 	lines: string[];
 	/** Use the engine's dark option (plantuml-dark). */
 	engineDark: boolean;
+	/** Built-in PlantUML theme (!theme) of a builtin:<name> preset. */
+	theme?: string;
 }
 
 export interface ViewerConfig {
@@ -49,6 +51,9 @@ export const DEFAULT_VIEWER_CONFIG: ViewerConfig = {
 	settingsVersion: 'default',
 };
 
+/** Names of built-in themes: lower case letters, digits and hyphens. */
+export const THEME_NAME_RE = /^[a-z0-9][a-z0-9-]*$/;
+
 function intIn(value: unknown, min: number, max: number, fallback: number): number {
 	return typeof value === 'number' && Number.isInteger(value) && value >= min && value <= max ? value : fallback;
 }
@@ -57,7 +62,9 @@ function preset(value: unknown, fallback: PresetConfig): PresetConfig {
 	const v = value as Partial<PresetConfig> | null;
 	if (!v || typeof v !== 'object') return fallback;
 	const lines = Array.isArray(v.lines) ? v.lines.filter((l): l is string => typeof l === 'string') : fallback.lines;
-	return { lines, engineDark: typeof v.engineDark === 'boolean' ? v.engineDark : fallback.engineDark };
+	const result: PresetConfig = { lines, engineDark: typeof v.engineDark === 'boolean' ? v.engineDark : fallback.engineDark };
+	if (typeof v.theme === 'string' && THEME_NAME_RE.test(v.theme)) result.theme = v.theme;
+	return result;
 }
 
 /**

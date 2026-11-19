@@ -3,6 +3,8 @@
 // The labels are English until stage 3 (i18n).
 import { SettingItem, SettingItemType } from 'api/types';
 import { DEFAULT_VIEWER_CONFIG, PresetConfig, ViewerConfig } from './contentScript/viewerConfig';
+import { BUILTIN_THEMES } from './presets/builtinThemes';
+import { JOPLIN_LIGHT_LINES } from './presets/joplinLight';
 import { hashString } from './shared/hash';
 
 export const SECTION = 'dgPlantuml';
@@ -23,15 +25,22 @@ export const KEYS = {
 	cacheSize: 'plantuml.cacheSize',
 } as const;
 
-/** Preset IDs offered for each theme (design 8.4). */
+const BUILTIN_OPTIONS: Record<string, string> = Object.fromEntries(
+	Object.entries(BUILTIN_THEMES).map(([name, label]) => [`builtin:${name}`, `PlantUML theme: ${label}`]),
+);
+
+/** Preset IDs offered for each theme (design 8.4). Built-in themes are offered for both. */
 export const LIGHT_PRESETS: Record<string, string> = {
 	'plantuml-default': 'PlantUML default',
+	'joplin-light': 'Joplin light',
+	...BUILTIN_OPTIONS,
 	custom: 'Custom (preamble below)',
 };
 
 export const DARK_PRESETS: Record<string, string> = {
 	'plantuml-dark': 'PlantUML dark',
 	'plantuml-default': 'PlantUML default',
+	...BUILTIN_OPTIONS,
 	custom: 'Custom (preamble below)',
 };
 
@@ -181,9 +190,14 @@ export function resolvePreset(id: string, customText: string, theme: 'light' | '
 		return { lines: [], engineDark: false };
 	case 'plantuml-dark':
 		return { lines: [], engineDark: true };
+	case 'joplin-light':
+		return { lines: JOPLIN_LIGHT_LINES.slice(), engineDark: false };
 	case 'custom':
 		return { lines: parseCustomPreamble(customText), engineDark: false };
 	default:
+		if (id.startsWith('builtin:') && Object.prototype.hasOwnProperty.call(BUILTIN_THEMES, id.slice(8))) {
+			return { lines: [], engineDark: false, theme: id.slice(8) };
+		}
 		return theme === 'dark' ? { lines: [], engineDark: true } : { lines: [], engineDark: false };
 	}
 }

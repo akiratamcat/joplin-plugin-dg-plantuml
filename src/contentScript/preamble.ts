@@ -6,6 +6,8 @@
 export interface PreambleOptions {
 	/** Lines of the selected style preset (empty for plantuml-default / plantuml-dark). */
 	presetLines: string[];
+	/** Built-in theme of the preset (builtin:<name>). Added as "!theme <name>". */
+	presetTheme?: string;
 	/** Add "skinparam backgroundColor transparent". */
 	transparentBackground: boolean;
 	/** Font name for "skinparam defaultFontName" (empty: not added). */
@@ -48,13 +50,18 @@ export function buildPreamble(diagramType: string, source: string, opts: Preambl
 	const lines: string[] = [];
 	if (opts.smetana && !LAYOUT_PRAGMA_RE.test(source)) lines.push('!pragma layout smetana');
 	if (opts.noStyle) return lines;
+	// Order: the preset (theme, then its lines), then the settings chosen on the
+	// settings screen, which win over the preset ("transparent background"
+	// applies whatever the preset says, design 8.5). The user's own lines in
+	// the diagram come after the preamble and win over everything.
+	if (opts.presetTheme && /^[a-z0-9][a-z0-9-]*$/.test(opts.presetTheme)) lines.push(`!theme ${opts.presetTheme}`);
+	for (const line of opts.presetLines) lines.push(line);
 	if (opts.transparentBackground) lines.push('skinparam backgroundColor transparent');
 	const font = oneLine(opts.fontFamily);
 	if (font) lines.push(`skinparam defaultFontName ${font}`);
 	if (Number.isInteger(opts.fontSizePx) && opts.fontSizePx > 0 && opts.fontSizePx <= 200) {
 		lines.push(`skinparam defaultFontSize ${opts.fontSizePx}`);
 	}
-	for (const line of opts.presetLines) lines.push(line);
 	return lines;
 }
 

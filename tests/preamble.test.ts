@@ -19,14 +19,14 @@ describe('buildPreamble', () => {
 		expect(buildPreamble('uml', '@startuml\n  !pragma layout elk\n@enduml', base)).toEqual([]);
 	});
 
-	test('style lines in order: background, font, size, preset', () => {
-		const opts = { ...base, transparentBackground: true, fontFamily: 'Noto Sans\nJP', fontSizePx: 16, presetLines: ['skinparam ArrowColor #888'] };
+	test('style lines in order: preset, then the settings that win over it (background, font, size)', () => {
+		const opts = { ...base, transparentBackground: true, fontFamily: 'Noto Sans\nJP', fontSizePx: 16, presetLines: ['skinparam backgroundColor #FFAAAA'] };
 		expect(buildPreamble('uml', '', opts)).toEqual([
 			'!pragma layout smetana',
+			'skinparam backgroundColor #FFAAAA',
 			'skinparam backgroundColor transparent',
 			'skinparam defaultFontName Noto Sans JP',
 			'skinparam defaultFontSize 16',
-			'skinparam ArrowColor #888',
 		]);
 	});
 
