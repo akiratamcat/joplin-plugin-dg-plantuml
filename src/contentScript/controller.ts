@@ -143,6 +143,11 @@ export class ViewerController {
 		});
 		el.classList.remove('joplin-plantuml-align-left', 'joplin-plantuml-align-right');
 		if (options.align === 'left' || options.align === 'right') el.classList.add(`joplin-plantuml-align-${options.align}`);
+		// A dark diagram on a light page (or the other way round) is hard to read,
+		// because the engine draws no background. Put a backdrop behind it.
+		const diagramDark = theme === 'dark';
+		el.classList.remove('joplin-plantuml-backdrop-light', 'joplin-plantuml-backdrop-dark');
+		if (diagramDark !== dark) el.classList.add(diagramDark ? 'joplin-plantuml-backdrop-dark' : 'joplin-plantuml-backdrop-light');
 		const preamble = prepared.lines.slice(prepared.startLine, prepared.startLine + prepared.inserted).join('\n');
 		const key = cacheKey({
 			source,

@@ -119,6 +119,27 @@ describe('ViewerController', () => {
 		expect(document.querySelector('.joplin-plantuml')?.classList.contains('joplin-plantuml-align-left')).toBe(true);
 	});
 
+	test('backdrop only when the diagram and the page differ in lightness', () => {
+		const cases: [Partial<ViewerConfig>, boolean, string, string | null][] = [
+			// config, dark page, info, backdrop
+			[{}, false, 'plantuml', null],
+			[{}, true, 'plantuml', null],
+			[{}, false, 'plantuml theme=dark', 'dark'],
+			[{}, true, 'plantuml theme=light', 'light'],
+			[{}, true, 'plantuml theme=none', 'light'],
+			[{}, false, 'plantuml theme=none', null],
+			[{ themeMode: 'dark' }, false, 'plantuml', 'dark'],
+		];
+		for (const [config, dark, info, backdrop] of cases) {
+			setNote(`\`\`\`${info}\nA -> B\n\`\`\`\n`);
+			const { controller } = setup(config, dark);
+			controller.update();
+			const cls = document.querySelector('.joplin-plantuml')?.classList;
+			expect([cls?.contains('joplin-plantuml-backdrop-light'), cls?.contains('joplin-plantuml-backdrop-dark')])
+				.toEqual([backdrop === 'light', backdrop === 'dark']);
+		}
+	});
+
 	test('while editing, the previous diagram stays (dimmed) and rendering waits', async () => {
 		const { engine, controller, timers, flush } = setup();
 		setNote('```plantuml\nAlice -> Bob : hello\n```\n');

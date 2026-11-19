@@ -25,6 +25,26 @@
 	height: auto !important;
 }
 
+/*
+ * Backdrop when the diagram and the page differ in lightness (theme=dark on a
+ * light page, theme=light or none on a dark page). The engine draws no
+ * background, so without it the lines would vanish into the page.
+ */
+.joplin-plantuml-backdrop-light > .joplin-plantuml-output svg,
+.joplin-plantuml-backdrop-dark > .joplin-plantuml-output svg {
+	max-width: calc(100% - 16px);
+	padding: 8px;
+	border-radius: 4px;
+}
+
+.joplin-plantuml-backdrop-light > .joplin-plantuml-output svg {
+	background: #ffffff;
+}
+
+.joplin-plantuml-backdrop-dark > .joplin-plantuml-output svg {
+	background: #181818;
+}
+
 /* Rendering: a small spinner, then the text the viewer sets. */
 .joplin-plantuml-status {
 	display: inline-block;
