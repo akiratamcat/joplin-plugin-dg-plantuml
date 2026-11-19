@@ -38,7 +38,7 @@ S --> 利用者 : 完成 / 完成了 / 완료
 Alice -> Bob : dark, left
 ```
 
-## 5. theme=none (no preamble: white background)
+## 5. theme=none (no preamble)
 
 ```plantuml theme=none
 Alice -> Bob : none
@@ -67,7 +67,7 @@ end note
 ## 8. Emoji
 
 ```plantuml
-Alice -> Bob : <:smile:> <:+1:>
+Alice -> Bob : <:smile:> <:thumbsup:>
 ```
 
 ## 9. Syntax error (line 3)

@@ -169,7 +169,7 @@ describe('ViewerController', () => {
 		expect(box?.getAttribute('role')).toBe('alert');
 		expect(box?.querySelector('.joplin-plantuml-error-message')?.textContent).toBe('Line 3: Syntax Error?');
 		expect(box?.querySelector('.joplin-plantuml-error-excerpt')?.textContent).toBe('3bad line');
-		expect(document.querySelector('.joplin-plantuml')?.getAttribute('data-plantuml-state')).toBe('error');
+		expect(document.querySelector('.joplin-plantuml-output')?.getAttribute('data-plantuml-state')).toBe('error');
 	});
 
 	test('an error while editing keeps the previous diagram under the error box', async () => {
@@ -232,6 +232,26 @@ describe('ViewerController', () => {
 		controller.update();
 		await flush();
 		expect(document.querySelector('.joplin-plantuml-note')?.textContent).toBe('Only the first diagram in this block is shown.');
+	});
+
+	test('Rich Text edit dialog: the block element stays, its inner HTML is replaced', async () => {
+		const { engine, controller, flush } = setup();
+		setNote('```plantuml\nA -> B\n```\n');
+		controller.update();
+		await flush();
+		const block = document.querySelector('.joplin-plantuml') as HTMLElement;
+		// Joplin's useEditDialog: editable.innerHTML = editableInnerHtml(result.html)
+		const md = new MarkdownIt();
+		contentScript(null).plugin(md, {});
+		const fresh = document.createElement('div');
+		fresh.innerHTML = md.render('```plantuml\nA -> B\n```\n');
+		block.innerHTML = (fresh.firstElementChild as HTMLElement).innerHTML;
+		expect(controller.hasNewBlocks()).toBe(true);
+		controller.update();
+		await flush();
+		expect(block.querySelector('.joplin-plantuml-output > svg')).not.toBeNull();
+		expect(block.querySelector('.joplin-plantuml-status')).toBeNull();
+		expect(engine.calls).toHaveLength(1); // unchanged source: from the cache
 	});
 
 	test('blocks removed before rendering are skipped', async () => {

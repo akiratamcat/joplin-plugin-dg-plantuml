@@ -9,6 +9,10 @@ import { ViewerConfig } from './viewerConfig';
 import { parseInfo } from '../shared/fence';
 
 export const BLOCK_SELECTOR = '.joplin-plantuml';
+const OUTPUT_SELECTOR = '.joplin-plantuml-output';
+// The state is kept on the output element, not on the block: after the Rich
+// Text editor's edit dialog, Joplin keeps the block element and replaces only
+// its inner HTML, and the new content must be rendered again.
 const STATE_ATTR = 'data-plantuml-state';
 
 /** What is shown for a diagram. Stored in the cache. */
@@ -81,7 +85,7 @@ export class ViewerController {
 
 	/** True when the page has blocks that have not been handled yet. */
 	hasNewBlocks(): boolean {
-		return !!this.deps.doc.querySelector(`${BLOCK_SELECTOR}:not([${STATE_ATTR}])`);
+		return !!this.deps.doc.querySelector(`${BLOCK_SELECTOR} > ${OUTPUT_SELECTOR}:not([${STATE_ATTR}])`);
 	}
 
 	/** Handles new blocks. Safe to call many times (events, MutationObserver). */
@@ -91,7 +95,7 @@ export class ViewerController {
 		let queued = false;
 		let edited = false;
 		blocks.forEach((el, index) => {
-			if (el.hasAttribute(STATE_ATTR)) return;
+			if (this.output(el).hasAttribute(STATE_ATTR)) return;
 			if (dark === null) dark = this.deps.isDark();
 			const job = this.makeJob(el, index, dark);
 			const cached = this.cache.get(job.key);
@@ -99,7 +103,7 @@ export class ViewerController {
 				this.show(job, cached);
 				return;
 			}
-			el.setAttribute(STATE_ATTR, 'pending');
+			this.output(el).setAttribute(STATE_ATTR, 'pending');
 			if (job.source.length > this.deps.config.maxSourceLength) {
 				const view: DiagramView = {
 					kind: 'error',
@@ -156,7 +160,7 @@ export class ViewerController {
 	}
 
 	private output(el: HTMLElement): HTMLElement {
-		let out = el.querySelector<HTMLElement>('.joplin-plantuml-output');
+		let out = el.querySelector<HTMLElement>(OUTPUT_SELECTOR);
 		if (!out) {
 			out = this.deps.doc.createElement('div');
 			out.className = 'joplin-plantuml-output';
@@ -280,7 +284,7 @@ export class ViewerController {
 	private show(job: Job, view: DiagramView): void {
 		const out = this.output(job.el);
 		out.removeAttribute('aria-busy');
-		job.el.setAttribute(STATE_ATTR, view.kind === 'svg' ? 'done' : 'error');
+		out.setAttribute(STATE_ATTR, view.kind === 'svg' ? 'done' : 'error');
 		if (view.kind === 'svg') {
 			out.innerHTML = view.svg;
 			this.lastGood.set(job.index, { source: job.source, svg: view.svg });
