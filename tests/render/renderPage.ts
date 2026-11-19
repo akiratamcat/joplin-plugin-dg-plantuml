@@ -1,0 +1,137 @@
+// SPDX-License-Identifier: MIT
+// Test page for the rendering tests (design 16.1, 16.4 (2)): the built viewer
+// script and engine (dist/contentScript) in headless Chrome, with every
+// request outside the test's own files blocked and recorded.
+import * as fs from 'fs';
+import * as path from 'path';
+import MarkdownIt from 'markdown-it';
+import { Browser, BrowserContext, chromium, Page } from 'playwright-core';
+import contentScript from '../../src/contentScript/markdownItPlugin';
+
+export const ROOT = path.join(__dirname, '..', '..');
+export const DIST = path.join(ROOT, 'dist', 'contentScript');
+const ORIGIN = 'http://render.test';
+
+// Close to the note viewer of Joplin 3.7.22 (no 'wasm-unsafe-eval', no workers),
+// plus connect-src 'none' so that any request is reported.
+const CSP = [
+	"default-src 'self'",
+	"script-src 'self'",
+	"style-src 'self' 'unsafe-inline'",
+	"img-src 'self' data:",
+	"font-src 'self' data:",
+	"connect-src 'none'",
+	"worker-src 'none'",
+	"child-src 'none'",
+].join('; ');
+
+export function renderMarkdown(markdown: string): string {
+	const md = new MarkdownIt();
+	contentScript(null).plugin(md, {});
+	return md.render(markdown);
+}
+
+export function launchBrowser(): Promise<Browser> {
+	// The installed Chrome is used (no browser download). DG_CHROME_PATH can
+	// point to another Chromium build.
+	const executablePath = process.env.DG_CHROME_PATH;
+	return chromium.launch(executablePath ? { executablePath, headless: true } : { channel: 'chrome', headless: true });
+}
+
+export interface RenderedBlock {
+	state: string | null;
+	classes: string;
+	svg: boolean;
+	svgMarkup: string;
+	texts: string;
+	errorTitle: string;
+	errorMessage: string;
+	note: string;
+}
+
+export interface PageRun {
+	blocks: RenderedBlock[];
+	/** Requests to anything but the test's own files. */
+	blocked: string[];
+	/** The test's own files that were served (paths). */
+	served: string[];
+	cspViolations: string[];
+	pageErrors: string[];
+	console: string[];
+}
+
+const TYPES: Record<string, string> = { '.js': 'text/javascript', '.css': 'text/css' };
+
+async function openContext(browser: Browser, html: string, run: PageRun): Promise<BrowserContext> {
+	const context = await browser.newContext({ viewport: { width: 900, height: 800 } });
+	await context.route('**/*', (route) => {
+		const url = new URL(route.request().url());
+		if (url.origin === ORIGIN) {
+			if (url.pathname === '/') return route.fulfill({ status: 200, body: html, contentType: 'text/html; charset=utf-8' });
+			const file = path.join(DIST, decodeURIComponent(url.pathname));
+			if (file.startsWith(DIST) && fs.existsSync(file) && fs.statSync(file).isFile()) {
+				run.served.push(url.pathname);
+				return route.fulfill({ status: 200, body: fs.readFileSync(file), contentType: TYPES[path.extname(file)] || 'application/octet-stream' });
+			}
+		}
+		run.blocked.push(url.href);
+		return route.abort();
+	});
+	return context;
+}
+
+async function waitForBlocks(page: Page): Promise<void> {
+	await page.waitForFunction(
+		() => document.querySelectorAll('.joplin-plantuml').length > 0
+			&& !document.querySelector('.joplin-plantuml-output:not([data-plantuml-state]), .joplin-plantuml-output[data-plantuml-state="pending"]'),
+		undefined,
+		{ timeout: 60000, polling: 100 },
+	);
+}
+
+/** Renders a note in a page with the given body colours. */
+export async function renderNote(browser: Browser, markdown: string, colors = { bg: '#ffffff', fg: '#222222' }): Promise<PageRun> {
+	const run: PageRun = { blocks: [], blocked: [], served: [], cspViolations: [], pageErrors: [], console: [] };
+	const html = `<!doctype html><html><head><meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="${CSP}">
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="plantuml.css">
+<style>body { background: ${colors.bg}; color: ${colors.fg}; }</style>
+</head><body>${renderMarkdown(markdown)}
+<script src="viewer.js"></script></body></html>`;
+	const context = await openContext(browser, html, run);
+	try {
+		const page = await context.newPage();
+		await page.addInitScript(() => {
+			document.addEventListener('securitypolicyviolation', (e) => {
+				const w = window as unknown as { __csp: string[] };
+				(w.__csp = w.__csp || []).push(`${e.violatedDirective} ${e.blockedURI}`);
+			});
+		});
+		page.on('pageerror', (e) => run.pageErrors.push(e.message));
+		page.on('console', (m) => run.console.push(`${m.type()}: ${m.text()}`));
+		await page.goto(`${ORIGIN}/`);
+		// Everything the page needs has been loaded: from now on, the page is offline too.
+		await context.setOffline(true);
+		await waitForBlocks(page);
+		run.cspViolations = await page.evaluate(() => (window as unknown as { __csp?: string[] }).__csp || []);
+		run.blocks = await page.evaluate(() => Array.from(document.querySelectorAll('.joplin-plantuml')).map((el) => {
+			const out = el.querySelector('.joplin-plantuml-output');
+			const svg = out ? out.querySelector(':scope > svg') : null;
+			const text = (sel: string) => (el.querySelector(sel) || { textContent: '' }).textContent || '';
+			return {
+				state: out ? out.getAttribute('data-plantuml-state') : null,
+				classes: el.className,
+				svg: !!svg,
+				svgMarkup: svg ? svg.outerHTML : '',
+				texts: svg ? Array.from(svg.querySelectorAll('text')).map((t) => t.textContent).join('|') : '',
+				errorTitle: text('.joplin-plantuml-error-title'),
+				errorMessage: text('.joplin-plantuml-error-message'),
+				note: text('.joplin-plantuml-note'),
+			};
+		}));
+	} finally {
+		await context.close();
+	}
+	return run;
+}
