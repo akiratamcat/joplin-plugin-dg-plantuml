@@ -1,0 +1,21 @@
+{
+	"description": "Places in the plugin code and the bundled engine that match a network pattern of tests/helpers/networkPatterns.ts, with the reason why they make no network request (design 16.4 (1)). A new match, or a different count, fails tests/network.test.ts and must be checked again.",
+	"files": {
+		"src/contentScript/engine.ts": {
+			"createElement": {
+				"count": 1,
+				"reason": "loadScriptElement() loads themes.js, emoji.js and openiconic.js from the plugin's own engine folder (baseUrl). No other URL is given."
+			},
+			"dynamicImport": {
+				"count": 1,
+				"reason": "importModuleNative() imports plantuml.js from the plugin's own engine folder."
+			}
+		},
+		"vendor/plantuml/plantuml.js": {
+			"createElement": {
+				"count": 1,
+				"reason": "Fallback script loader of the standard library, used only when PLANTUML_STDLIB_LOADER is missing or returns false. The plugin's loader always returns true (engine.ts), so this path never runs."
+			}
+		}
+	}
+}

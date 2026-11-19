@@ -1,0 +1,64 @@
+# Release (design 21.4, docs/release.md): runs on a version tag.
+name: Release
+
+on:
+  push:
+    tags: ['v*.*.*']
+
+permissions:
+  contents: read
+
+jobs:
+  release:
+    name: GitHub release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: The tag matches the version
+        run: |
+          version="$(node -p "require('./package.json').version")"
+          manifest="$(node -p "require('./src/manifest.json').version")"
+          test "v$version" = "$GITHUB_REF_NAME"
+          test "$version" = "$manifest"
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm test
+      - name: Release notes
+        run: node .github/scripts/release-notes.js "${GITHUB_REF_NAME#v}" > release-notes.md
+      - name: Create the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" \
+            --title "$GITHUB_REF_NAME" \
+            --notes-file release-notes.md \
+            publish/io.github.akiratamcat.dg-plantuml.jpl \
+            LICENSE THIRD_PARTY_NOTICES.md
+
+  npm:
+    name: npm
+    needs: release
+    # Enabled when the publishing account and Trusted Publishing are set up
+    # (repository variable NPM_PUBLISH = true). Design 19 D-16.
+    if: vars.NPM_PUBLISH == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: https://registry.npmjs.org
+      - run: npm install -g npm@latest
+      - run: npm ci
+      - run: npm run dist
+      - run: npm publish --provenance --access public

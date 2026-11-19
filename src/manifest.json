@@ -1,0 +1,14 @@
+{
+	"manifest_version": 1,
+	"id": "io.github.akiratamcat.dg-plantuml",
+	"app_min_version": "3.1",
+	"version": "0.1.0",
+	"name": "dg-plantuml",
+	"description": "Render PlantUML diagrams with a bundled engine. No external server, no network access.",
+	"author": "akira tamcat",
+	"homepage_url": "https://github.com/akiratamcat/joplin-plugin-dg-plantuml",
+	"repository_url": "https://github.com/akiratamcat/joplin-plugin-dg-plantuml",
+	"platforms": ["desktop"],
+	"categories": ["viewer", "editor"],
+	"keywords": ["plantuml", "diagram", "uml", "offline"]
+}

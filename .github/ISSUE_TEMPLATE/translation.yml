@@ -1,0 +1,21 @@
+name: Translation
+description: A wrong or unnatural translation, or a new language.
+labels: [translation]
+body:
+  - type: input
+    id: language
+    attributes:
+      label: Language
+      placeholder: e.g. de, fr, zh_TW
+    validations:
+      required: true
+  - type: textarea
+    id: details
+    attributes:
+      label: Current text and suggested text
+      description: Where is the text shown (settings, viewer)? What should it say?
+    validations:
+      required: true
+  - type: markdown
+    attributes:
+      value: The current translations are made with generative AI, so corrections by native speakers are very welcome. Contributions are provided under the MIT License.
