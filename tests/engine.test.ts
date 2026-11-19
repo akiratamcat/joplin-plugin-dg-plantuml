@@ -4,7 +4,7 @@
 // fake engine module.
 import * as fs from 'fs';
 import * as path from 'path';
-import { classifySvg, ENGINE_VERSION, PlantUmlEngine } from '../src/contentScript/engine';
+import { classifySvg, ENGINE_VERSION, PlantUmlEngine, RESET_LINES } from '../src/contentScript/engine';
 
 const fixture = (name: string) => fs.readFileSync(path.join(__dirname, 'fixtures', 'engine', name), 'utf8');
 
@@ -59,13 +59,25 @@ describe('PlantUmlEngine', () => {
 		expect(err).toHaveBeenCalled();
 	});
 
-	test('passes the lines and the dark option', async () => {
+	test('resets the engine state, then passes the lines and the dark option', async () => {
 		const render = jest.fn<void, Parameters<Render>>((_l, ok) => ok('<svg/>'));
 		const { engine } = setup(render);
 		await engine.init();
 		await engine.renderSvg('@startuml\r\nA -> B\n@enduml', { timeoutMs: 1000, dark: true });
-		expect(render.mock.calls[0][0]).toEqual(['@startuml', 'A -> B', '@enduml']);
-		expect(render.mock.calls[0][3]).toEqual({ dark: true });
+		expect(render.mock.calls).toHaveLength(2);
+		expect(render.mock.calls[0][0]).toEqual(RESET_LINES);
+		expect(render.mock.calls[1][0]).toEqual(['@startuml', 'A -> B', '@enduml']);
+		expect(render.mock.calls[1][3]).toEqual({ dark: true });
+	});
+
+	test('a failing reset does not change the result', async () => {
+		const render: Render = (lines, ok) => {
+			if (lines === RESET_LINES) throw new Error('reset failed');
+			ok('<svg><text>A</text></svg>');
+		};
+		const { engine } = setup(render);
+		await engine.init();
+		expect(await engine.renderSvg('A', { timeoutMs: 1000, dark: false })).toEqual({ ok: true, svg: '<svg><text>A</text></svg>' });
 	});
 
 	test('error image, onError, exception and timeout', async () => {

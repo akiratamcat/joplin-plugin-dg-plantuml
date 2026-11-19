@@ -30,6 +30,12 @@ const DIAGRAMS: DiagramCase[] = [
 	{ name: 'activity', source: 'start\n:Step one;\nif (ok?) then (yes)\n  :Done;\nendif\nstop', texts: ['Step one', 'Done'] },
 	{ name: 'state', source: '[*] --> Idle\nIdle --> Running : start\nRunning --> [*]', texts: ['Idle', 'Running'] },
 	{ name: 'component', source: '[Web] --> [API]\n[API] --> [Database]', texts: ['Web', 'API', 'Database'] },
+	// Right after class-like diagrams: the engine used to take it for a class diagram (RESET_LINES in engine.ts).
+	{
+		name: 'sequence after class-like diagrams',
+		source: Array.from({ length: 20 }, (_, i) => `P${i % 10} -> P${(i + 3) % 10} : message ${i}`).join('\n'),
+		texts: ['message 0', 'message 19'],
+	},
 	{ name: 'mind map', source: '@startmindmap\n* root\n** child one\n** child two\n@endmindmap', texts: ['root', 'child one', 'child two'] },
 	{ name: 'gantt', source: "@startgantt\n[Design] lasts 5 days\n[Build] lasts 10 days\n[Build] starts at [Design]'s end\n@endgantt", texts: ['Design', 'Build'] },
 	{ name: 'json', source: '@startjson\n{"name": "dg", "tags": ["a", "b"]}\n@endjson', texts: ['name', 'dg'] },
@@ -92,6 +98,19 @@ describe('rendering in a browser without network', () => {
 		expect(block.svg).toBe(true);
 		for (const text of DIAGRAMS[i].texts) expect(block.texts).toContain(text);
 		expect(block.errorTitle).toBe('');
+	});
+
+	test('each diagram renders the same alone as after the others (no engine state leaks)', async () => {
+		for (const [i, c] of DIAGRAMS.entries()) {
+			const alone = await renderNote(browser, fence(c.source, c.info));
+			expect([c.name, alone.blocks[0].svgMarkup]).toEqual([c.name, run.blocks[i].svgMarkup]);
+		}
+	});
+
+	test('the sequence diagram after class-like diagrams is a sequence diagram', () => {
+		const block = run.blocks[DIAGRAMS.findIndex((c) => c.name === 'sequence after class-like diagrams')];
+		const viewBox = (block.svgMarkup.match(/viewBox="0 0 (\d+(?:\.\d+)?) (\d+(?:\.\d+)?)"/) || []).slice(1).map(Number);
+		expect(viewBox[1]).toBeGreaterThan(viewBox[0]); // 20 messages: taller than wide
 	});
 
 	test.each(ERRORS.map((c, i) => [c.name, i] as const))('error: %s', (_name, i) => {

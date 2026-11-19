@@ -13,6 +13,16 @@ import { splitLines } from './preamble';
 /** Version of the vendored engine (vendor/plantuml/SOURCE.md). Part of the cache key. */
 export const ENGINE_VERSION = '1.2026.10';
 
+/**
+ * Rendered (and thrown away) before every diagram. The engine keeps state
+ * between calls: after a class, use case, state or component diagram, the
+ * next sequence diagram whose participants are not declared can be taken
+ * for a class diagram. Rendering any other kind of diagram in between
+ * resets it, so every diagram renders the same as in a fresh engine
+ * (found with @plantuml/core 1.2026.10; docs/lessons-learned.md).
+ */
+export const RESET_LINES = ['@startuml', 'participant Reset', '@enduml'];
+
 /** Files the standard library loader may give to the engine (design 7.5). */
 export const BUNDLED_LIBRARY_FILES = ['emoji.js', 'openiconic.js'];
 
@@ -115,9 +125,14 @@ export class PlantUmlEngine implements RenderEngine {
 		};
 	}
 
-	renderSvg(source: string, opts: RenderOptions): Promise<RenderResult> {
+	async renderSvg(source: string, opts: RenderOptions): Promise<RenderResult> {
 		const mod = this.mod;
-		if (!mod) return Promise.resolve({ ok: false, reason: 'engine', message: 'The PlantUML engine is not loaded.' });
+		if (!mod) return { ok: false, reason: 'engine', message: 'The PlantUML engine is not loaded.' };
+		await this.call(mod, RESET_LINES, { timeoutMs: opts.timeoutMs, dark: false });
+		return this.call(mod, splitLines(source), opts);
+	}
+
+	private call(mod: PlantUmlModule, lines: string[], opts: RenderOptions): Promise<RenderResult> {
 		return new Promise((resolve) => {
 			let settled = false;
 			const finish = (r: RenderResult) => {
@@ -131,7 +146,7 @@ export class PlantUmlEngine implements RenderEngine {
 			}, opts.timeoutMs);
 			try {
 				mod.renderToString(
-					splitLines(source),
+					lines,
 					(svg) => finish(classifySvg(svg)),
 					(message) => finish({ ok: false, reason: 'engine', message: String(message) }),
 					{ dark: opts.dark },
