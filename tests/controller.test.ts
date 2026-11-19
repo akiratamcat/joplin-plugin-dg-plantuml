@@ -283,6 +283,31 @@ describe('ViewerController', () => {
 		await flush();
 		expect(engine.calls).toHaveLength(0);
 	});
+
+	test('new settings: the blocks are drawn again with them', async () => {
+		const { engine, controller, flush } = setup();
+		setNote('```plantuml\nA -> B\n```\n');
+		controller.update();
+		await flush();
+		controller.setConfig({ ...DEFAULT_VIEWER_CONFIG, transparentBackground: false, settingsVersion: 'v2' });
+		expect(controller.settingsVersion).toBe('v2');
+		// The previous diagram stays while the block renders again.
+		expect(outputs()[0].querySelector('.joplin-plantuml-stale svg')).not.toBeNull();
+		await flush();
+		expect(engine.calls).toHaveLength(2);
+		expect(engine.calls[1].source).not.toMatch(/backgroundColor transparent/);
+		expect(outputs()[0].querySelector(':scope > svg')).not.toBeNull();
+	});
+
+	test('the same settings again: nothing is drawn again', async () => {
+		const { engine, controller, flush } = setup();
+		setNote('```plantuml\nA -> B\n```\n');
+		controller.update();
+		await flush();
+		controller.setConfig({ ...DEFAULT_VIEWER_CONFIG });
+		await flush();
+		expect(engine.calls).toHaveLength(1);
+	});
 });
 
 describe('helpers', () => {

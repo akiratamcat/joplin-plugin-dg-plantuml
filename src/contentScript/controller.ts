@@ -64,6 +64,7 @@ export function countDiagrams(source: string): number {
 }
 
 export class ViewerController {
+	private config: ViewerConfig;
 	private readonly cache: LruCache<DiagramView>;
 	private readonly queue: Job[] = [];
 	/** Last successful diagram at each block position. */
@@ -77,10 +78,27 @@ export class ViewerController {
 	private readonly logError: (...args: unknown[]) => void;
 
 	constructor(private readonly deps: ControllerDeps) {
+		this.config = deps.config;
 		this.cache = new LruCache<DiagramView>(deps.config.cacheSize);
 		this.setTimer = deps.setTimer || ((fn, ms) => setTimeout(fn, ms));
 		this.clearTimer = deps.clearTimer || ((h) => clearTimeout(h as ReturnType<typeof setTimeout>));
 		this.logError = deps.logError || ((...args) => console.error('dg-plantuml:', ...args));
+	}
+
+	get settingsVersion(): string {
+		return this.config.settingsVersion;
+	}
+
+	/**
+	 * Uses new settings. When they differ from the current ones, every block
+	 * is drawn again (the cache key contains the settings version, design 7.2).
+	 */
+	setConfig(config: ViewerConfig): void {
+		if (config.settingsVersion === this.config.settingsVersion) return;
+		this.config = config;
+		this.cache.setLimit(config.cacheSize);
+		this.deps.doc.querySelectorAll(`${BLOCK_SELECTOR} > ${OUTPUT_SELECTOR}[${STATE_ATTR}]`).forEach((out) => out.removeAttribute(STATE_ATTR));
+		this.update();
 	}
 
 	/** True when the page has blocks that have not been handled yet. */
@@ -104,11 +122,11 @@ export class ViewerController {
 				return;
 			}
 			this.output(el).setAttribute(STATE_ATTR, 'pending');
-			if (job.source.length > this.deps.config.maxSourceLength) {
+			if (job.source.length > this.config.maxSourceLength) {
 				const view: DiagramView = {
 					kind: 'error',
 					title: 'The diagram is too large.',
-					message: `The source has ${job.source.length} characters. The limit is ${this.deps.config.maxSourceLength}.`,
+					message: `The source has ${job.source.length} characters. The limit is ${this.config.maxSourceLength}.`,
 					line: null,
 				};
 				this.show(job, view);
@@ -123,11 +141,11 @@ export class ViewerController {
 			this.queue.push(job);
 			queued = true;
 		});
-		if (queued) this.schedule(edited ? this.deps.config.debounceMs : 0);
+		if (queued) this.schedule(edited ? this.config.debounceMs : 0);
 	}
 
 	private makeJob(el: HTMLElement, index: number, dark: boolean): Job {
-		const config = this.deps.config;
+		const config = this.config;
 		const pre = el.querySelector('pre.joplin-source');
 		const source = pre ? pre.textContent || '' : '';
 		const options = parseInfo(pre ? pre.getAttribute('data-joplin-language') || '' : '').options;
@@ -260,7 +278,7 @@ export class ViewerController {
 		let result: RenderResult;
 		try {
 			result = await this.deps.engine.renderSvg(job.prepared.lines.join('\n'), {
-				timeoutMs: this.deps.config.renderTimeoutMs,
+				timeoutMs: this.config.renderTimeoutMs,
 				dark: job.engineDark,
 			});
 		} catch (e) {

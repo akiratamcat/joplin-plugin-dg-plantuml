@@ -40,7 +40,7 @@ describe('LruCache', () => {
 });
 
 describe('cacheKey', () => {
-	const parts: CacheKeyParts = { source: 'A -> B', theme: 'light', preamble: '!pragma layout smetana', baseFontSizePx: 16, settingsVersion: 1, engineVersion: '1.2026.10' };
+	const parts: CacheKeyParts = { source: 'A -> B', theme: 'light', preamble: '!pragma layout smetana', baseFontSizePx: 16, settingsVersion: 'v1', engineVersion: '1.2026.10' };
 
 	test('same parts give the same key', () => {
 		expect(cacheKey(parts)).toBe(cacheKey({ ...parts }));
@@ -51,7 +51,7 @@ describe('cacheKey', () => {
 		['theme', { theme: 'dark' }],
 		['preamble', { preamble: '' }],
 		['font size', { baseFontSizePx: 14 }],
-		['settings version', { settingsVersion: 2 }],
+		['settings version', { settingsVersion: 'v2' }],
 		['engine version', { engineVersion: '1.2026.11' }],
 	])('a different %s gives a different key', (_name, change) => {
 		expect(cacheKey({ ...parts, ...change })).not.toBe(cacheKey(parts));

@@ -5,6 +5,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { Browser } from 'playwright-core';
 import { countPatterns, FORBIDDEN_PATTERNS } from '../helpers/networkPatterns';
+import { buildViewerConfig, KEYS } from '../../src/settings';
 import { DIST, launchBrowser, PageRun, renderNote } from './renderPage';
 
 interface DiagramCase {
@@ -138,11 +139,44 @@ describe('theme', () => {
 
 	test('dark page: auto uses the dark output', async () => {
 		const light = await renderNote(browser, note);
-		const dark = await renderNote(browser, note, { bg: 'rgb(29, 32, 36)', fg: '#dddddd' });
+		const dark = await renderNote(browser, note, { colors: { bg: 'rgb(29, 32, 36)', fg: '#dddddd' } });
 		expectNoNetwork(dark);
 		expect(dark.blocks.map((b) => backdrop(b.classes))).toEqual([null, null, 'light', 'light']);
 		expect(dark.blocks[0].svgMarkup).toBe(light.blocks[1].svgMarkup); // auto on dark = theme=dark
 		expect(dark.blocks[2].svgMarkup).toBe(light.blocks[0].svgMarkup); // theme=light = auto on light
+	});
+});
+
+describe('settings from the main script (getConfig)', () => {
+	const note = fence('Alice -> Bob : x');
+
+	test('the viewer uses the settings it gets', async () => {
+		const defaults = await renderNote(browser, note);
+		const darkTheme = await renderNote(browser, `${fence('Alice -> Bob : x', 'plantuml theme=dark')}`);
+		const config = buildViewerConfig({ [KEYS.themeMode]: 'dark', [KEYS.lightPreset]: 'plantuml-default', [KEYS.darkPreset]: 'plantuml-dark' });
+		const run = await renderNote(browser, note, { config });
+		expectNoNetwork(run);
+		// themeMode=dark on a light page: the dark output, with a backdrop.
+		expect(run.blocks[0].svgMarkup).toBe(darkTheme.blocks[0].svgMarkup);
+		expect(run.blocks[0].svgMarkup).not.toBe(defaults.blocks[0].svgMarkup);
+		expect(run.blocks[0].classes).toContain('joplin-plantuml-backdrop-dark');
+		expect(run.settingsVersion).toBe(config.settingsVersion);
+		expect(run.messages).toContainEqual({ id: 'dgPlantumlMarkdownIt', message: { type: 'getConfig' } });
+		expect(run.console.filter((m) => /could not get the settings/.test(m))).toEqual([]);
+	});
+
+	test('a custom preamble is used', async () => {
+		const config = buildViewerConfig({ [KEYS.lightPreset]: 'custom', [KEYS.lightCustomPreamble]: 'skinparam ParticipantBackgroundColor #FF0000' });
+		const run = await renderNote(browser, note, { config });
+		expect(run.blocks[0].svgMarkup).toMatch(/fill="#FF0000"/i);
+	});
+
+	test('a broken answer falls back to the defaults', async () => {
+		const defaults = await renderNote(browser, note);
+		const run = await renderNote(browser, note, { config: { themeMode: 42, presets: 'x' } });
+		expectNoNetwork(run);
+		expect(run.blocks[0].state).toBe('done');
+		expect(run.blocks[0].svgMarkup).toBe(defaults.blocks[0].svgMarkup);
 	});
 });
 

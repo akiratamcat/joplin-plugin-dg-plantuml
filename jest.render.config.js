@@ -6,4 +6,8 @@ module.exports = {
 	testEnvironment: 'node',
 	roots: ['<rootDir>/tests/render'],
 	testTimeout: 120000,
+	moduleNameMapper: {
+		'^api$': '<rootDir>/api',
+		'^api/(.*)$': '<rootDir>/api/$1',
+	},
 };

@@ -49,7 +49,7 @@ export interface CacheKeyParts {
 	/** Preamble lines joined by newlines. */
 	preamble: string;
 	baseFontSizePx: number;
-	settingsVersion: number;
+	settingsVersion: string;
 	engineVersion: string;
 }
 

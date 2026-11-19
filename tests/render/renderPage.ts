@@ -58,6 +58,10 @@ export interface PageRun {
 	cspViolations: string[];
 	pageErrors: string[];
 	console: string[];
+	/** Messages the page posted to the fake main script. */
+	messages: unknown[];
+	/** Settings version the viewer uses at the end. */
+	settingsVersion: string | null;
 }
 
 const TYPES: Record<string, string> = { '.js': 'text/javascript', '.css': 'text/css' };
@@ -89,9 +93,19 @@ async function waitForBlocks(page: Page): Promise<void> {
 	);
 }
 
-/** Renders a note in a page with the given body colours. */
-export async function renderNote(browser: Browser, markdown: string, colors = { bg: '#ffffff', fg: '#222222' }): Promise<PageRun> {
-	const run: PageRun = { blocks: [], blocked: [], served: [], cspViolations: [], pageErrors: [], console: [] };
+export interface RenderOptions {
+	colors?: { bg: string; fg: string };
+	/**
+	 * Answer of a fake main script to getConfig (window.webviewApi, as in
+	 * Joplin). Without it there is no webviewApi and the viewer uses its defaults.
+	 */
+	config?: unknown;
+}
+
+/** Renders a note in a page. */
+export async function renderNote(browser: Browser, markdown: string, options: RenderOptions = {}): Promise<PageRun> {
+	const colors = options.colors || { bg: '#ffffff', fg: '#222222' };
+	const run: PageRun = { blocks: [], blocked: [], served: [], cspViolations: [], pageErrors: [], console: [], messages: [], settingsVersion: null };
 	const html = `<!doctype html><html><head><meta charset="utf-8">
 <meta http-equiv="Content-Security-Policy" content="${CSP}">
 <link rel="icon" href="data:,">
@@ -108,6 +122,20 @@ export async function renderNote(browser: Browser, markdown: string, colors = { 
 				(w.__csp = w.__csp || []).push(`${e.violatedDirective} ${e.blockedURI}`);
 			});
 		});
+		if (options.config !== undefined) {
+			await page.addInitScript((config) => {
+				const w = window as unknown as { webviewApi: unknown; __messages: unknown[] };
+				w.__messages = [];
+				// No async/await here: this function runs in the page as it is, and the
+				// TypeScript helpers for async functions do not exist there.
+				w.webviewApi = {
+					postMessage: (id: string, message: { type?: string }) => {
+						w.__messages.push({ id, message });
+						return Promise.resolve(id === 'dgPlantumlMarkdownIt' && message && message.type === 'getConfig' ? config : null);
+					},
+				};
+			}, options.config);
+		}
 		page.on('pageerror', (e) => run.pageErrors.push(e.message));
 		page.on('console', (m) => run.console.push(`${m.type()}: ${m.text()}`));
 		await page.goto(`${ORIGIN}/`);
@@ -115,6 +143,11 @@ export async function renderNote(browser: Browser, markdown: string, colors = { 
 		await context.setOffline(true);
 		await waitForBlocks(page);
 		run.cspViolations = await page.evaluate(() => (window as unknown as { __csp?: string[] }).__csp || []);
+		run.messages = await page.evaluate(() => (window as unknown as { __messages?: unknown[] }).__messages || []);
+		run.settingsVersion = await page.evaluate(() => {
+			const v = (window as unknown as { __dgPlantumlViewer?: { settingsVersion: string } }).__dgPlantumlViewer;
+			return v ? v.settingsVersion : null;
+		});
 		run.blocks = await page.evaluate(() => Array.from(document.querySelectorAll('.joplin-plantuml')).map((el) => {
 			const out = el.querySelector('.joplin-plantuml-output');
 			const svg = out ? out.querySelector(':scope > svg') : null;
