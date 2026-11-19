@@ -226,6 +226,32 @@ describe('font size (design 8.7)', () => {
 		expect(off.blocks[0].svgMarkup).not.toMatch(/font-size="20"/);
 	});
 
+	test('other diagram types follow the note text too (design 8.5, table of diagram types)', async () => {
+		const sources = [
+			'@startmindmap\n* root\n** child\n@endmindmap',
+			'@startjson\n{"name": "dg"}\n@endjson',
+			"@startgantt\n[Design] lasts 5 days\n@endgantt",
+			'@startwbs\n* Project\n** Design\n@endwbs',
+		];
+		const run = await renderNote(browser, sources.map((s) => fence(s)).join('\n\n'), { bodyFontSize: '20px' });
+		expectNoNetwork(run);
+		for (const b of run.blocks) {
+			expect(b.state).toBe('done');
+			expect(b.svgMarkup).toMatch(/font-size="20"/);
+		}
+	});
+
+	test('error line numbers in other diagram types with a preamble', async () => {
+		const run = await renderNote(browser, [
+			fence('@startmindmap\n* root\nnot a node\n@endmindmap'),
+			// (Broken JSON is not an error for the engine: it draws "Your data does not sound like JSON data".)
+			fence('@startwbs\n* Project\nnot a node\n@endwbs'),
+		].join('\n\n'), { bodyFontSize: '20px' });
+		expect(run.blocks.map((b) => b.state)).toEqual(['error', 'error']);
+		expect(run.blocks[0].errorMessage).toMatch(/^Line 3: /);
+		expect(run.blocks[1].errorMessage).toMatch(/^Line 3: /);
+	});
+
 	test('a narrow diagram keeps its natural size', async () => {
 		const run = await renderNote(browser, narrow);
 		expect(run.blocks[0].scale).toBe(1);
