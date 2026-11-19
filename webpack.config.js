@@ -232,6 +232,12 @@ const pluginConfig = { ...baseConfig, entry: './src/index.ts',
 					context: path.resolve(__dirname, 'vendor', 'plantuml'),
 					to: path.resolve(__dirname, 'dist', 'contentScript', 'engine'),
 				},
+				// dg-plantuml: the plugin's license and the third-party notices (design 20.4).
+				{
+					from: '{LICENSE,THIRD_PARTY_NOTICES.md}',
+					context: path.resolve(__dirname),
+					to: path.resolve(__dirname, 'dist'),
+				},
 			],
 		}),
 	] };

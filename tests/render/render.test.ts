@@ -160,6 +160,12 @@ describe('the checks themselves', () => {
 });
 
 describe('built files (static check)', () => {
+	test.each(['LICENSE', 'THIRD_PARTY_NOTICES.md', 'contentScript/engine/LICENSE'])('the package includes %s', (file) => {
+		const built = fs.readFileSync(path.join(DIST, '..', file), 'utf8');
+		const source = fs.readFileSync(path.join(DIST, '..', '..', file === 'contentScript/engine/LICENSE' ? 'vendor/plantuml/LICENSE' : file), 'utf8');
+		expect(built).toBe(source);
+	});
+
 	test.each(['index.js', 'contentScript/markdownItPlugin.js', 'contentScript/viewer.js'])('%s has no network API', (file) => {
 		const found = countPatterns(fs.readFileSync(path.join(DIST, '..', file), 'utf8'));
 		for (const name of FORBIDDEN_PATTERNS) expect(found[name]).toBeUndefined();

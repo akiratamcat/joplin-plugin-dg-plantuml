@@ -1,0 +1,15 @@
+# Dependency updates (design 21.1). The PlantUML engine in vendor/ is not an
+# npm dependency and is updated by hand (vendor/plantuml/SOURCE.md).
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    # Give new versions time to settle before they are proposed.
+    cooldown:
+      default-days: 14
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly

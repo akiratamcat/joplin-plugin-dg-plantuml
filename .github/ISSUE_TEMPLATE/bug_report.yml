@@ -1,0 +1,41 @@
+name: Bug report
+description: Something does not work as expected.
+labels: [bug]
+body:
+  - type: input
+    id: plugin-version
+    attributes:
+      label: dg-plantuml version
+      placeholder: e.g. 1.0.0
+    validations:
+      required: true
+  - type: input
+    id: joplin-version
+    attributes:
+      label: Joplin version
+      description: Help → About Joplin
+      placeholder: e.g. 3.7.22
+    validations:
+      required: true
+  - type: input
+    id: os
+    attributes:
+      label: Operating system
+      placeholder: e.g. Windows 11, macOS 15, Ubuntu 24.04
+    validations:
+      required: true
+  - type: textarea
+    id: source
+    attributes:
+      label: PlantUML source
+      description: The smallest source that shows the problem. Please remove private information.
+      render: text
+    validations:
+      required: true
+  - type: textarea
+    id: what-happens
+    attributes:
+      label: What happens, and what you expected
+      description: Screenshots help. Where does it happen? Note viewer, Rich Text editor or Markdown editor.
+    validations:
+      required: true

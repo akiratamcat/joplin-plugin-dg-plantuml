@@ -1,0 +1,53 @@
+# CI (design 21.3): lint, type check, tests and the plugin package.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: Lint, type check, audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run typecheck
+      # Packages that end up in the plugin must have no known vulnerabilities.
+      - run: npm audit --omit=dev --audit-level=moderate
+
+  test:
+    name: Tests (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        # Rendering differs most by OS (fonts), so the tests run on all three (design 16.2).
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run test:unit
+      # Builds the plugin, then renders diagrams in the runner's Google Chrome
+      # with the network blocked (design 16.1, 16.4).
+      - run: npm run test:render
+      - name: Keep the plugin package
+        if: matrix.os == 'ubuntu-latest'
+        uses: actions/upload-artifact@v4
+        with:
+          name: plugin-package
+          path: publish/
+          if-no-files-found: error
