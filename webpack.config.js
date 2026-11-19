@@ -375,7 +375,8 @@ function main(environ) {
 		// overwritten here by the compiled version. This is by design. The
 		// result is that JS files that don't need compilation, are simply
 		// copied to /dist, while those that do need it are correctly compiled.
-		buildExtraScripts: buildExtraScriptConfigs(userConfig),
+		// dg-plantuml: plus the viewer script (webpack.viewer.js).
+		buildExtraScripts: [...buildExtraScriptConfigs(userConfig), require('./webpack.viewer.js')(rootDir)],
 
 		// Ths config is for creating the .jpl, which is done via the plugin, so
 		// it doesn't actually need an entry and output, however webpack won't
