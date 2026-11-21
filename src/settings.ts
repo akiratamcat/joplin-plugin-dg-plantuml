@@ -3,7 +3,7 @@
 // The labels are English until stage 3 (i18n).
 import { SettingItem, SettingItemType } from 'api/types';
 import { DEFAULT_VIEWER_CONFIG, PresetConfig, ViewerConfig } from './contentScript/viewerConfig';
-import { BUILTIN_THEMES } from './presets/builtinThemes';
+import { BUILTIN_THEMES, DARK_THEMES, LIGHT_THEMES } from './presets/builtinThemes';
 import { JOPLIN_LIGHT_LINES } from './presets/joplinLight';
 import { hashString } from './shared/hash';
 
@@ -25,22 +25,26 @@ export const KEYS = {
 	cacheSize: 'plantuml.cacheSize',
 } as const;
 
-const BUILTIN_OPTIONS: Record<string, string> = Object.fromEntries(
-	Object.entries(BUILTIN_THEMES).map(([name, label]) => [`builtin:${name}`, `PlantUML theme: ${label}`]),
-);
+function builtinOptions(names: string[]): Record<string, string> {
+	return Object.fromEntries(names.map((name) => [`builtin:${name}`, `PlantUML theme: ${BUILTIN_THEMES[name]}`]));
+}
 
-/** Preset IDs offered for each theme (design 8.4). Built-in themes are offered for both. */
+/**
+ * Preset IDs offered for each theme (design 8.4). Only the built-in themes
+ * that are readable on that kind of page are offered (LIGHT_THEMES /
+ * DARK_THEMES). Any builtin:<name> still works if it is set (resolvePreset).
+ */
 export const LIGHT_PRESETS: Record<string, string> = {
 	'plantuml-default': 'PlantUML standard (light colours, default)',
 	'joplin-light': 'Joplin light (light colours)',
-	...BUILTIN_OPTIONS,
+	...builtinOptions(LIGHT_THEMES),
 	custom: 'Custom (preamble below)',
 };
 
 export const DARK_PRESETS: Record<string, string> = {
 	'plantuml-dark': 'PlantUML dark (dark colours, default)',
 	'plantuml-default': 'PlantUML standard (light colours)',
-	...BUILTIN_OPTIONS,
+	...builtinOptions(DARK_THEMES),
 	custom: 'Custom (preamble below)',
 };
 

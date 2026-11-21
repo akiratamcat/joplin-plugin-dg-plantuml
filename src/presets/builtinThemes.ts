@@ -47,3 +47,59 @@ export const BUILTIN_THEMES: Record<string, string> = {
 	'united': 'United',
 	'vibrant': 'Vibrant',
 };
+
+/**
+ * Themes offered for the light theme and for the dark theme. Many themes are
+ * readable only on one kind of page (for example white lines that vanish on a
+ * light page), so the owner checked each one in a gallery of real renderings
+ * (tests/render/themeGallery.probe.ts) and chose the readable ones
+ * (tests/manual/theme-review.md, 2026-11-21). Themes unreadable on both are
+ * not offered at all.
+ */
+export const LIGHT_THEMES: string[] = [
+	'black-knight',
+	'bluegray',
+	'cerulean',
+	'cerulean-outline',
+	'cloudscape-design',
+	'crt-amber',
+	'crt-green',
+	'cyborg',
+	'cyborg-outline',
+	'mars',
+	'materia',
+	'materia-outline',
+	'metal',
+	'mimeograph',
+	'mono',
+	'plain',
+	'reddress-lightblue',
+	'reddress-lightgreen',
+	'reddress-lightorange',
+	'reddress-lightred',
+	'sunlust',
+	'superhero-outline',
+	'toy',
+	'united',
+	'vibrant',
+];
+
+export const DARK_THEMES: string[] = [
+	'amiga',
+	'aws-orange',
+	'bluegray',
+	'blueprint',
+	'carbon-gray',
+	'crt-amber',
+	'crt-green',
+	'cyborg',
+	'cyborg-outline',
+	'hacker',
+	'metal',
+	'mimeograph',
+	'minty',
+	'sandstone',
+	'spacelab',
+	'spacelab-white',
+	'superhero',
+];

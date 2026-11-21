@@ -131,3 +131,5 @@ M-04 と M-05 で確かめた項目（Diagram theme、Light / Dark のスタイ�
 | M-12 3 | OK | Joplin が「暗い」で、Dark 用を Custom（`skinparam ArrowColor #00FF00`）にすると矢印が緑 |
 
 対策：「PlantUML default」と「PlantUML dark」は名前が似ていて取り違えやすいため、選択肢の表示名を見直す。
+
+M-04 D の対策（2026-11-21）：内蔵テーマ43個の見本（`tests/render/themeGallery.probe.ts` で作成）をオーナーが確かめ、読めるテーマだけを選択肢に出すことにした。Light 用に25個、Dark 用に17個。どちらでも読めない9個は出さない。判断の記録は [theme-review.md](theme-review.md)。

@@ -2,7 +2,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import * as vm from 'vm';
-import { BUILTIN_THEMES } from '../src/presets/builtinThemes';
+import { BUILTIN_THEMES, DARK_THEMES, LIGHT_THEMES } from '../src/presets/builtinThemes';
 import { JOPLIN_LIGHT_LINES } from '../src/presets/joplinLight';
 import { buildPreamble } from '../src/contentScript/preamble';
 import { normalizeConfig } from '../src/contentScript/viewerConfig';
@@ -21,11 +21,23 @@ describe('built-in themes', () => {
 		expect(BUILTIN_THEMES).toEqual(expected);
 	});
 
-	test('offered for both themes', () => {
-		for (const name of Object.keys(BUILTIN_THEMES)) {
-			expect(LIGHT_PRESETS).toHaveProperty(`builtin:${name}`);
-			expect(DARK_PRESETS).toHaveProperty(`builtin:${name}`);
-		}
+	test('only the themes checked as readable are offered, as recorded in theme-review.md', () => {
+		const review = fs.readFileSync(path.join(__dirname, 'manual', 'theme-review.md'), 'utf8');
+		const ok = (column: number) => review.split('\n')
+			.map((line) => line.split('|').map((c) => c.trim()))
+			.filter((cells) => cells.length >= 7 && /^\d+$/.test(cells[1]) && cells[column] === 'OK')
+			.map((cells) => cells[3].replace(/`/g, ''));
+		expect(LIGHT_THEMES).toEqual(ok(4));
+		expect(DARK_THEMES).toEqual(ok(5));
+		const offered = (presets: Record<string, string>) => Object.keys(presets).filter((k) => k.startsWith('builtin:')).map((k) => k.slice(8));
+		expect(offered(LIGHT_PRESETS)).toEqual(LIGHT_THEMES);
+		expect(offered(DARK_PRESETS)).toEqual(DARK_THEMES);
+		for (const name of [...LIGHT_THEMES, ...DARK_THEMES]) expect(BUILTIN_THEMES).toHaveProperty(name);
+	});
+
+	test('a theme that is not offered still works when it is set', () => {
+		expect(LIGHT_THEMES).not.toContain('silver');
+		expect(resolvePreset('builtin:silver', '', 'light')).toEqual({ lines: [], engineDark: false, theme: 'silver' });
 	});
 });
 
