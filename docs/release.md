@@ -2,6 +2,21 @@
 
 設計書 21.4節の手順の詳細。GitHub のリポジトリと npm の公開用アカウントができるまでは、この手順はまだ使えない（設計書 18章の段階0.5）。
 
+## 0. GitHub に push する前（毎回）
+
+公開のリポジトリに push すると、そのブランチの全履歴が公開され、後から消すのは難しい。push の前に、毎回次を確かめる。
+
+1. `npm run check:publish`（ブランチを指定するときは `npm run check:publish -- <ブランチ名>`）が `check:publish: OK` になる。このスクリプトは、push するブランチの全履歴について、次を調べる。
+   - コミットの作者とコミッターのメールアドレスが、許可したもの（`akiratamcat@gmail.com`）だけであること。outlook.jp のアドレスは使わない（2026-11-19 に履歴も gmail に書き換え済み）。
+   - 公開してはいけないファイル（`.env`、ログ、エディタの個人設定、`dist/`、`publish/`、`node_modules/`、試作の `spike/` など）が、最新の版に入っていないこと。過去のコミットにだけあるものは注意として表示されるので、中身に個人の情報がないことを確かめる。
+   - ファイルの中身に、トークンや秘密鍵らしい文字列、PC のパス（`C:\Users\…` など）がないこと。
+2. **push するのは `main` だけ**にする（`git push -u origin main`）。作業用のブランチを共有したいときだけ、そのブランチを名前を指定して push する。`git push --all` と `git push --mirror` は使わない。試作のブランチ（`spike/engine`、`spike/plugin`）は使い捨てなので、push しない（設計書 18章）。
+3. 作者の gmail のアドレスは、コミットの情報として公開される（オーナーが gmail で公開すると決めた）。そのため、GitHub の「Block command line pushes that expose my email」は有効にしない（有効にすると push が止まる）。
+4. 最初の push の後、GitHub のリポジトリの設定で次を有効にする。
+   - Secret scanning と Push protection（公開リポジトリでは無料。秘密の情報を含む push を GitHub が止める）
+   - Private vulnerability reporting（`SECURITY.md` の案内先。設計書 21.1節）
+   - Dependabot alerts
+
 ## 1. 準備
 
 1. `main` が最新で、作業中のファイルがないことを確かめる。

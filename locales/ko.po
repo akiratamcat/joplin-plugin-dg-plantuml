@@ -1,0 +1,209 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: dg-plantuml\n"
+"Report-Msgid-Bugs-To: https://github.com/akiratamcat/joplin-plugin-dg-plantuml/issues\n"
+"Language: ko\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: src/contentScript/controller.ts:138
+msgid "The diagram is too large."
+msgstr "다이어그램이 너무 큽니다."
+
+#: src/contentScript/controller.ts:140
+msgid "The source has {count} character. The limit is {limit}."
+msgid_plural "The source has {count} characters. The limit is {limit}."
+msgstr[0] "소스가 {count}자입니다. 상한은 {limit}자입니다."
+
+#: src/contentScript/controller.ts:198
+msgid "Rendering..."
+msgstr "렌더링 중..."
+
+#: src/contentScript/controller.ts:198
+msgid "Loading the PlantUML engine..."
+msgstr "PlantUML 엔진을 불러오는 중..."
+
+#: src/contentScript/controller.ts:295
+msgid "Could not load the PlantUML engine."
+msgstr "PlantUML 엔진을 불러올 수 없습니다."
+
+#: src/contentScript/controller.ts:296
+msgid "See the developer tools console for details."
+msgstr "자세한 내용은 개발자 도구의 콘솔을 확인하세요."
+
+#: src/contentScript/controller.ts:315
+#: src/contentScript/controller.ts:330
+msgid "PlantUML error"
+msgstr "PlantUML 오류"
+
+#: src/contentScript/controller.ts:322
+msgid "Rendering timed out."
+msgstr "렌더링 시간이 초과되었습니다."
+
+#: src/contentScript/controller.ts:323
+msgid "Rendering took longer than {ms} ms."
+msgstr "렌더링이 {ms}ms를 넘었습니다."
+
+#: src/contentScript/controller.ts:328
+msgid "The PlantUML engine crashed."
+msgstr "PlantUML 엔진이 중단되었습니다."
+
+#: src/contentScript/controller.ts:343
+msgid "Only the first diagram in this block is shown."
+msgstr "이 블록의 첫 번째 다이어그램만 표시합니다."
+
+#: src/contentScript/controller.ts:429
+#. {line} is a line number in the diagram source, {message} is the error message of PlantUML (in English).
+msgid "Line {line}: {message}"
+msgstr "{line}번째 줄: {message}"
+
+#: src/settings.ts:107
+msgid "Style for the dark theme"
+msgstr "어두운 테마에서 사용할 스타일"
+
+#: src/settings.ts:108
+msgid "Used on a dark note viewer. Light colours on a dark page are hard to read."
+msgstr "노트 뷰어가 어두울 때 사용합니다. 어두운 페이지에서 밝은 색상을 사용하면 읽기 어렵습니다."
+
+#: src/settings.ts:115
+msgid "Transparent diagram background"
+msgstr "다이어그램 배경 투명"
+
+#: src/settings.ts:122
+msgid "Match the font size of the note"
+msgstr "다이어그램 글꼴 크기를 노트에 맞추기"
+
+#: src/settings.ts:123
+msgid "Uses the font size of the note text as the base font size of diagrams."
+msgstr "노트 본문의 글꼴 크기를 다이어그램의 기본 글꼴 크기로 사용합니다."
+
+#: src/settings.ts:133
+msgid "Minimum font size when scaled down (px)"
+msgstr "축소 표시할 때의 최소 글꼴 크기(px)"
+
+#: src/settings.ts:134
+msgid "Wide diagrams are not scaled down below this font size; they scroll sideways instead. 0: no limit."
+msgstr "가로로 긴 다이어그램은 이 글꼴 크기보다 작아지도록 축소하지 않고, 대신 가로로 스크롤합니다. 0: 제한 없음."
+
+#: src/settings.ts:142
+msgid "Custom preamble for the light theme"
+msgstr "밝은 테마의 사용자 지정 프리앰블"
+
+#: src/settings.ts:144
+#. "@startuml" and "\n" are written as they are. "\n" is a backslash followed by the letter n.
+msgid ""
+"Used when the light style is \"Custom\". PlantUML lines added after @startuml. Write \\n"
+" between lines."
+msgstr ""
+"밝은 테마의 스타일이 \"사용자 지정(아래 프리앰블)\"일 때 사용합니다. @startuml 뒤에 추가되는 PlantUML 줄입니다. 줄 사이에는 \\n"
+"을 씁니다."
+
+#: src/settings.ts:152
+msgid "Custom preamble for the dark theme"
+msgstr "어두운 테마의 사용자 지정 프리앰블"
+
+#: src/settings.ts:154
+#. "@startuml" and "\n" are written as they are. "\n" is a backslash followed by the letter n.
+msgid ""
+"Used when the dark style is \"Custom\". PlantUML lines added after @startuml. Write \\n"
+" between lines."
+msgstr ""
+"어두운 테마의 스타일이 \"사용자 지정(아래 프리앰블)\"일 때 사용합니다. @startuml 뒤에 추가되는 PlantUML 줄입니다. 줄 사이에는 \\n"
+"을 씁니다."
+
+#: src/settings.ts:162
+msgid "Font used in diagrams"
+msgstr "다이어그램에 사용할 글꼴"
+
+#: src/settings.ts:163
+msgid "Name of the font used in diagrams. Empty: the default font."
+msgstr "다이어그램에 사용할 글꼴 이름. 비워 두면 기본 글꼴을 사용합니다."
+
+#: src/settings.ts:171
+msgid "Other language names"
+msgstr "기타 언어 이름"
+
+#: src/settings.ts:173
+#. The info string is the text right after the opening fence of a code block, as in ```plantuml. "plantuml" and "puml" are language names and are not translated.
+msgid "Info strings (language names) of code fences that are drawn as PlantUML diagrams. Separate several language names with commas. \"plantuml\" and \"puml\" always work."
+msgstr "PlantUML 다이어그램으로 그릴 코드 펜스의 정보 문자열(언어 이름). 쉼표로 구분하여 여러 언어 이름을 지정할 수 있습니다. \"plantuml\"과 \"puml\"은 항상 사용할 수 있습니다."
+
+#: src/settings.ts:184
+msgid "Time limit per diagram (ms)"
+msgstr "다이어그램당 렌더링 시간 상한(ms)"
+
+#: src/settings.ts:195
+msgid "Maximum source length (characters)"
+msgstr "소스의 최대 길이(문자 수)"
+
+#: src/settings.ts:206
+msgid "Number of diagrams held in the cache"
+msgstr "캐시에 보관할 다이어그램 수"
+
+#: src/settings.ts:219
+msgid "A plugin that renders PlantUML. The PlantUML rendering engine is built in, and the plugin makes no network connections to the outside."
+msgstr "PlantUML을 렌더링하는 플러그인. PlantUML 렌더링 엔진이 내장되어 있으며, 외부와 네트워크 통신을 하지 않습니다."
+
+#: src/settings.ts:33
+#. {name} is the name of a built-in PlantUML theme, for example "Cyborg". Theme names are not translated.
+msgid "PlantUML theme: {name}"
+msgstr "PlantUML 테마: {name}"
+
+#: src/settings.ts:45
+#. Name of a diagram style. "PlantUML" is not translated.
+msgid "PlantUML standard (light colours, default)"
+msgstr "PlantUML 표준(밝은 색상, 기본값)"
+
+#: src/settings.ts:47
+#. Name of a diagram style. "Joplin" is not translated.
+msgid "Joplin light (light colours)"
+msgstr "Joplin 밝은 스타일(밝은 색상)"
+
+#: src/settings.ts:49
+#: src/settings.ts:61
+msgid "Custom (preamble below)"
+msgstr "사용자 지정(아래 프리앰블)"
+
+#: src/settings.ts:57
+#. Name of a diagram style. "PlantUML" is not translated.
+msgid "PlantUML dark (dark colours, default)"
+msgstr "PlantUML 어두운 스타일(어두운 색상, 기본값)"
+
+#: src/settings.ts:59
+#. Name of a diagram style. "PlantUML" is not translated.
+msgid "PlantUML standard (light colours)"
+msgstr "PlantUML 표준(밝은 색상)"
+
+#: src/settings.ts:81
+msgid "Auto (follow Joplin's theme)"
+msgstr "자동(Joplin 테마에 맞춤)"
+
+#: src/settings.ts:87
+msgid "PlantUML diagram theme"
+msgstr "PlantUML 다이어그램 테마"
+
+#: src/settings.ts:88
+msgid "When set to \"Auto\", the light or dark style is chosen automatically from the background of the note viewer."
+msgstr "\"자동\"으로 설정하면 노트 뷰어의 배경에 따라 밝은 스타일 또는 어두운 스타일을 자동으로 선택합니다."
+
+#: src/settings.ts:97
+msgid "Style for the light theme"
+msgstr "밝은 테마에서 사용할 스타일"
+
+#: src/settings.ts:98
+msgid "Used on a light note viewer. Dark colours on a light page are hard to read."
+msgstr "노트 뷰어가 밝을 때 사용합니다. 밝은 페이지에서 어두운 색상을 사용하면 읽기 어렵습니다."
+
+#: src/settings.ts:83
+#. A value of the setting "Diagram theme".
+msgctxt "Diagram theme"
+msgid "Light"
+msgstr "밝음"
+
+#: src/settings.ts:85
+#. A value of the setting "Diagram theme".
+msgctxt "Diagram theme"
+msgid "Dark"
+msgstr "어두움"

@@ -6,6 +6,8 @@ import * as path from 'path';
 import { Browser } from 'playwright-core';
 import { countPatterns, FORBIDDEN_PATTERNS } from '../helpers/networkPatterns';
 import { buildViewerConfig, KEYS } from '../../src/settings';
+import { Catalog } from '../../src/i18n/gettext';
+import catalogs from '../../src/i18n/catalog/catalogs.json';
 import { DIST, launchBrowser, PageRun, renderNote } from './renderPage';
 
 interface DiagramCase {
@@ -202,6 +204,13 @@ describe('settings from the main script (getConfig)', () => {
 			expect(run.blocks[0].state).toBe('done');
 			expect(run.blocks[0].svgMarkup).not.toBe(defaults.blocks[0].svgMarkup);
 		}
+	});
+
+	test('messages in the language sent by the main script (design 10.4)', async () => {
+		const ja = (catalogs as Record<string, Catalog>).ja;
+		const run = await renderNote(browser, fence('@startuml\nAlice -> Bob\nthis is bad\n@enduml'), { config: buildViewerConfig({}, { locale: 'ja', catalog: ja }) });
+		expect(run.blocks[0].errorTitle).toBe(ja['PlantUML error'][0]);
+		expect(run.blocks[0].errorMessage).toMatch(/^3 行目: Syntax Error/);
 	});
 
 	test('a broken answer falls back to the defaults', async () => {

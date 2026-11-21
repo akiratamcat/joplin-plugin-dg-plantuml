@@ -68,7 +68,7 @@ describe('ViewerController', () => {
 		const { engine, controller, timers, flush } = setup();
 		controller.update();
 		expect(timers[0].ms).toBe(0); // a new note: no delay
-		expect(outputs()[0].textContent).toBe('Loading the PlantUML engine…');
+		expect(outputs()[0].textContent).toBe('Loading the PlantUML engine...');
 		await flush();
 		expect(engine.inits).toBe(1);
 		expect(engine.calls.map((c) => c.source)).toEqual([
@@ -308,6 +308,46 @@ describe('ViewerController', () => {
 		controller.setConfig({ ...DEFAULT_VIEWER_CONFIG });
 		await flush();
 		expect(engine.calls).toHaveLength(1);
+	});
+});
+
+describe('messages in the language of the config (design 10.4)', () => {
+	const catalog = {
+		'PlantUML error': ['PlantUML のエラー'],
+		'Line {line}: {message}': ['{line} 行目: {message}'],
+		'Loading the PlantUML engine...': ['PlantUML のエンジンを読み込み中...'],
+		'The source has {count} character. The limit is {limit}.': ['ソースは {count} 文字です。上限は {limit} 文字です。'],
+	};
+
+	test('status, error box and limits are translated; the engine message stays as it is', async () => {
+		setNote('```plantuml\n@startuml\nA -> B\nbad line\n@enduml\n```\n');
+		const { engine, controller, flush } = setup({ locale: 'ja', catalog });
+		engine.result = () => ({ ok: false, reason: 'syntax', message: 'Syntax Error?', line: 5 });
+		controller.update();
+		expect(outputs()[0].textContent).toBe('PlantUML のエンジンを読み込み中...');
+		await flush();
+		expect(document.querySelector('.joplin-plantuml-error-title')?.textContent).toBe('PlantUML のエラー');
+		expect(document.querySelector('.joplin-plantuml-error-message')?.textContent).toBe('3 行目: Syntax Error?');
+	});
+
+	test('plural message', async () => {
+		setNote('```plantuml\nAlice -> Bob : hello\n```\n');
+		const { controller, flush } = setup({ locale: 'ja', catalog, maxSourceLength: 10 });
+		controller.update();
+		await flush();
+		expect(document.querySelector('.joplin-plantuml-error-message')?.textContent).toBe('ソースは 20 文字です。上限は 10 文字です。');
+	});
+
+	test('new settings with another language: the messages change', async () => {
+		setNote('```plantuml\nA\n```\n');
+		const { engine, controller, flush } = setup();
+		engine.result = () => ({ ok: false, reason: 'syntax', message: 'x', line: 1 });
+		controller.update();
+		await flush();
+		expect(document.querySelector('.joplin-plantuml-error-title')?.textContent).toBe('PlantUML error');
+		controller.setConfig({ ...DEFAULT_VIEWER_CONFIG, locale: 'ja', catalog, settingsVersion: 'ja' });
+		await flush();
+		expect(document.querySelector('.joplin-plantuml-error-title')?.textContent).toBe('PlantUML のエラー');
 	});
 });
 

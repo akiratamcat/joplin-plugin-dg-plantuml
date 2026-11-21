@@ -3,6 +3,7 @@
 // them from the plugin settings and sends them as the answer to getConfig.
 // The defaults are used until the answer arrives, and when there is no main
 // script (for example in the rendering tests).
+import { Catalog } from '../i18n/gettext';
 
 export type ThemeMode = 'auto' | 'light' | 'dark';
 
@@ -29,6 +30,10 @@ export interface ViewerConfig {
 	cacheSize: number;
 	/** Delay before rendering a block that is being edited (design 7.3). */
 	debounceMs: number;
+	/** Locale of the viewer's messages (design 10.4). */
+	locale: string;
+	/** Translations for the locale (design 10.4). Empty: English. */
+	catalog: Catalog;
 	/** Changes when any setting changes. Part of the cache key. */
 	settingsVersion: string;
 }
@@ -48,6 +53,8 @@ export const DEFAULT_VIEWER_CONFIG: ViewerConfig = {
 	maxSourceLength: 100000,
 	cacheSize: 100,
 	debounceMs: 300,
+	locale: 'en',
+	catalog: {},
 	settingsVersion: 'default',
 };
 
@@ -65,6 +72,16 @@ function preset(value: unknown, fallback: PresetConfig): PresetConfig {
 	const result: PresetConfig = { lines, engineDark: typeof v.engineDark === 'boolean' ? v.engineDark : fallback.engineDark };
 	if (typeof v.theme === 'string' && THEME_NAME_RE.test(v.theme)) result.theme = v.theme;
 	return result;
+}
+
+/** Keeps only the entries of a catalog that are lists of strings. */
+function catalogFrom(value: unknown): Catalog {
+	const out: Catalog = {};
+	if (!value || typeof value !== 'object') return out;
+	for (const [key, entry] of Object.entries(value as Record<string, unknown>)) {
+		if (Array.isArray(entry) && entry.every((s) => typeof s === 'string')) out[key] = entry as string[];
+	}
+	return out;
 }
 
 /**
@@ -87,6 +104,8 @@ export function normalizeConfig(raw: unknown): ViewerConfig {
 		maxSourceLength: intIn(r.maxSourceLength, 1000, 10000000, d.maxSourceLength),
 		cacheSize: intIn(r.cacheSize, 1, 10000, d.cacheSize),
 		debounceMs: intIn(r.debounceMs, 0, 5000, d.debounceMs),
+		locale: typeof r.locale === 'string' && /^[a-z]{2,3}(_[A-Za-z]{2,4})?$/.test(r.locale) ? r.locale : d.locale,
+		catalog: catalogFrom(r.catalog),
 		settingsVersion: typeof r.settingsVersion === 'string' ? r.settingsVersion : d.settingsVersion,
 	};
 }

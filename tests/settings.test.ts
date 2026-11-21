@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: MIT
-import { buildViewerConfig, KEYS, parseCustomPreamble, resolvePreset, SETTINGS } from '../src/settings';
+import { buildViewerConfig, KEYS, parseCustomPreamble, resolvePreset, settingItems, SETTINGS } from '../src/settings';
+import { CONTEXT_SEPARATOR, Translator } from '../src/i18n/gettext';
 import { DEFAULT_VIEWER_CONFIG, normalizeConfig } from '../src/contentScript/viewerConfig';
 
 /** Setting values as Joplin returns them, from the defaults of SETTINGS. */
@@ -34,6 +35,31 @@ describe('SETTINGS', () => {
 	test('the default settings give the viewer defaults (design 9, D-08)', () => {
 		const config = buildViewerConfig(defaults());
 		expect({ ...config, settingsVersion: '' }).toEqual({ ...DEFAULT_VIEWER_CONFIG, settingsVersion: '' });
+	});
+});
+
+describe('translations (design 10)', () => {
+	test('labels, descriptions and option names use the translator', () => {
+		const t = new Translator('ja', {
+			'PlantUML diagram theme': ['PlantUML の図のテーマ'],
+			[`Diagram theme${CONTEXT_SEPARATOR}Dark`]: ['ダーク'],
+			'PlantUML theme: {name}': ['PlantUML のテーマ: {name}'],
+		});
+		const items = settingItems(t);
+		expect(items[KEYS.themeMode].label).toBe('PlantUML の図のテーマ');
+		expect(items[KEYS.themeMode].options?.dark).toBe('ダーク');
+		expect(items[KEYS.themeMode].options?.light).toBe('Light'); // untranslated: English
+		expect(items[KEYS.darkPreset].options?.['builtin:cyborg']).toBe('PlantUML のテーマ: Cyborg');
+		expect(items[KEYS.themeMode].value).toBe(SETTINGS[KEYS.themeMode].value);
+	});
+
+	test('the viewer gets the locale and the catalog; the settings version follows the locale', () => {
+		const en = buildViewerConfig(defaults());
+		const ja = buildViewerConfig(defaults(), { locale: 'ja', catalog: { 'PlantUML error': ['PlantUML のエラー'] } });
+		expect(ja.locale).toBe('ja');
+		expect(ja.catalog['PlantUML error']).toEqual(['PlantUML のエラー']);
+		expect(ja.settingsVersion).not.toBe(en.settingsVersion);
+		expect(normalizeConfig(JSON.parse(JSON.stringify(ja)))).toEqual(ja);
 	});
 });
 

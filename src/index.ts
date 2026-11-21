@@ -1,17 +1,22 @@
 // SPDX-License-Identifier: MIT
 import joplin from 'api';
 import { ContentScriptType } from 'api/types';
-import { buildViewerConfig, KEYS, SECTION, SETTINGS } from './settings';
+import { Catalog, resolveLocale, Translator } from './i18n/gettext';
+import catalogs from './i18n/catalog/catalogs.json';
+import { buildViewerConfig, KEYS, SECTION, settingItems, settingsSection, ViewerLanguage } from './settings';
 import { MARKDOWN_IT_SCRIPT_ID, ViewerMessage } from './shared/messages';
 
 joplin.plugins.register({
 	onStart: async function() {
-		await joplin.settings.registerSection(SECTION, {
-			label: 'dg-plantuml',
-			iconName: 'fas fa-project-diagram',
-			description: 'PlantUML diagrams, rendered by the engine bundled in this plugin. No network access.',
-		});
-		await joplin.settings.registerSettings(SETTINGS);
+		// The display language of Joplin. Joplin asks for a restart when it
+		// changes, so it is read once (design 10.3).
+		const locale = resolveLocale(String(await joplin.settings.globalValue('locale') || ''), ['en', ...Object.keys(catalogs)]);
+		const catalog: Catalog = (catalogs as Record<string, Catalog>)[locale] || {};
+		const t = new Translator(locale, catalog);
+		const language: ViewerLanguage = { locale, catalog };
+
+		await joplin.settings.registerSection(SECTION, settingsSection(t));
+		await joplin.settings.registerSettings(settingItems(t));
 
 		// Renders PlantUML fences in the note viewer (design 5.1, 7.1).
 		await joplin.contentScripts.register(
@@ -20,10 +25,10 @@ joplin.plugins.register({
 			'./contentScript/markdownItPlugin.js',
 		);
 
-		// The viewer script asks for the settings (design 7.2 step 2).
+		// The viewer script asks for the settings and its translations (design 7.2 step 2, 10.4).
 		await joplin.contentScripts.onMessage(MARKDOWN_IT_SCRIPT_ID, async (message: ViewerMessage) => {
 			if (message && message.type === 'getConfig') {
-				return buildViewerConfig(await joplin.settings.values(Object.values(KEYS)));
+				return buildViewerConfig(await joplin.settings.values(Object.values(KEYS)), language);
 			}
 			return null;
 		});

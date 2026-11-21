@@ -12,7 +12,7 @@ This statement covers what the plugin itself does. Joplin's own features, such a
 
 [日本語の README](README.ja.md)
 
-> **Status: early development (0.1.x).** The plugin is not yet available in the Joplin plugin repository. Settings, translations and the diagram toolbar are not implemented yet.
+> **Status: early development (0.1.x).** The plugin is not yet available in the Joplin plugin repository. The diagram toolbar and syntax highlighting in the Markdown editor are not implemented yet.
 
 <!-- Screenshots (light and dark) will be added before the first release (docs/images/). -->
 
@@ -24,6 +24,8 @@ This statement covers what the plugin itself does. Joplin's own features, such a
 - Shows syntax errors with the line number and the line in question.
 - Keeps the diagram on screen while you type, and caches rendered diagrams.
 - Works with Japanese, Chinese and Korean text.
+- Settings for the diagram theme, styles (including built-in PlantUML themes), font size and more.
+- The settings screen and messages follow Joplin's display language (11 languages).
 
 ## Installation
 

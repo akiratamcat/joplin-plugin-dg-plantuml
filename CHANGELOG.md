@@ -22,3 +22,4 @@ are always listed.
 - Styles: PlantUML standard, PlantUML dark, Joplin light, a custom preamble, and the built-in PlantUML themes that are readable on a light or a dark page.
 - The base font size of diagrams follows the note text. Wide diagrams are scaled down to the pane, but not below the minimum font size (11 px by default); then they scroll sideways.
 - Theme, style and font settings also apply to mind maps, WBS, Gantt charts, JSON, YAML, EBNF and regex diagrams.
+- Translations: the settings screen and the messages in the note viewer follow Joplin's display language. Japanese, Chinese (Simplified and Traditional), Korean, German, French, Spanish, Portuguese (Brazil), Italian and Russian. The translations were made with generative AI (the Japanese one was checked by the maintainer); corrections are welcome. Error messages from the PlantUML engine itself stay in English.
