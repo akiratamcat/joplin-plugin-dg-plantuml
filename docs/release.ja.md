@@ -7,7 +7,7 @@
 公開のリポジトリに push すると、そのブランチの全履歴が公開され、後から消すのは難しい。push の前に、毎回次を確かめる。
 
 1. `npm run check:publish`（ブランチを指定するときは `npm run check:publish -- <ブランチ名>`）が `check:publish: OK` になる。このスクリプトは、push するブランチの全履歴について、次を調べる。
-   - コミットの作者とコミッターのメールアドレスが、許可したもの（`akiratamcat@gmail.com`）だけであること。outlook.jp のアドレスは使わない（2026-11-19 に履歴も gmail に書き換え済み）。
+   - コミットの作者とコミッターのメールアドレスが、許可したもの（`akiratamcat@gmail.com`、Claude の共同作者の表記、GitHub の画面でのマージと Dependabot が使う GitHub の公開用のアドレス）だけであること。outlook.jp のアドレスは使わない（2026-11-19 に履歴も gmail に書き換え済み）。
    - 公開してはいけないファイル（`.env`、ログ、エディタの個人設定、`dist/`、`publish/`、`node_modules/`、試作の `spike/` など）が、最新の版に入っていないこと。過去のコミットにだけあるものは注意として表示されるので、中身に個人の情報がないことを確かめる。
    - ファイルの中身に、トークンや秘密鍵らしい文字列、PC のパス（`C:\Users\…` など）がないこと。
 2. **push するのは `main` だけ**にする（`git push -u origin main`）。作業用のブランチを共有したいときだけ、そのブランチを名前を指定して push する。`git push --all` と `git push --mirror` は使わない。試作のブランチ（`spike/engine`、`spike/plugin`）は使い捨てなので、push しない（設計書 18章）。
@@ -30,7 +30,7 @@
 ## 2. 確認
 
 1. `npm test`、`npm run typecheck`、`npm run lint` がすべて通る。
-2. `npm run dist` で作った `.jpl` を手元の Joplin にインストールし、設計書 16.3節の手動テストを行う。環境ごとの範囲は 16.3節のとおり。結果を下の「記録」に書く。
+2. 設計書 16.3節の手動テストを、`tests/manual/release-manual-tests.ja.md` の手順で行う。`.jpl` は、Windows では `npm run dist` で作り、ほかの PC では GitHub Actions の CI の成果物（plugin-package）を使う。環境ごとの範囲は手順書のとおり。項目ごとの結果は手順書の「記録」に、まとめは下の「記録」に書く。
 3. 外部通信なしの手動確認（設計書 16.4節の (4)）を行う。
 4. 初回の公開（v1.0.0）では、設計書 21.6節の公開前チェックリストをすべて確かめる。
 

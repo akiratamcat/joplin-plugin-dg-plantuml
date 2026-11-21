@@ -15,8 +15,17 @@ import { execFileSync } from 'node:child_process';
 const branch = process.argv[2] || 'main';
 // A full ref name avoids clashes with folder names (spike/engine is also a folder).
 const ref = branch.startsWith('refs/') ? branch : `refs/heads/${branch}`;
-/** Emails that may appear as author or committer (the owner chose the gmail address, 2026-11-19). */
-const ALLOWED_EMAILS = ['akiratamcat@gmail.com', 'noreply@anthropic.com'];
+/**
+ * Emails that may appear as author or committer: the owner's gmail address
+ * (chosen on 2026-11-19), and the public addresses GitHub uses for merges in
+ * the web UI and for Dependabot's commits.
+ */
+const ALLOWED_EMAILS = [
+	'akiratamcat@gmail.com',
+	'noreply@anthropic.com',
+	'noreply@github.com',
+	'49699333+dependabot[bot]@users.noreply.github.com',
+];
 
 // The repository's own workspace file (folders: "." only) is published; other
 // workspace files may hold personal settings.
