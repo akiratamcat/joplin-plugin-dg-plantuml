@@ -8,3 +8,20 @@ coverage/
 /spike/
 # Generated from locales/*.po by npm run i18n:compile (design 10.5)
 src/i18n/catalog/
+
+# Local files that must not be published (secrets, logs, editor and OS files)
+.env
+.env.*
+*.log
+npm-debug.log*
+*.tgz
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+*.code-workspace
+.claude/settings.local.json
+# Test output
+test-results/
+playwright-report/

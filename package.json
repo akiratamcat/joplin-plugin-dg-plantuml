@@ -33,7 +33,8 @@
     "typecheck": "npm run i18n:compile && tsc --noEmit -p tsconfig.json",
     "i18n:extract": "node scripts/i18n-extract.mjs",
     "i18n:compile": "node scripts/i18n-compile.mjs",
-    "i18n:check": "node scripts/i18n-check.mjs"
+    "i18n:check": "node scripts/i18n-check.mjs",
+    "check:publish": "node scripts/check-publish.mjs"
   },
   "dependencies": {
     "dompurify": "3.4.17"

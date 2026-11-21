@@ -1374,7 +1374,7 @@ Joplin 公式プラグイン一覧は、npm に公開されたプラグインを
 - `manifest.json` と `package.json` の URL が、実際に作成した GitHub のリポジトリと一致している
 - `README.md` に、使えない図や機能（19章 D-03 の結果、PlantUML エンジンのライセンスの版による制限）が書かれている
 - `LICENSE`、`THIRD_PARTY_NOTICES.md` が最新で、`.jpl`、GitHub Releases、npm パッケージのすべてに含まれている
-- リポジトリとコミット履歴に秘密情報や個人情報が含まれていない
+- リポジトリとコミット履歴に秘密情報や個人情報が含まれていない（`npm run check:publish` が OK になる。push するのは `main` だけで、試作のブランチは push しない。手順は `docs/release.md` の「GitHub に push する前」）
 - 16.3節の手動テストを、環境ごとに決めた範囲（Windows と macOS はフルテスト、Linux はスモークテスト）で行い、結果を `docs/release.md` に記録した
 - `README.md` と `README.ja.md` に生成 AI の利用が明記されている（22.3節）
 - 21.7節の「描画エンジン内蔵・外部通信なし」の記載が、すべての公開する場にあり、16.4節の外部通信なしの検査（(4) の手動確認を含む）に合格している
