@@ -2,7 +2,7 @@
 
 For the manual test M-07 (design 16.3) and the coloured error excerpt. See stage4-manual-tests.md.
 
-## 1. All kinds of tokens
+## 1. All kinds of tokens (sequence diagram)
 
 ```plantuml
 @startuml
@@ -15,10 +15,15 @@ User -> W : request (this label is not coloured: class note ->)
 W --> User : response
 /' a block comment
    over two lines '/
+@enduml
+```
+
+## 1b. Class diagram (arrows and a colour)
+
+```plantuml
 class Customer #LightBlue
 Customer <|-- Admin
 Customer ..> Order
-@enduml
 ```
 
 ## 2. Four backticks, tildes and the language name puml
