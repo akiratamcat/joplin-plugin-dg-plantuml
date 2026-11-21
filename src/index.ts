@@ -5,7 +5,8 @@ import { ActionDeps, ActionState, handleAction } from './actions';
 import { Catalog, resolveLocale, Translator } from './i18n/gettext';
 import catalogs from './i18n/catalog/catalogs.json';
 import { buildViewerConfig, KEYS, SECTION, settingItems, settingsSection, ViewerLanguage } from './settings';
-import { MARKDOWN_IT_SCRIPT_ID, ViewerMessage } from './shared/messages';
+import { parseAliases } from './shared/fence';
+import { CODEMIRROR_SCRIPT_ID, EditorConfig, MARKDOWN_IT_SCRIPT_ID, ViewerMessage } from './shared/messages';
 
 /** Joins a folder and a file name with the folder's own separator (no Node.js path module in the plugin). */
 function joinPath(folder: string, name: string): string {
@@ -33,6 +34,21 @@ joplin.plugins.register({
 			MARKDOWN_IT_SCRIPT_ID,
 			'./contentScript/markdownItPlugin.js',
 		);
+
+		// PlantUML syntax highlighting in the Markdown editor (design 7.7).
+		await joplin.contentScripts.register(
+			ContentScriptType.CodeMirrorPlugin,
+			CODEMIRROR_SCRIPT_ID,
+			'./contentScript/codeMirrorPlugin.js',
+		);
+		await joplin.contentScripts.onMessage(CODEMIRROR_SCRIPT_ID, async (message: { type?: string }): Promise<EditorConfig | null> => {
+			if (!message || message.type !== 'getEditorConfig') return null;
+			const values = await joplin.settings.values([KEYS.editorHighlight, KEYS.fenceAliases]);
+			return {
+				enabled: values[KEYS.editorHighlight] !== false,
+				aliases: typeof values[KEYS.fenceAliases] === 'string' ? parseAliases(values[KEYS.fenceAliases]) : [],
+			};
+		});
 
 		// Toolbar and link actions (design 11), through the Joplin API.
 		const fs = joplin.require('fs-extra');

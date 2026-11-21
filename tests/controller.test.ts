@@ -192,6 +192,20 @@ describe('ViewerController', () => {
 		expect(box?.getAttribute('role')).toBe('alert');
 		expect(box?.querySelector('.joplin-plantuml-error-message')?.textContent).toBe('Line 3: Syntax Error?');
 		expect(box?.querySelector('.joplin-plantuml-error-excerpt')?.textContent).toBe('3bad line');
+	});
+
+	test('the line excerpt is coloured like the editor; dark pages get the dark colours', async () => {
+		const { engine, controller, flush } = setup({}, true);
+		// engine: 1 @startuml, 2-3 preamble (Smetana, transparent background), 4 "participant A -> B : x"
+		engine.result = () => ({ ok: false, reason: 'syntax', message: 'Syntax Error?', line: 4 });
+		setNote('```plantuml\n@startuml\nparticipant A -> B : x\n@enduml\n```\n');
+		controller.update();
+		await flush();
+		const box = document.querySelector('.joplin-plantuml-error');
+		expect(box?.classList.contains('joplin-plantuml-on-dark')).toBe(true);
+		const spans = Array.from(box?.querySelectorAll('.joplin-plantuml-error-excerpt span[class^="joplin-plantuml-tok-"]') || []);
+		expect(spans.map((s) => `${s.className}:${s.textContent}`)).toEqual(['joplin-plantuml-tok-keyword:participant', 'joplin-plantuml-tok-arrow:->']);
+		expect(box?.querySelector('.joplin-plantuml-error-excerpt')?.textContent).toBe('2participant A -> B : x');
 		expect(document.querySelector('.joplin-plantuml-output')?.getAttribute('data-plantuml-state')).toBe('error');
 	});
 

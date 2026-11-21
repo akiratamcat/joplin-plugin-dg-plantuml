@@ -38,6 +38,20 @@ export interface OpenLinkMessage {
 	href: string;
 }
 
+/** The Markdown editor content script asks for its settings (design 7.7). */
+export interface EditorConfigMessage {
+	type: 'getEditorConfig';
+}
+
+export interface EditorConfig {
+	enabled: boolean;
+	/** Extra language names of PlantUML fences. */
+	aliases: string[];
+}
+
+/** ID of the Markdown editor content script. */
+export const CODEMIRROR_SCRIPT_ID = 'dgPlantumlCodeMirror';
+
 export type ViewerMessage = GetConfigMessage | CopyTextMessage | CopyImageMessage | SaveFileMessage | OpenLinkMessage;
 
 /** Answer to the action messages. */

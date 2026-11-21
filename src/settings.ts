@@ -22,6 +22,7 @@ export const KEYS = {
 	darkCustomPreamble: 'plantuml.darkCustomPreamble',
 	fontFamily: 'plantuml.fontFamily',
 	fenceAliases: 'plantuml.fenceAliases',
+	editorHighlight: 'plantuml.editorHighlight',
 	renderTimeoutMs: 'plantuml.renderTimeoutMs',
 	maxSourceLength: 'plantuml.maxSourceLength',
 	cacheSize: 'plantuml.cacheSize',
@@ -141,6 +142,14 @@ export function settingItems(t: Translator = ENGLISH): Record<string, SettingIte
 			step: 1,
 			label: t._('Minimum font size when scaled down (px)'),
 			description: t._('Wide diagrams are not scaled down below this font size; they scroll sideways instead. 0: no limit.'),
+		},
+		[KEYS.editorHighlight]: {
+			section: SECTION,
+			public: true,
+			type: SettingItemType.Bool,
+			value: true,
+			label: t._('Highlight PlantUML in the Markdown editor'),
+			description: t._('Colours the PlantUML code in the Markdown editor. A change applies when the note is opened again.'),
 		},
 		[KEYS.lightCustomPreamble]: {
 			section: SECTION,

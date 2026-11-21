@@ -188,3 +188,19 @@
 .joplin-plantuml-output svg a:focus-visible {
 	outline: 2px solid currentColor;
 }
+
+/* The line excerpt of the error box, coloured like the editor (design 7.4, 7.7). */
+.joplin-plantuml-tok-tag { color: #a626a4; font-weight: bold; }
+.joplin-plantuml-tok-keyword { color: #4078f2; }
+.joplin-plantuml-tok-preprocessor { color: #c18401; }
+.joplin-plantuml-tok-comment { color: #8a8a8a; font-style: italic; }
+.joplin-plantuml-tok-string { color: #50a14f; }
+.joplin-plantuml-tok-arrow { color: #e45649; }
+.joplin-plantuml-tok-color { color: #986801; }
+.joplin-plantuml-on-dark .joplin-plantuml-tok-tag { color: #c678dd; }
+.joplin-plantuml-on-dark .joplin-plantuml-tok-keyword { color: #61afef; }
+.joplin-plantuml-on-dark .joplin-plantuml-tok-preprocessor { color: #e5c07b; }
+.joplin-plantuml-on-dark .joplin-plantuml-tok-comment { color: #7f848e; }
+.joplin-plantuml-on-dark .joplin-plantuml-tok-string { color: #98c379; }
+.joplin-plantuml-on-dark .joplin-plantuml-tok-arrow { color: #e06c75; }
+.joplin-plantuml-on-dark .joplin-plantuml-tok-color { color: #d19a66; }

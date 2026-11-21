@@ -37,57 +37,57 @@ msgstr "コピーできませんでした: {error}"
 msgid "Copied the image (PNG)."
 msgstr "画像（PNG）をコピーしました。"
 
-#: src/contentScript/controller.ts:143
+#: src/contentScript/controller.ts:146
 msgid "The diagram is too large."
 msgstr "図が大きすぎます。"
 
-#: src/contentScript/controller.ts:145
+#: src/contentScript/controller.ts:148
 msgid "The source has {count} character. The limit is {limit}."
 msgid_plural "The source has {count} characters. The limit is {limit}."
 msgstr[0] "ソースは {count} 文字です。上限は {limit} 文字です。"
 
-#: src/contentScript/controller.ts:203
+#: src/contentScript/controller.ts:206
 msgid "Rendering..."
 msgstr "描画中..."
 
-#: src/contentScript/controller.ts:203
+#: src/contentScript/controller.ts:206
 msgid "Loading the PlantUML engine..."
 msgstr "PlantUML のエンジンを読み込み中..."
 
-#: src/contentScript/controller.ts:311
+#: src/contentScript/controller.ts:314
 msgid "Could not load the PlantUML engine."
 msgstr "PlantUML のエンジンを読み込めませんでした。"
 
-#: src/contentScript/controller.ts:312
+#: src/contentScript/controller.ts:315
 msgid "See the developer tools console for details."
 msgstr "詳しくは開発者ツールのコンソールを見てください。"
 
-#: src/contentScript/controller.ts:331
-#: src/contentScript/controller.ts:346
+#: src/contentScript/controller.ts:334
+#: src/contentScript/controller.ts:349
 msgid "PlantUML error"
 msgstr "PlantUML のエラー"
 
-#: src/contentScript/controller.ts:338
+#: src/contentScript/controller.ts:341
 msgid "Rendering timed out."
 msgstr "描画が時間切れになりました。"
 
-#: src/contentScript/controller.ts:339
+#: src/contentScript/controller.ts:342
 msgid "Rendering took longer than {ms} ms."
 msgstr "描画が {ms} ミリ秒を超えました。"
 
-#: src/contentScript/controller.ts:344
+#: src/contentScript/controller.ts:347
 msgid "The PlantUML engine crashed."
 msgstr "PlantUML のエンジンがクラッシュしました。"
 
-#: src/contentScript/controller.ts:359
+#: src/contentScript/controller.ts:362
 msgid "PlantUML diagram"
 msgstr "PlantUML の図"
 
-#: src/contentScript/controller.ts:366
+#: src/contentScript/controller.ts:369
 msgid "Only the first diagram in this block is shown."
 msgstr "このブロックの最初の図だけを表示しています。"
 
-#: src/contentScript/controller.ts:452
+#: src/contentScript/controller.ts:455
 #. {line} is a line number in the diagram source, {message} is the error message of PlantUML (in English).
 msgid "Line {line}: {message}"
 msgstr "{line} 行目: {message}"
@@ -116,51 +116,63 @@ msgstr "PNG を保存"
 msgid "Copy PlantUML source"
 msgstr "PlantUML のソースをコピー"
 
-#: src/index.ts:45
+#: src/index.ts:61
 msgid "Choose a folder to save the diagram in"
 msgstr "図を保存するフォルダーを選んでください"
 
-#: src/settings.ts:108
+#: src/settings.ts:100
+msgid "Used on a light note viewer. Dark colours on a light page are hard to read."
+msgstr "ノートのビューアーが明るいときに使います。明るいページで暗い配色を選ぶと読みにくくなります。"
+
+#: src/settings.ts:109
 msgid "Style for the dark theme"
 msgstr "暗いテーマのときのスタイル"
 
-#: src/settings.ts:109
+#: src/settings.ts:110
 msgid "Used on a dark note viewer. Light colours on a dark page are hard to read."
 msgstr "ノートのビューアーが暗いときに使います。暗いページで明るい配色を選ぶと読みにくくなります。"
 
-#: src/settings.ts:116
+#: src/settings.ts:117
 msgid "Transparent diagram background"
 msgstr "図の背景を透明にする"
 
-#: src/settings.ts:123
+#: src/settings.ts:124
 msgid "Show the diagram toolbar"
 msgstr "図のツールバーを表示する"
 
-#: src/settings.ts:124
+#: src/settings.ts:125
 msgid "Buttons to copy or save a diagram, shown when the mouse is over it or after a tap on it."
 msgstr "図をコピーまたは保存するボタン。図にマウスを乗せたとき、または図をタップしたときに表示します。"
 
-#: src/settings.ts:131
+#: src/settings.ts:132
 msgid "Match the font size of the note"
 msgstr "図の文字サイズをノートの文字に合わせる"
 
-#: src/settings.ts:132
+#: src/settings.ts:133
 msgid "Uses the font size of the note text as the base font size of diagrams."
 msgstr "ノートの本文の文字サイズを、図の基本の文字サイズにします。"
 
-#: src/settings.ts:142
+#: src/settings.ts:143
 msgid "Minimum font size when scaled down (px)"
 msgstr "縮小表示するときの最小の文字サイズ（px）"
 
-#: src/settings.ts:143
+#: src/settings.ts:144
 msgid "Wide diagrams are not scaled down below this font size; they scroll sideways instead. 0: no limit."
 msgstr "横に長い図は、文字がこのサイズより小さくなるところまでは縮小せず、代わりに横スクロールにします。0 は制限なし。"
 
 #: src/settings.ts:151
+msgid "Highlight PlantUML in the Markdown editor"
+msgstr "Markdown エディターで PlantUML を色分けする"
+
+#: src/settings.ts:152
+msgid "Colours the PlantUML code in the Markdown editor. A change applies when the note is opened again."
+msgstr "Markdown エディターで PlantUML のコードを色分けします。変更は、ノートを開き直したときに反映されます。"
+
+#: src/settings.ts:160
 msgid "Custom preamble for the light theme"
 msgstr "明るいテーマのときのカスタムのプリアンブル"
 
-#: src/settings.ts:153
+#: src/settings.ts:162
 #. "@startuml" and "\n" are written as they are. "\n" is a backslash followed by the letter n.
 msgid ""
 "Used when the light style is \"Custom\". PlantUML lines added after @startuml. Write \\n"
@@ -169,11 +181,11 @@ msgstr ""
 "明るいテーマのスタイルが「カスタム（下のプリアンブル）」のときに使います。@startuml の後に加える PlantUML の行です。行と行の間には \\n"
 " と書きます。"
 
-#: src/settings.ts:161
+#: src/settings.ts:170
 msgid "Custom preamble for the dark theme"
 msgstr "暗いテーマのときのカスタムのプリアンブル"
 
-#: src/settings.ts:163
+#: src/settings.ts:172
 #. "@startuml" and "\n" are written as they are. "\n" is a backslash followed by the letter n.
 msgid ""
 "Used when the dark style is \"Custom\". PlantUML lines added after @startuml. Write \\n"
@@ -182,96 +194,92 @@ msgstr ""
 "暗いテーマのスタイルが「カスタム（下のプリアンブル）」のときに使います。@startuml の後に加える PlantUML の行です。行と行の間には \\n"
 " と書きます。"
 
-#: src/settings.ts:171
+#: src/settings.ts:180
 msgid "Font used in diagrams"
 msgstr "図で使用するフォント"
 
-#: src/settings.ts:172
+#: src/settings.ts:181
 msgid "Name of the font used in diagrams. Empty: the default font."
 msgstr "図で使用するフォントの名前。空のときは既定のフォントになります。"
 
-#: src/settings.ts:180
+#: src/settings.ts:189
 msgid "Other language names"
 msgstr "ほかの言語名"
 
-#: src/settings.ts:182
+#: src/settings.ts:191
 #. The info string is the text right after the opening fence of a code block, as in ```plantuml. "plantuml" and "puml" are language names and are not translated.
 msgid "Info strings (language names) of code fences that are drawn as PlantUML diagrams. Separate several language names with commas. \"plantuml\" and \"puml\" always work."
 msgstr "PlantUML の図として描くコードフェンスの情報文字列（言語名）。カンマ区切りで複数の言語名を指定可能。\"plantuml\" と \"puml\" は常に使えます。"
 
-#: src/settings.ts:193
+#: src/settings.ts:202
 msgid "Time limit per diagram (ms)"
 msgstr "1つの図の描画時間の上限（ms）"
 
-#: src/settings.ts:204
+#: src/settings.ts:213
 msgid "Maximum source length (characters)"
 msgstr "ソースの最大文字数"
 
-#: src/settings.ts:215
+#: src/settings.ts:224
 msgid "Number of diagrams held in the cache"
 msgstr "キャッシュに保持する図の数"
 
-#: src/settings.ts:228
+#: src/settings.ts:237
 msgid "A plugin that renders PlantUML. The PlantUML rendering engine is built in, and the plugin makes no network connections to the outside."
 msgstr "PlantUML を描画するプラグイン。PlantUML の描画エンジンは内蔵しており、外部とのネットワーク通信は行いません。"
 
-#: src/settings.ts:34
+#: src/settings.ts:35
 #. {name} is the name of a built-in PlantUML theme, for example "Cyborg". Theme names are not translated.
 msgid "PlantUML theme: {name}"
 msgstr "PlantUML のテーマ: {name}"
 
-#: src/settings.ts:46
+#: src/settings.ts:47
 #. Name of a diagram style. "PlantUML" is not translated.
 msgid "PlantUML standard (light colours, default)"
 msgstr "PlantUML 標準（明るい配色、既定）"
 
-#: src/settings.ts:48
+#: src/settings.ts:49
 #. Name of a diagram style. "Joplin" is not translated.
 msgid "Joplin light (light colours)"
 msgstr "Joplin ライト（明るい配色）"
 
-#: src/settings.ts:50
-#: src/settings.ts:62
+#: src/settings.ts:51
+#: src/settings.ts:63
 msgid "Custom (preamble below)"
 msgstr "カスタム（下のプリアンブル）"
 
-#: src/settings.ts:58
+#: src/settings.ts:59
 #. Name of a diagram style. "PlantUML" is not translated.
 msgid "PlantUML dark (dark colours, default)"
 msgstr "PlantUML ダーク（暗い配色、既定）"
 
-#: src/settings.ts:60
+#: src/settings.ts:61
 #. Name of a diagram style. "PlantUML" is not translated.
 msgid "PlantUML standard (light colours)"
 msgstr "PlantUML 標準（明るい配色）"
 
-#: src/settings.ts:82
+#: src/settings.ts:83
 msgid "Auto (follow Joplin's theme)"
 msgstr "自動（Joplin のテーマに合わせる）"
 
-#: src/settings.ts:88
+#: src/settings.ts:89
 msgid "PlantUML diagram theme"
 msgstr "PlantUML の図のテーマ"
 
-#: src/settings.ts:89
+#: src/settings.ts:90
 msgid "When set to \"Auto\", the light or dark style is chosen automatically from the background of the note viewer."
 msgstr "「自動」と設定すると、ノートのビューアーの背景から、明るいスタイルか暗いスタイルかを自動的に設定します。"
 
-#: src/settings.ts:98
+#: src/settings.ts:99
 msgid "Style for the light theme"
 msgstr "明るいテーマのときのスタイル"
 
-#: src/settings.ts:99
-msgid "Used on a light note viewer. Dark colours on a light page are hard to read."
-msgstr "ノートのビューアーが明るいときに使います。明るいページで暗い配色を選ぶと読みにくくなります。"
-
-#: src/settings.ts:84
+#: src/settings.ts:85
 #. A value of the setting "Diagram theme".
 msgctxt "Diagram theme"
 msgid "Light"
 msgstr "明るい"
 
-#: src/settings.ts:86
+#: src/settings.ts:87
 #. A value of the setting "Diagram theme".
 msgctxt "Diagram theme"
 msgid "Dark"
