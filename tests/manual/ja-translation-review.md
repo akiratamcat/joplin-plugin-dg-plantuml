@@ -1,0 +1,56 @@
+# 日本語の訳の確認
+
+`locales/ja.po` の訳（Claude が作成）を確認する表。設計書 10.2節の「日本語はオーナーが確認する」に当たる。
+
+- 「結果」の欄に、そのままでよければ OK、直したければ NG を書き、「修正案」に直した訳を書く。
+- `{line}` `{name}` のような波かっこの部分は、そのまま残す（実行時に値が入る）。
+- PlantUML、Joplin、`@startuml`、`\n`、`plantuml`、`puml` は訳さない。
+- 「場所」は、その文字列が表示される場所（ビューア: 図のエラーや状態の表示、設定画面: 設定 → プラグイン → dg-plantuml）。
+- 用語は Joplin の日本語の画面に合わせた（テーマの「明るい」「暗い」、「ビューアー」など）。
+
+| # | 場所 | 英語（原文） | 日本語（訳） | 結果 | 修正案 |
+| - | ---- | ------------ | ------------ | ---- | ------ |
+| 1 | ビューア: controller.ts | The diagram is too large. | 図が大きすぎます。 | | |
+| 2 | ビューア: controller.ts | The source has {count} character. The limit is {limit}. / The source has {count} characters. The limit is {limit}. | ソースは {count} 文字です。上限は {limit} 文字です。 | | |
+| 3 | ビューア: controller.ts | Rendering… | 描画中… | | |
+| 4 | ビューア: controller.ts | Loading the PlantUML engine… | PlantUML のエンジンを読み込み中… | | |
+| 5 | ビューア: controller.ts | Could not load the PlantUML engine. | PlantUML のエンジンを読み込めませんでした。 | | |
+| 6 | ビューア: controller.ts | See the developer tools console for details. | 詳しくは開発者ツールのコンソールを見てください。 | | |
+| 7 | ビューア: controller.ts | PlantUML error | PlantUML のエラー | | |
+| 8 | ビューア: controller.ts | Rendering timed out. | 描画が時間切れになりました。 | | |
+| 9 | ビューア: controller.ts | Rendering took longer than {ms} ms. | 描画が {ms} ミリ秒を超えました。 | | |
+| 10 | ビューア: controller.ts | The PlantUML engine crashed. | PlantUML のエンジンがクラッシュしました。 | | |
+| 11 | ビューア: controller.ts | Only the first diagram in this block is shown. | このブロックの最初の図だけを表示しています。 | | |
+| 12 | ビューア: controller.ts | Line {line}: {message} | {line} 行目: {message} | | |
+| 13 | 設定画面 | Style for the dark theme | 暗いテーマのときのスタイル | | |
+| 14 | 設定画面 | Used on a dark note viewer. Light colours on a dark page are hard to read. | ノートのビューアーが暗いときに使います。暗いページで明るい配色を選ぶと読みにくくなります。 | | |
+| 15 | 設定画面 | Transparent diagram background | 図の背景を透明にする | | |
+| 16 | 設定画面 | Match the font size of the note | 図の文字サイズをノートの文字に合わせる | | |
+| 17 | 設定画面 | Uses the font size of the note text as the base font size of diagrams. | ノートの本文の文字サイズを、図の基本の文字サイズにします。 | | |
+| 18 | 設定画面 | Minimum font size when scaled down (px) | 縮小表示するときの最小の文字サイズ（px） | | |
+| 19 | 設定画面 | Wide diagrams are not scaled down below this font size; they scroll sideways instead. 0: no limit. | 横に長い図は、文字がこのサイズより小さくなるところまでは縮小せず、代わりに横スクロールにします。0 は制限なし。 | | |
+| 20 | 設定画面 | Custom preamble for the light theme | 明るいテーマのときのカスタムのプリアンブル | | |
+| 21 | 設定画面 | Used when the light style is "Custom". PlantUML lines added after @startuml. Write \n between lines. | 明るいテーマのスタイルが「カスタム（下のプリアンブル）」のときに使います。@startuml の後に加える PlantUML の行です。行と行の間には \n と書きます。 | | |
+| 22 | 設定画面 | Custom preamble for the dark theme | 暗いテーマのときのカスタムのプリアンブル | | |
+| 23 | 設定画面 | Used when the dark style is "Custom". PlantUML lines added after @startuml. Write \n between lines. | 暗いテーマのスタイルが「カスタム（下のプリアンブル）」のときに使います。@startuml の後に加える PlantUML の行です。行と行の間には \n と書きます。 | | |
+| 24 | 設定画面 | Diagram font | 図のフォント | | |
+| 25 | 設定画面 | Font name for diagrams. Empty: the default font. | 図に使うフォントの名前。空のときは既定のフォントになります。 | | |
+| 26 | 設定画面 | Other language names | ほかの言語名 | | |
+| 27 | 設定画面 | Code block languages that are also drawn as PlantUML, separated by commas. "plantuml" and "puml" always work. | PlantUML の図として描くコードブロックの言語名（カンマ区切り）。"plantuml" と "puml" は常に使えます。 | | |
+| 28 | 設定画面 | Time limit per diagram (ms) | 1つの図の描画時間の上限（ms） | | |
+| 29 | 設定画面 | Maximum source length (characters) | ソースの最大文字数 | | |
+| 30 | 設定画面 | Number of diagrams kept in the cache | キャッシュに残す図の数 | | |
+| 31 | 設定画面 | PlantUML diagrams, rendered by the engine bundled in this plugin. No network access. | このプラグインに内蔵したエンジンで描く PlantUML の図。ネットワーク通信は行いません。 | | |
+| 32 | 設定画面 | PlantUML theme: {name} | PlantUML のテーマ: {name} | | |
+| 33 | 設定画面 | PlantUML standard (light colours, default) | PlantUML 標準（明るい配色、既定） | | |
+| 34 | 設定画面 | Joplin light (light colours) | Joplin ライト（明るい配色） | | |
+| 35 | 設定画面 | Custom (preamble below) | カスタム（下のプリアンブル） | | |
+| 36 | 設定画面 | PlantUML dark (dark colours, default) | PlantUML ダーク（暗い配色、既定） | | |
+| 37 | 設定画面 | PlantUML standard (light colours) | PlantUML 標準（明るい配色） | | |
+| 38 | 設定画面 | Auto (follow Joplin's theme) | 自動（Joplin のテーマに合わせる） | | |
+| 39 | 設定画面 | Diagram theme | 図のテーマ | | |
+| 40 | 設定画面 | Auto chooses the light or dark style from the background of the note viewer. | 自動では、ノートのビューアーの背景から、明るいスタイルか暗いスタイルかを選びます。 | | |
+| 41 | 設定画面 | Style for the light theme | 明るいテーマのときのスタイル | | |
+| 42 | 設定画面 | Used on a light note viewer. Dark colours on a light page are hard to read. | ノートのビューアーが明るいときに使います。明るいページで暗い配色を選ぶと読みにくくなります。 | | |
+| 43 | 設定画面 | [Diagram theme] Light | 明るい | | |
+| 44 | 設定画面 | [Diagram theme] Dark | 暗い | | |
