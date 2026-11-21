@@ -10,87 +10,87 @@ msgstr ""
 
 #: src/contentScript/controller.ts:138
 msgid "The diagram is too large."
-msgstr ""
+msgstr "O diagrama é grande demais."
 
 #: src/contentScript/controller.ts:140
 msgid "The source has {count} character. The limit is {limit}."
 msgid_plural "The source has {count} characters. The limit is {limit}."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "O código-fonte tem {count} caractere. O limite é {limit}."
+msgstr[1] "O código-fonte tem {count} caracteres. O limite é {limit}."
 
 #: src/contentScript/controller.ts:198
 msgid "Rendering…"
-msgstr ""
+msgstr "Renderizando…"
 
 #: src/contentScript/controller.ts:198
 msgid "Loading the PlantUML engine…"
-msgstr ""
+msgstr "Carregando o mecanismo do PlantUML…"
 
 #: src/contentScript/controller.ts:295
 msgid "Could not load the PlantUML engine."
-msgstr ""
+msgstr "Não foi possível carregar o mecanismo do PlantUML."
 
 #: src/contentScript/controller.ts:296
 msgid "See the developer tools console for details."
-msgstr ""
+msgstr "Veja o console das ferramentas de desenvolvedor para mais detalhes."
 
 #: src/contentScript/controller.ts:315
 #: src/contentScript/controller.ts:330
 msgid "PlantUML error"
-msgstr ""
+msgstr "Erro do PlantUML"
 
 #: src/contentScript/controller.ts:322
 msgid "Rendering timed out."
-msgstr ""
+msgstr "O tempo de renderização se esgotou."
 
 #: src/contentScript/controller.ts:323
 msgid "Rendering took longer than {ms} ms."
-msgstr ""
+msgstr "A renderização levou mais de {ms} ms."
 
 #: src/contentScript/controller.ts:328
 msgid "The PlantUML engine crashed."
-msgstr ""
+msgstr "O mecanismo do PlantUML travou."
 
 #: src/contentScript/controller.ts:343
 msgid "Only the first diagram in this block is shown."
-msgstr ""
+msgstr "Apenas o primeiro diagrama deste bloco é exibido."
 
 #: src/contentScript/controller.ts:429
 #. {line} is a line number in the diagram source, {message} is the error message of PlantUML (in English).
 msgid "Line {line}: {message}"
-msgstr ""
+msgstr "Linha {line}: {message}"
 
 #: src/settings.ts:107
 msgid "Style for the dark theme"
-msgstr ""
+msgstr "Estilo para o tema escuro"
 
 #: src/settings.ts:108
 msgid "Used on a dark note viewer. Light colours on a dark page are hard to read."
-msgstr ""
+msgstr "Usado quando o visualizador de notas é escuro. Cores claras são difíceis de ler em uma página escura."
 
 #: src/settings.ts:115
 msgid "Transparent diagram background"
-msgstr ""
+msgstr "Fundo do diagrama transparente"
 
 #: src/settings.ts:122
 msgid "Match the font size of the note"
-msgstr ""
+msgstr "Usar o tamanho da fonte da nota"
 
 #: src/settings.ts:123
 msgid "Uses the font size of the note text as the base font size of diagrams."
-msgstr ""
+msgstr "Usa o tamanho da fonte do texto da nota como tamanho base dos diagramas."
 
 #: src/settings.ts:133
 msgid "Minimum font size when scaled down (px)"
-msgstr ""
+msgstr "Tamanho mínimo da fonte ao reduzir (px)"
 
 #: src/settings.ts:134
 msgid "Wide diagrams are not scaled down below this font size; they scroll sideways instead. 0: no limit."
-msgstr ""
+msgstr "Diagramas largos não são reduzidos abaixo deste tamanho de fonte; em vez disso, rolam na horizontal. 0: sem limite."
 
 #: src/settings.ts:142
 msgid "Custom preamble for the light theme"
-msgstr ""
+msgstr "Preâmbulo personalizado para o tema claro"
 
 #: src/settings.ts:144
 #. "@startuml" and "\n" are written as they are. "\n" is a backslash followed by the letter n.
@@ -98,10 +98,12 @@ msgid ""
 "Used when the light style is \"Custom\". PlantUML lines added after @startuml. Write \\n"
 " between lines."
 msgstr ""
+"Usado quando o estilo do tema claro é \"Personalizado (preâmbulo abaixo)\". Linhas do PlantUML adicionadas após @startuml. Escreva \\n"
+" entre as linhas."
 
 #: src/settings.ts:152
 msgid "Custom preamble for the dark theme"
-msgstr ""
+msgstr "Preâmbulo personalizado para o tema escuro"
 
 #: src/settings.ts:154
 #. "@startuml" and "\n" are written as they are. "\n" is a backslash followed by the letter n.
@@ -109,98 +111,100 @@ msgid ""
 "Used when the dark style is \"Custom\". PlantUML lines added after @startuml. Write \\n"
 " between lines."
 msgstr ""
+"Usado quando o estilo do tema escuro é \"Personalizado (preâmbulo abaixo)\". Linhas do PlantUML adicionadas após @startuml. Escreva \\n"
+" entre as linhas."
 
 #: src/settings.ts:162
 msgid "Diagram font"
-msgstr ""
+msgstr "Fonte dos diagramas"
 
 #: src/settings.ts:163
 msgid "Font name for diagrams. Empty: the default font."
-msgstr ""
+msgstr "Nome da fonte dos diagramas. Vazio: a fonte padrão."
 
 #: src/settings.ts:171
 msgid "Other language names"
-msgstr ""
+msgstr "Outros nomes de linguagem"
 
 #: src/settings.ts:173
 #. "plantuml" and "puml" are language names of code blocks and are not translated.
 msgid "Code block languages that are also drawn as PlantUML, separated by commas. \"plantuml\" and \"puml\" always work."
-msgstr ""
+msgstr "Linguagens de blocos de código que também são desenhadas como PlantUML, separadas por vírgulas. \"plantuml\" e \"puml\" sempre funcionam."
 
 #: src/settings.ts:184
 msgid "Time limit per diagram (ms)"
-msgstr ""
+msgstr "Tempo máximo por diagrama (ms)"
 
 #: src/settings.ts:195
 msgid "Maximum source length (characters)"
-msgstr ""
+msgstr "Tamanho máximo do código-fonte (caracteres)"
 
 #: src/settings.ts:206
 msgid "Number of diagrams kept in the cache"
-msgstr ""
+msgstr "Número de diagramas mantidos no cache"
 
 #: src/settings.ts:219
 msgid "PlantUML diagrams, rendered by the engine bundled in this plugin. No network access."
-msgstr ""
+msgstr "Diagramas do PlantUML, renderizados pelo mecanismo incluído neste plugin. Sem acesso à rede."
 
 #: src/settings.ts:33
 #. {name} is the name of a built-in PlantUML theme, for example "Cyborg". Theme names are not translated.
 msgid "PlantUML theme: {name}"
-msgstr ""
+msgstr "Tema do PlantUML: {name}"
 
 #: src/settings.ts:45
 #. Name of a diagram style. "PlantUML" is not translated.
 msgid "PlantUML standard (light colours, default)"
-msgstr ""
+msgstr "PlantUML padrão (cores claras, padrão)"
 
 #: src/settings.ts:47
 #. Name of a diagram style. "Joplin" is not translated.
 msgid "Joplin light (light colours)"
-msgstr ""
+msgstr "Joplin claro (cores claras)"
 
 #: src/settings.ts:49
 #: src/settings.ts:61
 msgid "Custom (preamble below)"
-msgstr ""
+msgstr "Personalizado (preâmbulo abaixo)"
 
 #: src/settings.ts:57
 #. Name of a diagram style. "PlantUML" is not translated.
 msgid "PlantUML dark (dark colours, default)"
-msgstr ""
+msgstr "PlantUML escuro (cores escuras, padrão)"
 
 #: src/settings.ts:59
 #. Name of a diagram style. "PlantUML" is not translated.
 msgid "PlantUML standard (light colours)"
-msgstr ""
+msgstr "PlantUML padrão (cores claras)"
 
 #: src/settings.ts:81
 msgid "Auto (follow Joplin's theme)"
-msgstr ""
+msgstr "Automático (seguir o tema do Joplin)"
 
 #: src/settings.ts:87
 msgid "Diagram theme"
-msgstr ""
+msgstr "Tema dos diagramas"
 
 #: src/settings.ts:88
 msgid "Auto chooses the light or dark style from the background of the note viewer."
-msgstr ""
+msgstr "O modo automático escolhe o estilo claro ou escuro de acordo com o fundo do visualizador de notas."
 
 #: src/settings.ts:97
 msgid "Style for the light theme"
-msgstr ""
+msgstr "Estilo para o tema claro"
 
 #: src/settings.ts:98
 msgid "Used on a light note viewer. Dark colours on a light page are hard to read."
-msgstr ""
+msgstr "Usado quando o visualizador de notas é claro. Cores escuras são difíceis de ler em uma página clara."
 
 #: src/settings.ts:83
 #. A value of the setting "Diagram theme".
 msgctxt "Diagram theme"
 msgid "Light"
-msgstr ""
+msgstr "Claro"
 
 #: src/settings.ts:85
 #. A value of the setting "Diagram theme".
 msgctxt "Diagram theme"
 msgid "Dark"
-msgstr ""
+msgstr "Escuro"

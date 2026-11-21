@@ -43,7 +43,14 @@ To use another Chromium build for the rendering tests, set `DG_CHROME_PATH` to i
 
 ## Translations
 
-Translations will use gettext PO files in `locales/` (planned). The current translations are made with generative AI, so corrections by native speakers are very welcome.
+Translations are gettext PO files in `locales/` (`ja.po`, `de.po`...), so they can be edited with Poedit or any text editor. The current translations were made with generative AI, so corrections by native speakers are very welcome.
+
+- To correct a translation, edit the `msgstr` in `locales/<locale>.po` and run `npm run i18n:check`.
+- Keep placeholders such as `{line}` and `{name}` as they are. Words like PlantUML, Joplin, `@startuml` and `\n` are not translated. Notes for translators are the `#.` comments.
+- After changing texts in the source code, run `npm run i18n:extract` to update `locales/plantuml.pot` and all PO files.
+- A new language needs an entry in `scripts/i18n-common.mjs` and in `src/i18n/gettext.ts` (plural rules).
+
+Untranslated texts are shown in English.
 
 ## License of contributions
 

@@ -10,88 +10,88 @@ msgstr ""
 
 #: src/contentScript/controller.ts:138
 msgid "The diagram is too large."
-msgstr ""
+msgstr "Диаграмма слишком большая."
 
 #: src/contentScript/controller.ts:140
 msgid "The source has {count} character. The limit is {limit}."
 msgid_plural "The source has {count} characters. The limit is {limit}."
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "Исходный текст содержит {count} символ. Ограничение — {limit}."
+msgstr[1] "Исходный текст содержит {count} символа. Ограничение — {limit}."
+msgstr[2] "Исходный текст содержит {count} символов. Ограничение — {limit}."
 
 #: src/contentScript/controller.ts:198
 msgid "Rendering…"
-msgstr ""
+msgstr "Отрисовка…"
 
 #: src/contentScript/controller.ts:198
 msgid "Loading the PlantUML engine…"
-msgstr ""
+msgstr "Загрузка движка PlantUML…"
 
 #: src/contentScript/controller.ts:295
 msgid "Could not load the PlantUML engine."
-msgstr ""
+msgstr "Не удалось загрузить движок PlantUML."
 
 #: src/contentScript/controller.ts:296
 msgid "See the developer tools console for details."
-msgstr ""
+msgstr "Подробности смотрите в консоли инструментов разработчика."
 
 #: src/contentScript/controller.ts:315
 #: src/contentScript/controller.ts:330
 msgid "PlantUML error"
-msgstr ""
+msgstr "Ошибка PlantUML"
 
 #: src/contentScript/controller.ts:322
 msgid "Rendering timed out."
-msgstr ""
+msgstr "Время отрисовки истекло."
 
 #: src/contentScript/controller.ts:323
 msgid "Rendering took longer than {ms} ms."
-msgstr ""
+msgstr "Отрисовка заняла больше {ms} мс."
 
 #: src/contentScript/controller.ts:328
 msgid "The PlantUML engine crashed."
-msgstr ""
+msgstr "Движок PlantUML аварийно завершил работу."
 
 #: src/contentScript/controller.ts:343
 msgid "Only the first diagram in this block is shown."
-msgstr ""
+msgstr "Показана только первая диаграмма в этом блоке."
 
 #: src/contentScript/controller.ts:429
 #. {line} is a line number in the diagram source, {message} is the error message of PlantUML (in English).
 msgid "Line {line}: {message}"
-msgstr ""
+msgstr "Строка {line}: {message}"
 
 #: src/settings.ts:107
 msgid "Style for the dark theme"
-msgstr ""
+msgstr "Стиль для тёмной темы"
 
 #: src/settings.ts:108
 msgid "Used on a dark note viewer. Light colours on a dark page are hard to read."
-msgstr ""
+msgstr "Используется, когда просмотр заметки тёмный. Светлые цвета плохо читаются на тёмной странице."
 
 #: src/settings.ts:115
 msgid "Transparent diagram background"
-msgstr ""
+msgstr "Прозрачный фон диаграммы"
 
 #: src/settings.ts:122
 msgid "Match the font size of the note"
-msgstr ""
+msgstr "Размер шрифта как в заметке"
 
 #: src/settings.ts:123
 msgid "Uses the font size of the note text as the base font size of diagrams."
-msgstr ""
+msgstr "Использует размер шрифта текста заметки как базовый размер шрифта диаграмм."
 
 #: src/settings.ts:133
 msgid "Minimum font size when scaled down (px)"
-msgstr ""
+msgstr "Минимальный размер шрифта при уменьшении (px)"
 
 #: src/settings.ts:134
 msgid "Wide diagrams are not scaled down below this font size; they scroll sideways instead. 0: no limit."
-msgstr ""
+msgstr "Широкие диаграммы не уменьшаются ниже этого размера шрифта; вместо этого они прокручиваются по горизонтали. 0 — без ограничения."
 
 #: src/settings.ts:142
 msgid "Custom preamble for the light theme"
-msgstr ""
+msgstr "Своя преамбула для светлой темы"
 
 #: src/settings.ts:144
 #. "@startuml" and "\n" are written as they are. "\n" is a backslash followed by the letter n.
@@ -99,10 +99,12 @@ msgid ""
 "Used when the light style is \"Custom\". PlantUML lines added after @startuml. Write \\n"
 " between lines."
 msgstr ""
+"Используется, когда стиль светлой темы — «Свой (преамбула ниже)». Строки PlantUML, добавляемые после @startuml. Пишите \\n"
+" между строками."
 
 #: src/settings.ts:152
 msgid "Custom preamble for the dark theme"
-msgstr ""
+msgstr "Своя преамбула для тёмной темы"
 
 #: src/settings.ts:154
 #. "@startuml" and "\n" are written as they are. "\n" is a backslash followed by the letter n.
@@ -110,98 +112,100 @@ msgid ""
 "Used when the dark style is \"Custom\". PlantUML lines added after @startuml. Write \\n"
 " between lines."
 msgstr ""
+"Используется, когда стиль тёмной темы — «Свой (преамбула ниже)». Строки PlantUML, добавляемые после @startuml. Пишите \\n"
+" между строками."
 
 #: src/settings.ts:162
 msgid "Diagram font"
-msgstr ""
+msgstr "Шрифт диаграмм"
 
 #: src/settings.ts:163
 msgid "Font name for diagrams. Empty: the default font."
-msgstr ""
+msgstr "Название шрифта для диаграмм. Пусто — шрифт по умолчанию."
 
 #: src/settings.ts:171
 msgid "Other language names"
-msgstr ""
+msgstr "Другие названия языков"
 
 #: src/settings.ts:173
 #. "plantuml" and "puml" are language names of code blocks and are not translated.
 msgid "Code block languages that are also drawn as PlantUML, separated by commas. \"plantuml\" and \"puml\" always work."
-msgstr ""
+msgstr "Языки блоков кода, которые также рисуются как PlantUML, через запятую. «plantuml» и «puml» работают всегда."
 
 #: src/settings.ts:184
 msgid "Time limit per diagram (ms)"
-msgstr ""
+msgstr "Ограничение времени на диаграмму (мс)"
 
 #: src/settings.ts:195
 msgid "Maximum source length (characters)"
-msgstr ""
+msgstr "Максимальная длина исходного текста (символов)"
 
 #: src/settings.ts:206
 msgid "Number of diagrams kept in the cache"
-msgstr ""
+msgstr "Количество диаграмм в кэше"
 
 #: src/settings.ts:219
 msgid "PlantUML diagrams, rendered by the engine bundled in this plugin. No network access."
-msgstr ""
+msgstr "Диаграммы PlantUML, отрисованные встроенным в этот плагин движком. Без доступа к сети."
 
 #: src/settings.ts:33
 #. {name} is the name of a built-in PlantUML theme, for example "Cyborg". Theme names are not translated.
 msgid "PlantUML theme: {name}"
-msgstr ""
+msgstr "Тема PlantUML: {name}"
 
 #: src/settings.ts:45
 #. Name of a diagram style. "PlantUML" is not translated.
 msgid "PlantUML standard (light colours, default)"
-msgstr ""
+msgstr "PlantUML стандартный (светлые цвета, по умолчанию)"
 
 #: src/settings.ts:47
 #. Name of a diagram style. "Joplin" is not translated.
 msgid "Joplin light (light colours)"
-msgstr ""
+msgstr "Joplin светлый (светлые цвета)"
 
 #: src/settings.ts:49
 #: src/settings.ts:61
 msgid "Custom (preamble below)"
-msgstr ""
+msgstr "Свой (преамбула ниже)"
 
 #: src/settings.ts:57
 #. Name of a diagram style. "PlantUML" is not translated.
 msgid "PlantUML dark (dark colours, default)"
-msgstr ""
+msgstr "PlantUML тёмный (тёмные цвета, по умолчанию)"
 
 #: src/settings.ts:59
 #. Name of a diagram style. "PlantUML" is not translated.
 msgid "PlantUML standard (light colours)"
-msgstr ""
+msgstr "PlantUML стандартный (светлые цвета)"
 
 #: src/settings.ts:81
 msgid "Auto (follow Joplin's theme)"
-msgstr ""
+msgstr "Авто (как тема Joplin)"
 
 #: src/settings.ts:87
 msgid "Diagram theme"
-msgstr ""
+msgstr "Тема диаграмм"
 
 #: src/settings.ts:88
 msgid "Auto chooses the light or dark style from the background of the note viewer."
-msgstr ""
+msgstr "В режиме «Авто» светлый или тёмный стиль выбирается по фону просмотра заметки."
 
 #: src/settings.ts:97
 msgid "Style for the light theme"
-msgstr ""
+msgstr "Стиль для светлой темы"
 
 #: src/settings.ts:98
 msgid "Used on a light note viewer. Dark colours on a light page are hard to read."
-msgstr ""
+msgstr "Используется, когда просмотр заметки светлый. Тёмные цвета плохо читаются на светлой странице."
 
 #: src/settings.ts:83
 #. A value of the setting "Diagram theme".
 msgctxt "Diagram theme"
 msgid "Light"
-msgstr ""
+msgstr "Светлая"
 
 #: src/settings.ts:85
 #. A value of the setting "Diagram theme".
 msgctxt "Diagram theme"
 msgid "Dark"
-msgstr ""
+msgstr "Тёмная"

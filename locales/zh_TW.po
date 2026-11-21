@@ -10,86 +10,86 @@ msgstr ""
 
 #: src/contentScript/controller.ts:138
 msgid "The diagram is too large."
-msgstr ""
+msgstr "圖表太大。"
 
 #: src/contentScript/controller.ts:140
 msgid "The source has {count} character. The limit is {limit}."
 msgid_plural "The source has {count} characters. The limit is {limit}."
-msgstr[0] ""
+msgstr[0] "原始碼有 {count} 個字元。上限為 {limit} 個字元。"
 
 #: src/contentScript/controller.ts:198
 msgid "Rendering…"
-msgstr ""
+msgstr "正在繪製…"
 
 #: src/contentScript/controller.ts:198
 msgid "Loading the PlantUML engine…"
-msgstr ""
+msgstr "正在載入 PlantUML 引擎…"
 
 #: src/contentScript/controller.ts:295
 msgid "Could not load the PlantUML engine."
-msgstr ""
+msgstr "無法載入 PlantUML 引擎。"
 
 #: src/contentScript/controller.ts:296
 msgid "See the developer tools console for details."
-msgstr ""
+msgstr "詳細資訊請查看開發者工具的主控台。"
 
 #: src/contentScript/controller.ts:315
 #: src/contentScript/controller.ts:330
 msgid "PlantUML error"
-msgstr ""
+msgstr "PlantUML 錯誤"
 
 #: src/contentScript/controller.ts:322
 msgid "Rendering timed out."
-msgstr ""
+msgstr "繪製逾時。"
 
 #: src/contentScript/controller.ts:323
 msgid "Rendering took longer than {ms} ms."
-msgstr ""
+msgstr "繪製時間超過了 {ms} 毫秒。"
 
 #: src/contentScript/controller.ts:328
 msgid "The PlantUML engine crashed."
-msgstr ""
+msgstr "PlantUML 引擎當機了。"
 
 #: src/contentScript/controller.ts:343
 msgid "Only the first diagram in this block is shown."
-msgstr ""
+msgstr "只顯示此區塊中的第一個圖表。"
 
 #: src/contentScript/controller.ts:429
 #. {line} is a line number in the diagram source, {message} is the error message of PlantUML (in English).
 msgid "Line {line}: {message}"
-msgstr ""
+msgstr "第 {line} 行：{message}"
 
 #: src/settings.ts:107
 msgid "Style for the dark theme"
-msgstr ""
+msgstr "深色主題使用的樣式"
 
 #: src/settings.ts:108
 msgid "Used on a dark note viewer. Light colours on a dark page are hard to read."
-msgstr ""
+msgstr "用於深色的筆記檢視器。在深色頁面上使用淺色配色會不易閱讀。"
 
 #: src/settings.ts:115
 msgid "Transparent diagram background"
-msgstr ""
+msgstr "圖表背景透明"
 
 #: src/settings.ts:122
 msgid "Match the font size of the note"
-msgstr ""
+msgstr "圖表字型大小與筆記一致"
 
 #: src/settings.ts:123
 msgid "Uses the font size of the note text as the base font size of diagrams."
-msgstr ""
+msgstr "使用筆記內文的字型大小作為圖表的基本字型大小。"
 
 #: src/settings.ts:133
 msgid "Minimum font size when scaled down (px)"
-msgstr ""
+msgstr "縮小顯示時的最小字型大小（px）"
 
 #: src/settings.ts:134
 msgid "Wide diagrams are not scaled down below this font size; they scroll sideways instead. 0: no limit."
-msgstr ""
+msgstr "較寬的圖表不會縮小到小於此字型大小，而是改為水平捲動。0：不限制。"
 
 #: src/settings.ts:142
 msgid "Custom preamble for the light theme"
-msgstr ""
+msgstr "淺色主題的自訂前置程式碼"
 
 #: src/settings.ts:144
 #. "@startuml" and "\n" are written as they are. "\n" is a backslash followed by the letter n.
@@ -97,10 +97,12 @@ msgid ""
 "Used when the light style is \"Custom\". PlantUML lines added after @startuml. Write \\n"
 " between lines."
 msgstr ""
+"當淺色主題的樣式為「自訂（使用下方的前置程式碼）」時使用。加在 @startuml 之後的 PlantUML 程式碼行。各行之間寫 \\n"
+"。"
 
 #: src/settings.ts:152
 msgid "Custom preamble for the dark theme"
-msgstr ""
+msgstr "深色主題的自訂前置程式碼"
 
 #: src/settings.ts:154
 #. "@startuml" and "\n" are written as they are. "\n" is a backslash followed by the letter n.
@@ -108,98 +110,100 @@ msgid ""
 "Used when the dark style is \"Custom\". PlantUML lines added after @startuml. Write \\n"
 " between lines."
 msgstr ""
+"當深色主題的樣式為「自訂（使用下方的前置程式碼）」時使用。加在 @startuml 之後的 PlantUML 程式碼行。各行之間寫 \\n"
+"。"
 
 #: src/settings.ts:162
 msgid "Diagram font"
-msgstr ""
+msgstr "圖表字型"
 
 #: src/settings.ts:163
 msgid "Font name for diagrams. Empty: the default font."
-msgstr ""
+msgstr "圖表使用的字型名稱。留空則使用預設字型。"
 
 #: src/settings.ts:171
 msgid "Other language names"
-msgstr ""
+msgstr "其他語言名稱"
 
 #: src/settings.ts:173
 #. "plantuml" and "puml" are language names of code blocks and are not translated.
 msgid "Code block languages that are also drawn as PlantUML, separated by commas. \"plantuml\" and \"puml\" always work."
-msgstr ""
+msgstr "同樣以 PlantUML 繪製的程式碼區塊語言名稱，以逗號分隔。\"plantuml\" 與 \"puml\" 一律有效。"
 
 #: src/settings.ts:184
 msgid "Time limit per diagram (ms)"
-msgstr ""
+msgstr "每個圖表的繪製時間上限（ms）"
 
 #: src/settings.ts:195
 msgid "Maximum source length (characters)"
-msgstr ""
+msgstr "原始碼的最大長度（字元）"
 
 #: src/settings.ts:206
 msgid "Number of diagrams kept in the cache"
-msgstr ""
+msgstr "快取中保留的圖表數量"
 
 #: src/settings.ts:219
 msgid "PlantUML diagrams, rendered by the engine bundled in this plugin. No network access."
-msgstr ""
+msgstr "使用本外掛程式內建的引擎繪製 PlantUML 圖表。不進行任何網路存取。"
 
 #: src/settings.ts:33
 #. {name} is the name of a built-in PlantUML theme, for example "Cyborg". Theme names are not translated.
 msgid "PlantUML theme: {name}"
-msgstr ""
+msgstr "PlantUML 主題：{name}"
 
 #: src/settings.ts:45
 #. Name of a diagram style. "PlantUML" is not translated.
 msgid "PlantUML standard (light colours, default)"
-msgstr ""
+msgstr "PlantUML 標準（淺色配色，預設）"
 
 #: src/settings.ts:47
 #. Name of a diagram style. "Joplin" is not translated.
 msgid "Joplin light (light colours)"
-msgstr ""
+msgstr "Joplin 淺色（淺色配色）"
 
 #: src/settings.ts:49
 #: src/settings.ts:61
 msgid "Custom (preamble below)"
-msgstr ""
+msgstr "自訂（使用下方的前置程式碼）"
 
 #: src/settings.ts:57
 #. Name of a diagram style. "PlantUML" is not translated.
 msgid "PlantUML dark (dark colours, default)"
-msgstr ""
+msgstr "PlantUML 深色（深色配色，預設）"
 
 #: src/settings.ts:59
 #. Name of a diagram style. "PlantUML" is not translated.
 msgid "PlantUML standard (light colours)"
-msgstr ""
+msgstr "PlantUML 標準（淺色配色）"
 
 #: src/settings.ts:81
 msgid "Auto (follow Joplin's theme)"
-msgstr ""
+msgstr "自動（跟隨 Joplin 的主題）"
 
 #: src/settings.ts:87
 msgid "Diagram theme"
-msgstr ""
+msgstr "圖表主題"
 
 #: src/settings.ts:88
 msgid "Auto chooses the light or dark style from the background of the note viewer."
-msgstr ""
+msgstr "自動模式會依據筆記檢視器的背景選擇淺色或深色樣式。"
 
 #: src/settings.ts:97
 msgid "Style for the light theme"
-msgstr ""
+msgstr "淺色主題使用的樣式"
 
 #: src/settings.ts:98
 msgid "Used on a light note viewer. Dark colours on a light page are hard to read."
-msgstr ""
+msgstr "用於淺色的筆記檢視器。在淺色頁面上使用深色配色會不易閱讀。"
 
 #: src/settings.ts:83
 #. A value of the setting "Diagram theme".
 msgctxt "Diagram theme"
 msgid "Light"
-msgstr ""
+msgstr "淺色"
 
 #: src/settings.ts:85
 #. A value of the setting "Diagram theme".
 msgctxt "Diagram theme"
 msgid "Dark"
-msgstr ""
+msgstr "深色"
