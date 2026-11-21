@@ -23,7 +23,8 @@
 2. `npm audit` を実行し、配布物に含まれる依存パッケージに脆弱性がないことを確かめる。
 3. `CHANGELOG.md` の `[Unreleased]` を `[X.Y.Z] - YYYY-MM-DD` に変える。利用者に影響する変更（設定、図の見た目、対応する図）を必ず書く。
 4. 版数を上げる（設計書 21.2節）。`package.json` と `src/manifest.json` の `version` を同じ値にする。
-5. エンジンを更新した場合は、見た目のスナップショットの差分を確かめ、ライセンスが変わっていないことを確かめる（`vendor/plantuml/SOURCE.md`、`THIRD_PARTY_NOTICES.md`）。
+5. エンジンを更新した場合は、見た目のスナップショットの差分を確かめ、ライセンスが変わっていないことを確かめる（`vendor/plantuml/SOURCE.md`）。
+6. エンジンや DOMPurify を更新した場合は、`npm run notices` で `THIRD_PARTY_NOTICES.md` を作り直す。`npm run licenses:check`（`npm test` から自動で実行される）は、作り直し忘れと、許可していないライセンスの依存パッケージを検出する。
 
 ## 2. 確認
 

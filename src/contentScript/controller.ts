@@ -8,6 +8,8 @@ import { RenderEngine, RenderResult } from './engine';
 import { PreparedSource, prepareSource, splitLines, toUserLine } from './preamble';
 import { PresetConfig, ViewerConfig } from './viewerConfig';
 import { Translator } from '../i18n/gettext';
+import { buildToolbar, DiagramActions, TOOLBAR_CLASS } from './toolbar';
+import { tokenizeLines } from '../shared/tokenizer';
 import { parseInfo } from '../shared/fence';
 
 export const BLOCK_SELECTOR = '.joplin-plantuml';
@@ -29,6 +31,10 @@ interface Job {
 	key: string;
 	prepared: PreparedSource;
 	engineDark: boolean;
+	/** The diagram uses dark colours (design 8.5). */
+	diagramDark: boolean;
+	/** The note viewer has a dark background (design 8.2). */
+	pageDark: boolean;
 }
 
 export interface ControllerDeps {
@@ -44,6 +50,8 @@ export interface ControllerDeps {
 	setTimer?: (fn: () => void, ms: number) => unknown;
 	clearTimer?: (handle: unknown) => void;
 	logError?: (...args: unknown[]) => void;
+	/** Toolbar actions (design 11). Without them there is no toolbar. */
+	actions?: DiagramActions;
 }
 
 /**
@@ -191,7 +199,7 @@ export class ViewerController {
 			settingsVersion: config.settingsVersion,
 			engineVersion: this.deps.engine.version,
 		});
-		return { el, index, source, key, prepared, engineDark: preset.engineDark };
+		return { el, index, source, key, prepared, engineDark: preset.engineDark, diagramDark, pageDark: dark };
 	}
 
 	private statusText(): string {
@@ -216,6 +224,7 @@ export class ViewerController {
 			status.className = 'joplin-plantuml-status';
 			out.replaceChildren(status);
 		}
+		this.removeToolbar(el);
 		status.textContent = text;
 		out.setAttribute('aria-busy', 'true');
 	}
@@ -226,10 +235,20 @@ export class ViewerController {
 	}
 
 	/** Shows the previous diagram at the same position, dimmed (design 7.3). */
+	private removeToolbar(el: HTMLElement): void {
+		el.querySelectorAll(`:scope > .${TOOLBAR_CLASS}`).forEach((bar) => bar.remove());
+		const out = el.querySelector(OUTPUT_SELECTOR);
+		if (out) {
+			out.removeAttribute('role');
+			out.removeAttribute('aria-label');
+		}
+	}
+
 	private showPrevious(job: Job): boolean {
 		const prev = this.previousFor(job);
 		if (!prev) return false;
 		const out = this.output(job.el);
+		this.removeToolbar(job.el);
 		out.replaceChildren(this.staleNode(prev.svg));
 		this.fit(out);
 		out.setAttribute('aria-busy', 'true');
@@ -335,9 +354,16 @@ export class ViewerController {
 		const out = this.output(job.el);
 		out.removeAttribute('aria-busy');
 		out.setAttribute(STATE_ATTR, view.kind === 'svg' ? 'done' : 'error');
+		this.removeToolbar(job.el);
 		if (view.kind === 'svg') {
 			out.innerHTML = view.svg;
+			// The diagram as a whole, for screen readers. Links inside stay reachable.
+			out.setAttribute('role', 'figure');
+			out.setAttribute('aria-label', this.t._('PlantUML diagram'));
 			this.fit(out);
+			if (this.config.showToolbar && this.deps.actions) {
+				job.el.appendChild(buildToolbar(this.deps.doc, this.t, { svg: view.svg, source: job.source, dark: job.diagramDark, index: job.index + 1 }, this.deps.actions));
+			}
 			this.lastGood.set(job.index, { source: job.source, svg: view.svg });
 			if (countDiagrams(job.source) > 1) {
 				out.appendChild(this.note(this.t._('Only the first diagram in this block is shown.')));
@@ -416,7 +442,7 @@ export class ViewerController {
 	private errorBox(job: Job, view: Extract<DiagramView, { kind: 'error' }>): HTMLElement {
 		const doc = this.deps.doc;
 		const box = doc.createElement('div');
-		box.className = 'joplin-plantuml-error';
+		box.className = job.pageDark ? 'joplin-plantuml-error joplin-plantuml-on-dark' : 'joplin-plantuml-error';
 		box.setAttribute('role', 'alert');
 		const title = doc.createElement('div');
 		title.className = 'joplin-plantuml-error-title';
@@ -430,14 +456,27 @@ export class ViewerController {
 			box.appendChild(message);
 		}
 		if (view.line !== null) {
-			const text = splitLines(job.source)[view.line - 1];
+			const lines = splitLines(job.source);
+			const text = lines[view.line - 1];
 			if (text !== undefined) {
 				const pre = doc.createElement('pre');
 				pre.className = 'joplin-plantuml-error-excerpt';
 				const num = doc.createElement('span');
 				num.className = 'joplin-plantuml-error-line';
 				num.textContent = String(view.line);
-				pre.append(num, doc.createTextNode(text));
+				pre.appendChild(num);
+				// Coloured like the editor (design 7.4): the lines above are read for multi-line comments.
+				const tokens = tokenizeLines(lines.slice(0, view.line))[view.line - 1] || [];
+				let at = 0;
+				for (const tok of tokens) {
+					if (tok.from > at) pre.appendChild(doc.createTextNode(text.slice(at, tok.from)));
+					const span = doc.createElement('span');
+					span.className = `joplin-plantuml-tok-${tok.kind}`;
+					span.textContent = text.slice(tok.from, tok.to);
+					pre.appendChild(span);
+					at = tok.to;
+				}
+				if (at < text.length) pre.appendChild(doc.createTextNode(text.slice(at)));
 				box.appendChild(pre);
 			}
 		}

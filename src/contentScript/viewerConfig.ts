@@ -25,6 +25,8 @@ export interface ViewerConfig {
 	matchNoteFontSize: boolean;
 	/** Smallest font size when a diagram is scaled down. 0: no limit (design 8.7 (2)). */
 	minFontSizePx: number;
+	/** Show the diagram toolbar (design 11). */
+	showToolbar: boolean;
 	renderTimeoutMs: number;
 	maxSourceLength: number;
 	cacheSize: number;
@@ -49,6 +51,7 @@ export const DEFAULT_VIEWER_CONFIG: ViewerConfig = {
 	fontFamily: '',
 	matchNoteFontSize: true,
 	minFontSizePx: 11,
+	showToolbar: true,
 	renderTimeoutMs: 10000,
 	maxSourceLength: 100000,
 	cacheSize: 100,
@@ -100,6 +103,7 @@ export function normalizeConfig(raw: unknown): ViewerConfig {
 		fontFamily: typeof r.fontFamily === 'string' ? r.fontFamily : d.fontFamily,
 		matchNoteFontSize: typeof r.matchNoteFontSize === 'boolean' ? r.matchNoteFontSize : d.matchNoteFontSize,
 		minFontSizePx: intIn(r.minFontSizePx, 0, 100, d.minFontSizePx),
+		showToolbar: typeof r.showToolbar === 'boolean' ? r.showToolbar : d.showToolbar,
 		renderTimeoutMs: intIn(r.renderTimeoutMs, 1000, 600000, d.renderTimeoutMs),
 		maxSourceLength: intIn(r.maxSourceLength, 1000, 10000000, d.maxSourceLength),
 		cacheSize: intIn(r.cacheSize, 1, 10000, d.cacheSize),

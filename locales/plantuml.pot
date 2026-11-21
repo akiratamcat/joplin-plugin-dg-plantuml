@@ -8,198 +8,275 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: src/contentScript/controller.ts:138
+#: src/actions.ts:129
+msgid "Saved: {path}"
+msgstr ""
+
+#: src/actions.ts:132
+msgid "Could not save: {error}"
+msgstr ""
+
+#: src/actions.ts:138
+msgid "This link cannot be opened: {href}"
+msgstr ""
+
+#: src/actions.ts:84
+msgid "Copied the SVG."
+msgstr ""
+
+#: src/actions.ts:84
+msgid "Copied the PlantUML source."
+msgstr ""
+
+#: src/actions.ts:87
+#: src/actions.ts:100
+msgid "Could not copy: {error}"
+msgstr ""
+
+#: src/actions.ts:97
+msgid "Copied the image (PNG)."
+msgstr ""
+
+#: src/contentScript/controller.ts:146
 msgid "The diagram is too large."
 msgstr ""
 
-#: src/contentScript/controller.ts:140
+#: src/contentScript/controller.ts:148
 msgid "The source has {count} character. The limit is {limit}."
 msgid_plural "The source has {count} characters. The limit is {limit}."
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/contentScript/controller.ts:198
+#: src/contentScript/controller.ts:206
 msgid "Rendering..."
 msgstr ""
 
-#: src/contentScript/controller.ts:198
+#: src/contentScript/controller.ts:206
 msgid "Loading the PlantUML engine..."
 msgstr ""
 
-#: src/contentScript/controller.ts:295
+#: src/contentScript/controller.ts:314
 msgid "Could not load the PlantUML engine."
 msgstr ""
 
-#: src/contentScript/controller.ts:296
+#: src/contentScript/controller.ts:315
 msgid "See the developer tools console for details."
 msgstr ""
 
-#: src/contentScript/controller.ts:315
-#: src/contentScript/controller.ts:330
+#: src/contentScript/controller.ts:334
+#: src/contentScript/controller.ts:349
 msgid "PlantUML error"
 msgstr ""
 
-#: src/contentScript/controller.ts:322
+#: src/contentScript/controller.ts:341
 msgid "Rendering timed out."
 msgstr ""
 
-#: src/contentScript/controller.ts:323
+#: src/contentScript/controller.ts:342
 msgid "Rendering took longer than {ms} ms."
 msgstr ""
 
-#: src/contentScript/controller.ts:328
+#: src/contentScript/controller.ts:347
 msgid "The PlantUML engine crashed."
 msgstr ""
 
-#: src/contentScript/controller.ts:343
+#: src/contentScript/controller.ts:362
+msgid "PlantUML diagram"
+msgstr ""
+
+#: src/contentScript/controller.ts:369
 msgid "Only the first diagram in this block is shown."
 msgstr ""
 
-#: src/contentScript/controller.ts:429
+#: src/contentScript/controller.ts:455
 #. {line} is a line number in the diagram source, {message} is the error message of PlantUML (in English).
 msgid "Line {line}: {message}"
 msgstr ""
 
-#: src/settings.ts:107
+#: src/contentScript/toolbar.ts:50
+msgid "Diagram tools"
+msgstr ""
+
+#: src/contentScript/toolbar.ts:52
+msgid "Copy SVG"
+msgstr ""
+
+#: src/contentScript/toolbar.ts:53
+msgid "Copy PNG"
+msgstr ""
+
+#: src/contentScript/toolbar.ts:54
+msgid "Save SVG"
+msgstr ""
+
+#: src/contentScript/toolbar.ts:55
+msgid "Save PNG"
+msgstr ""
+
+#: src/contentScript/toolbar.ts:56
+msgid "Copy PlantUML source"
+msgstr ""
+
+#: src/index.ts:61
+msgid "Choose a folder to save the diagram in"
+msgstr ""
+
+#: src/settings.ts:100
+msgid "Used on a light note viewer. Dark colours on a light page are hard to read."
+msgstr ""
+
+#: src/settings.ts:109
 msgid "Style for the dark theme"
 msgstr ""
 
-#: src/settings.ts:108
+#: src/settings.ts:110
 msgid "Used on a dark note viewer. Light colours on a dark page are hard to read."
 msgstr ""
 
-#: src/settings.ts:115
+#: src/settings.ts:117
 msgid "Transparent diagram background"
 msgstr ""
 
-#: src/settings.ts:122
+#: src/settings.ts:124
+msgid "Show the diagram toolbar"
+msgstr ""
+
+#: src/settings.ts:125
+msgid "Buttons to copy or save a diagram, shown when the mouse is over it or after a tap on it."
+msgstr ""
+
+#: src/settings.ts:132
 msgid "Match the font size of the note"
 msgstr ""
 
-#: src/settings.ts:123
+#: src/settings.ts:133
 msgid "Uses the font size of the note text as the base font size of diagrams."
 msgstr ""
 
-#: src/settings.ts:133
+#: src/settings.ts:143
 msgid "Minimum font size when scaled down (px)"
 msgstr ""
 
-#: src/settings.ts:134
+#: src/settings.ts:144
 msgid "Wide diagrams are not scaled down below this font size; they scroll sideways instead. 0: no limit."
 msgstr ""
 
-#: src/settings.ts:142
+#: src/settings.ts:151
+msgid "Highlight PlantUML in the Markdown editor"
+msgstr ""
+
+#: src/settings.ts:152
+msgid "Colours the PlantUML code in the Markdown editor. A change applies when the note is opened again."
+msgstr ""
+
+#: src/settings.ts:160
 msgid "Custom preamble for the light theme"
 msgstr ""
 
-#: src/settings.ts:144
+#: src/settings.ts:162
 #. "@startuml" and "\n" are written as they are. "\n" is a backslash followed by the letter n.
 msgid ""
 "Used when the light style is \"Custom\". PlantUML lines added after @startuml. Write \\n"
 " between lines."
 msgstr ""
 
-#: src/settings.ts:152
+#: src/settings.ts:170
 msgid "Custom preamble for the dark theme"
 msgstr ""
 
-#: src/settings.ts:154
+#: src/settings.ts:172
 #. "@startuml" and "\n" are written as they are. "\n" is a backslash followed by the letter n.
 msgid ""
 "Used when the dark style is \"Custom\". PlantUML lines added after @startuml. Write \\n"
 " between lines."
 msgstr ""
 
-#: src/settings.ts:162
+#: src/settings.ts:180
 msgid "Font used in diagrams"
 msgstr ""
 
-#: src/settings.ts:163
+#: src/settings.ts:181
 msgid "Name of the font used in diagrams. Empty: the default font."
 msgstr ""
 
-#: src/settings.ts:171
+#: src/settings.ts:189
 msgid "Other language names"
 msgstr ""
 
-#: src/settings.ts:173
+#: src/settings.ts:191
 #. The info string is the text right after the opening fence of a code block, as in ```plantuml. "plantuml" and "puml" are language names and are not translated.
 msgid "Info strings (language names) of code fences that are drawn as PlantUML diagrams. Separate several language names with commas. \"plantuml\" and \"puml\" always work."
 msgstr ""
 
-#: src/settings.ts:184
+#: src/settings.ts:202
 msgid "Time limit per diagram (ms)"
 msgstr ""
 
-#: src/settings.ts:195
+#: src/settings.ts:213
 msgid "Maximum source length (characters)"
 msgstr ""
 
-#: src/settings.ts:206
+#: src/settings.ts:224
 msgid "Number of diagrams held in the cache"
 msgstr ""
 
-#: src/settings.ts:219
+#: src/settings.ts:237
 msgid "A plugin that renders PlantUML. The PlantUML rendering engine is built in, and the plugin makes no network connections to the outside."
 msgstr ""
 
-#: src/settings.ts:33
+#: src/settings.ts:35
 #. {name} is the name of a built-in PlantUML theme, for example "Cyborg". Theme names are not translated.
 msgid "PlantUML theme: {name}"
 msgstr ""
 
-#: src/settings.ts:45
+#: src/settings.ts:47
 #. Name of a diagram style. "PlantUML" is not translated.
 msgid "PlantUML standard (light colours, default)"
 msgstr ""
 
-#: src/settings.ts:47
+#: src/settings.ts:49
 #. Name of a diagram style. "Joplin" is not translated.
 msgid "Joplin light (light colours)"
 msgstr ""
 
-#: src/settings.ts:49
-#: src/settings.ts:61
+#: src/settings.ts:51
+#: src/settings.ts:63
 msgid "Custom (preamble below)"
-msgstr ""
-
-#: src/settings.ts:57
-#. Name of a diagram style. "PlantUML" is not translated.
-msgid "PlantUML dark (dark colours, default)"
 msgstr ""
 
 #: src/settings.ts:59
 #. Name of a diagram style. "PlantUML" is not translated.
+msgid "PlantUML dark (dark colours, default)"
+msgstr ""
+
+#: src/settings.ts:61
+#. Name of a diagram style. "PlantUML" is not translated.
 msgid "PlantUML standard (light colours)"
 msgstr ""
 
-#: src/settings.ts:81
+#: src/settings.ts:83
 msgid "Auto (follow Joplin's theme)"
 msgstr ""
 
-#: src/settings.ts:87
+#: src/settings.ts:89
 msgid "PlantUML diagram theme"
 msgstr ""
 
-#: src/settings.ts:88
+#: src/settings.ts:90
 msgid "When set to \"Auto\", the light or dark style is chosen automatically from the background of the note viewer."
 msgstr ""
 
-#: src/settings.ts:97
+#: src/settings.ts:99
 msgid "Style for the light theme"
 msgstr ""
 
-#: src/settings.ts:98
-msgid "Used on a light note viewer. Dark colours on a light page are hard to read."
-msgstr ""
-
-#: src/settings.ts:83
+#: src/settings.ts:85
 #. A value of the setting "Diagram theme".
 msgctxt "Diagram theme"
 msgid "Light"
 msgstr ""
 
-#: src/settings.ts:85
+#: src/settings.ts:87
 #. A value of the setting "Diagram theme".
 msgctxt "Diagram theme"
 msgid "Dark"

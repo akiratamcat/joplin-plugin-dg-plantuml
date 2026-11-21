@@ -70,6 +70,8 @@ export interface PageRun {
 	messages: unknown[];
 	/** Settings version the viewer uses at the end. */
 	settingsVersion: string | null;
+	/** URL of the page at the end (a followed link would change it). */
+	url: string;
 }
 
 const TYPES: Record<string, string> = { '.js': 'text/javascript', '.css': 'text/css' };
@@ -114,12 +116,14 @@ export interface RenderOptions {
 	bodyFontSize?: string;
 	/** After rendering, resize the window to this width and wait for the diagrams to refit. */
 	resizeTo?: number;
+	/** Interactions with the page after rendering (clicks...), before the results are collected. */
+	afterRender?: (page: Page) => Promise<void>;
 }
 
 /** Renders a note in a page. */
 export async function renderNote(browser: Browser, markdown: string, options: RenderOptions = {}): Promise<PageRun> {
 	const colors = options.colors || { bg: '#ffffff', fg: '#222222' };
-	const run: PageRun = { blocks: [], blocked: [], served: [], cspViolations: [], pageErrors: [], console: [], messages: [], settingsVersion: null };
+	const run: PageRun = { blocks: [], blocked: [], served: [], cspViolations: [], pageErrors: [], console: [], messages: [], settingsVersion: null, url: '' };
 	const html = `<!doctype html><html><head><meta charset="utf-8">
 <meta http-equiv="Content-Security-Policy" content="${CSP}">
 <link rel="icon" href="data:,">
@@ -161,6 +165,8 @@ export async function renderNote(browser: Browser, markdown: string, options: Re
 			await page.setViewportSize({ width: options.resizeTo, height: 800 });
 			await page.waitForFunction((b) => Array.from(document.querySelectorAll('.joplin-plantuml-output > svg')).map((s) => (s as SVGElement).style.width).join() !== b, before, { timeout: 5000, polling: 50 }).catch(() => undefined);
 		}
+		if (options.afterRender) await options.afterRender(page);
+		run.url = page.url();
 		run.cspViolations = await page.evaluate(() => (window as unknown as { __csp?: string[] }).__csp || []);
 		run.messages = await page.evaluate(() => (window as unknown as { __messages?: unknown[] }).__messages || []);
 		run.settingsVersion = await page.evaluate(() => {
