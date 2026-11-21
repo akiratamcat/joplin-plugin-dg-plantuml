@@ -32,7 +32,8 @@ const SECRET_PATTERNS = [
 	['Slack token', /\bxox[abpr]-[A-Za-z0-9-]{10,}/],
 	['private key', /-----BEGIN [A-Z ]*PRIVATE KEY-----/],
 	['password or secret', /\b(password|passwd|secret|api[_-]?key|token)\s*[:=]\s*["'][^"'\s]{8,}["']/i],
-	['local path', /[A-Za-z]:\\Users\\|[A-Za-z]:\/Users\/|\/home\/[a-z]|\/Users\/[A-Za-z][^/\s]*\/(Desktop|Documents|Library)/],
+	// A real path has a user name after "Users"; examples such as C:\Users\… in the docs do not match.
+	['local path', /[A-Za-z]:[\\/]Users[\\/][^\\/\s….'"`<>*]+[\\/]|\/home\/[a-z][^/\s]*\/|\/Users\/[A-Za-z][^/\s]*\/(Desktop|Documents|Library)/],
 ];
 /** Files whose content is not scanned (bundled third-party code, lock files, saved engine output). */
 const SKIP_CONTENT = [/^vendor\//, /package-lock\.json$/, /^tests\/fixtures\//];
