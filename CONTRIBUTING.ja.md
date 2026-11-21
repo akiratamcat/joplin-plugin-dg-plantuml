@@ -55,6 +55,8 @@ npm run dist        # publish/io.github.akiratamcat.dg-plantuml.jpl を作る
 | `npm run i18n:check` | PO ファイルを検査する（プレースホルダー、複数形、fuzzy） |
 | `npm run i18n:compile` | PO ファイルから `src/i18n/catalog/catalogs.json` を作る（`dist`、`test:unit`、`typecheck` から自動で実行される） |
 | `npm run notices` | `THIRD_PARTY_NOTICES.md` と `THIRD_PARTY_NOTICES.ja.md` を作り直す |
+| `npm run readme` | `README.ja.md` の内容を `README.md` の後半（日本語の部分）に写す |
+| `npm run readme:check` | `README.md` の後半が `README.ja.md` と一致するかを検査する（`test:unit` から自動で実行される） |
 | `npm run licenses:check` | 同梱するパッケージのライセンスと、ライセンス表示・版数の一覧が最新かを検査する |
 | `npm run check:publish` | GitHub に push する前に、ブランチの履歴を検査する（メールアドレス、公開してはいけないファイル、秘密の情報）。作者用。`docs/release.ja.md` を参照 |
 
@@ -79,7 +81,8 @@ GitHub Flow で運用します。
 - **PlantUML のエンジン**（`vendor/plantuml/`）は変更しません。更新はセキュリティの修正か、必要な不具合の修正のときだけです。更新の手順は `vendor/plantuml/SOURCE.md` にあります。
 - **依存パッケージ**は版数を固定します。プラグインに入るパッケージは、`scripts/check-licenses.mjs` の許可リストにあるライセンスでなければならず、`scripts/notices.mjs` と `src/thirdParty.ts` への追加も必要です。
 - **PlantUML 本体（Java 版）のコードを写さないでください。** 一部が GPL で、本プラグインは MIT です。
-- **文書**：リポジトリの直下の文書には、英語版と日本語版（`*.ja.md`）があります。両方を更新するか、翻訳が必要な方をプルリクエストに書いてください。
+- **文書**：リポジトリの直下の文書には、英語版と日本語版（`*.ja.md`）があります。両方を更新するか、翻訳が必要な方をプルリクエストに書いてください。GitHub は `README.md` だけを表示するので、`README.md` には英語の後に `README.ja.md` の写しを載せています。日本語は `README.ja.md` を編集して `npm run readme` を実行してください。`README.md` の後半を直接編集しないでください。
+- **変更履歴**：変更は `CHANGELOG.md` と `CHANGELOG.ja.md` の両方に書きます。GitHub のリリースノートは、この2つから作ります（英語の後に日本語）。
 
 ## 翻訳
 

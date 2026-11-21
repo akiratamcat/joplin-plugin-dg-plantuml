@@ -55,6 +55,8 @@ Install the `.jpl` with "Install from file" on Joplin's plugin screen (Tools →
 | `npm run i18n:check` | Checks the PO files (placeholders, plural forms, fuzzy entries) |
 | `npm run i18n:compile` | Builds `src/i18n/catalog/catalogs.json` from the PO files (run by `dist`, `test:unit` and `typecheck`) |
 | `npm run notices` | Rebuilds `THIRD_PARTY_NOTICES.md` and `THIRD_PARTY_NOTICES.ja.md` |
+| `npm run readme` | Copies `README.ja.md` into the Japanese half of `README.md` |
+| `npm run readme:check` | Checks that the Japanese half of `README.md` matches `README.ja.md` (run by `test:unit`) |
 | `npm run licenses:check` | Checks the licenses of the bundled packages and that the notices and version lists are up to date |
 | `npm run check:publish` | Checks the branch history before pushing to GitHub (emails, files that must not be published, secrets). Maintainer use; see `docs/release.ja.md` |
 
@@ -79,7 +81,8 @@ The project uses GitHub Flow.
 - **The PlantUML engine** in `vendor/plantuml/` is kept unchanged. It is updated only for security fixes or needed bug fixes. The update steps are in `vendor/plantuml/SOURCE.md`.
 - **Dependencies** are pinned to exact versions. A package that ends up in the plugin needs a license from the allowlist in `scripts/check-licenses.mjs`, and an entry in `scripts/notices.mjs` and `src/thirdParty.ts`.
 - **Do not copy code from PlantUML itself** (the Java project). Parts of it are GPL, and this plugin is MIT.
-- **Documents**: the files at the top of the repository have an English and a Japanese version (`*.ja.md`); please update both, or say in the pull request which one needs a translation.
+- **Documents**: the files at the top of the repository have an English and a Japanese version (`*.ja.md`); please update both, or say in the pull request which one needs a translation. GitHub shows only `README.md`, so it holds the English text and, after it, a copy of `README.ja.md`: edit `README.ja.md` and run `npm run readme`, never the Japanese half of `README.md` itself.
+- **Changelog**: write each change in both `CHANGELOG.md` and `CHANGELOG.ja.md`. The release notes on GitHub are made from both (English first, then Japanese).
 
 ## Translations
 
