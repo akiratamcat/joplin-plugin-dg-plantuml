@@ -28,7 +28,7 @@ export const KEYWORDS = new Set([
 	'file', 'card', 'storage', 'agent', 'stack', 'hexagon', 'person', 'label', 'object', 'map', 'json', 'state',
 	// structure
 	'note', 'end', 'as', 'of', 'on', 'over', 'left', 'right', 'top', 'bottom', 'up', 'down', 'link', 'across',
-	'together', 'is', 'extends', 'implements',
+	'together', 'extends', 'implements',
 	// sequence
 	'activate', 'deactivate', 'destroy', 'create', 'return', 'autonumber', 'autoactivate', 'newpage', 'box', 'ref',
 	'alt', 'else', 'opt', 'loop', 'par', 'par2', 'break', 'critical', 'group',
