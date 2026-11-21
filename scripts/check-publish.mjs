@@ -18,8 +18,10 @@ const ref = branch.startsWith('refs/') ? branch : `refs/heads/${branch}`;
 /** Emails that may appear as author or committer (the owner chose the gmail address, 2026-11-19). */
 const ALLOWED_EMAILS = ['akiratamcat@gmail.com', 'noreply@anthropic.com'];
 
+// The repository's own workspace file (folders: "." only) is published; other
+// workspace files may hold personal settings.
 const FORBIDDEN_FILES = [
-	/(^|\/)\.env(\.|$)/, /\.log$/, /\.tgz$/, /\.code-workspace$/, /(^|\/)\.vscode\//, /(^|\/)\.idea\//,
+	/(^|\/)\.env(\.|$)/, /\.log$/, /\.tgz$/, /^(?!__joplin-plugin-dg-plantuml__\.code-workspace$).*\.code-workspace$/, /(^|\/)\.vscode\//, /(^|\/)\.idea\//,
 	/(^|\/)\.claude\/settings\.local\.json$/, /(^|\/)\.DS_Store$/, /(^|\/)Thumbs\.db$/,
 	/^dist\//, /^publish\//, /(^|\/)node_modules\//, /^coverage\//, /^src\/i18n\/catalog\//, /^spike\//,
 	/\.(pem|key|p12|pfx)$/, /(^|\/)id_(rsa|ed25519)/,
