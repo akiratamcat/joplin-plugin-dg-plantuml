@@ -61,6 +61,18 @@ Install the `.jpl` with "Install from file" on Joplin's plugin screen (Tools →
 Please run `npm test`, `npm run typecheck` and `npm run lint` before you open a pull request.
 To use another Chromium build for the rendering tests, set `DG_CHROME_PATH` to its executable.
 
+## Branches and pull requests
+
+The project uses GitHub Flow.
+
+- `main` is the only long-lived branch and is always ready for a release. Releases are tags `vX.Y.Z` on `main`.
+- Create a branch from `main` with a prefix: `feature/…` (new or changed features), `fix/…` (bug fixes) or `docs/…` (documents only).
+- Open a pull request to `main`. It can be merged when the CI passes (lint, type check, and the tests on Windows, macOS and Linux). The maintainer's own changes go through pull requests too.
+- Pull requests are merged with a merge commit (no squash or rebase merge), so each piece of work stays visible in the history.
+- Merged branches are deleted (GitHub does it automatically). Their commits stay in `main`.
+- Fixes for a released version are made on a `fix/…` branch from `main` and released as a new PATCH version. Older versions get no fixes.
+- `spike/…` branches are throw-away experiments: they are not merged and not pushed.
+
 ## Rules
 
 - **No network access.** The plugin must not make network requests (see the README). Do not add code or dependencies that do. The static check (`tests/network.test.ts`) fails on new network code.
