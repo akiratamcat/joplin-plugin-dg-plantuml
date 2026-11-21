@@ -49,7 +49,7 @@ Update the engine only for security fixes or necessary bug fixes
    `src/presets/builtinThemes.ts` (`tests/presets.test.ts` shows the
    difference). For a new theme, check its readability in the theme gallery
    (`tests/render/themeGallery.probe.ts`), record it in
-   `tests/manual/theme-review.md`, and update `LIGHT_THEMES` / `DARK_THEMES`.
+   `tests/manual/theme-review.ja.md`, and update `LIGHT_THEMES` / `DARK_THEMES`.
 6. Run `npm test`. The saved engine output in `tests/fixtures/engine` (error
    and crash SVGs) may need to be saved again from the new engine if its
    error format changed. The rendering tests "the sequence diagram after

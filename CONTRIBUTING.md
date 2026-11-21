@@ -39,7 +39,7 @@ Install the `.jpl` with "Install from file" on Joplin's plugin screen (Tools →
 | `vendor/plantuml/` | The PlantUML engine, copied unchanged (see `SOURCE.md`) |
 | `locales/` | Translations (gettext PO files) |
 | `scripts/` | i18n, license and publish checks |
-| `tests/` | Unit tests; `tests/render/` rendering tests; `tests/manual/` manual test notes |
+| `tests/` | Unit tests; `tests/render/` rendering tests; `tests/manual/` manual test procedures and records (`*.ja.md`, in Japanese) and test notes to paste into Joplin (`*.md`, in English) |
 
 ## Commands
 

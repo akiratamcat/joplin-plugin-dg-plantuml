@@ -39,7 +39,7 @@ npm run dist        # publish/io.github.akiratamcat.dg-plantuml.jpl を作る
 | `vendor/plantuml/` | PlantUML のエンジン。変更せずにコピーしたもの（`SOURCE.md` を参照） |
 | `locales/` | 翻訳（gettext の PO ファイル） |
 | `scripts/` | 翻訳、ライセンス、公開前の確認のスクリプト |
-| `tests/` | 単体テスト。`tests/render/` は描画テスト、`tests/manual/` は手動テストの手順とノート |
+| `tests/` | 単体テスト。`tests/render/` は描画テスト。`tests/manual/` は手動テストの手順と記録（`*.ja.md`。日本語）と、Joplin に貼り付けるテスト用のノート（`*.md`。英語） |
 
 ## コマンド
 
