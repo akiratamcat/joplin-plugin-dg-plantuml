@@ -23,3 +23,6 @@ are always listed.
 - The base font size of diagrams follows the note text. Wide diagrams are scaled down to the pane, but not below the minimum font size (11 px by default); then they scroll sideways.
 - Theme, style and font settings also apply to mind maps, WBS, Gantt charts, JSON, YAML, EBNF and regex diagrams.
 - Translations: the settings screen and the messages in the note viewer follow Joplin's display language. Japanese, Chinese (Simplified and Traditional), Korean, German, French, Spanish, Portuguese (Brazil), Italian and Russian. The translations were made with generative AI (the Japanese one was checked by the maintainer); corrections are welcome. Error messages from the PlantUML engine itself stay in English.
+- Diagram toolbar: copy the diagram as SVG or PNG, save it as an SVG or PNG file in a folder you choose, or copy its PlantUML source. Shown on mouse-over, on keyboard focus or after a tap; it can be turned off.
+- Links in diagrams (`[[link]]`): links to Joplin notes open the note, web links open in the browser. Other kinds of links are not opened.
+- Syntax highlighting of PlantUML code blocks in the Markdown editor, with the colours of the editor's theme; it can be turned off. The line shown in an error box is coloured too.

@@ -12,7 +12,7 @@ This statement covers what the plugin itself does. Joplin's own features, such a
 
 [日本語の README](README.ja.md)
 
-> **Status: early development (0.1.x).** The plugin is not yet available in the Joplin plugin repository. The diagram toolbar and syntax highlighting in the Markdown editor are not implemented yet.
+> **Status: early development (0.1.x).** The plugin is not yet available in the Joplin plugin repository. All features planned for version 1.0 are implemented; the first release is being prepared.
 
 <!-- Screenshots (light and dark) will be added before the first release (docs/images/). -->
 
@@ -26,6 +26,9 @@ This statement covers what the plugin itself does. Joplin's own features, such a
 - Works with Japanese, Chinese and Korean text.
 - Settings for the diagram theme, styles (including built-in PlantUML themes), font size and more.
 - The settings screen and messages follow Joplin's display language (11 languages).
+- A toolbar on each diagram to copy it (SVG or PNG), save it as a file, or copy its source.
+- Links in diagrams open Joplin notes or web pages.
+- Syntax highlighting of PlantUML in the Markdown editor.
 
 ## Installation
 
