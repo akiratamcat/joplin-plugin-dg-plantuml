@@ -6,6 +6,7 @@ import contentScript from '../src/contentScript/markdownItPlugin';
 import MarkdownIt from 'markdown-it';
 import { countDiagrams, isSimilarSource, ViewerController } from '../src/contentScript/controller';
 import { RenderEngine, RenderOptions, RenderResult } from '../src/contentScript/engine';
+import { DiagramActions } from '../src/contentScript/toolbar';
 import { DEFAULT_VIEWER_CONFIG, ViewerConfig } from '../src/contentScript/viewerConfig';
 
 class FakeEngine implements RenderEngine {
@@ -348,6 +349,109 @@ describe('messages in the language of the config (design 10.4)', () => {
 		controller.setConfig({ ...DEFAULT_VIEWER_CONFIG, locale: 'ja', catalog, settingsVersion: 'ja' });
 		await flush();
 		expect(document.querySelector('.joplin-plantuml-error-title')?.textContent).toBe('PlantUML のエラー');
+	});
+});
+
+describe('toolbar and accessibility (design 11)', () => {
+	function setupWithActions(config: Partial<ViewerConfig> = {}, dark = false) {
+		const calls: unknown[][] = [];
+		const actions: DiagramActions = {
+			copyText: (...a) => { calls.push(['copyText', ...a]); },
+			copyImage: (...a) => { calls.push(['copyImage', ...a]); },
+			saveSvg: (...a) => { calls.push(['saveSvg', ...a]); },
+			savePng: (...a) => { calls.push(['savePng', ...a]); },
+			openLink: (...a) => { calls.push(['openLink', ...a]); },
+		};
+		const engine = new FakeEngine();
+		const timers: (() => void)[] = [];
+		const controller = new ViewerController({
+			doc: document,
+			engine,
+			config: { ...DEFAULT_VIEWER_CONFIG, ...config },
+			sanitize: (svg) => svg,
+			isDark: () => dark,
+			actions,
+			setTimer: (fn) => { timers.push(fn); return timers.length; },
+			clearTimer: () => { timers.length = 0; },
+		});
+		const flush = async () => {
+			while (timers.length) {
+				const fn = timers.shift();
+				if (fn) fn();
+				await new Promise((r) => setTimeout(r, 0));
+			}
+		};
+		return { engine, controller, flush, calls };
+	}
+	const toolbar = () => document.querySelector('.joplin-plantuml > .joplin-plantuml-toolbar');
+	const button = (name: string) => document.querySelector<HTMLButtonElement>(`.joplin-plantuml-tool-${name}`);
+
+	test('a rendered diagram gets a toolbar with labelled buttons and a figure role', async () => {
+		setNote('```plantuml\nA -> B\n```\n');
+		const { controller, flush } = setupWithActions();
+		controller.update();
+		await flush();
+		expect(toolbar()?.getAttribute('role')).toBe('toolbar');
+		const labels = Array.from(document.querySelectorAll('.joplin-plantuml-tool')).map((b) => b.getAttribute('aria-label'));
+		expect(labels).toEqual(['Copy SVG', 'Copy PNG', 'Save SVG', 'Save PNG', 'Copy PlantUML source']);
+		expect(Array.from(document.querySelectorAll('.joplin-plantuml-tool')).every((b) => (b as HTMLButtonElement).type === 'button')).toBe(true);
+		const out = outputs()[0];
+		expect(out.getAttribute('role')).toBe('figure');
+		expect(out.getAttribute('aria-label')).toBe('PlantUML diagram');
+	});
+
+	test('the buttons ask for the actions with the SVG, the source, the darkness and the position', async () => {
+		setNote('```plantuml\nX\n```\n\n```plantuml theme=dark\nA -> B\n```\n');
+		const { controller, flush, calls } = setupWithActions();
+		controller.update();
+		await flush();
+		const second = document.querySelectorAll('.joplin-plantuml')[1];
+		const svg = second.querySelector('.joplin-plantuml-output > svg')?.outerHTML || '';
+		for (const name of ['copy-svg', 'copy-png', 'save-svg', 'save-png', 'copy-source']) {
+			(second.querySelector(`.joplin-plantuml-tool-${name}`) as HTMLButtonElement).click();
+		}
+		expect(calls).toEqual([
+			['copyText', svg, 'svg'],
+			['copyImage', svg, true],
+			['saveSvg', svg, 2],
+			['savePng', svg, true, 2],
+			['copyText', 'A -> B', 'source'],
+		]);
+	});
+
+	test('no toolbar when the setting is off, on errors, or while a block renders again', async () => {
+		setNote('```plantuml\nA -> B\n```\n');
+		const off = setupWithActions({ showToolbar: false });
+		off.controller.update();
+		await off.flush();
+		expect(toolbar()).toBeNull();
+
+		setNote('```plantuml\nAlice -> Bob : hello\n```\n');
+		const { engine, controller, flush } = setupWithActions();
+		controller.update();
+		await flush();
+		expect(button('copy-svg')).not.toBeNull();
+		// Editing: the previous diagram is shown dimmed, without the toolbar.
+		setNote('```plantuml\nAlice -> Bob : hello!\n```\n');
+		controller.update();
+		expect(toolbar()).toBeNull();
+		engine.result = () => ({ ok: false, reason: 'syntax', message: 'x', line: 3 });
+		await flush();
+		expect(toolbar()).toBeNull();
+		expect(outputs()[0].hasAttribute('role')).toBe(false);
+	});
+
+	test('Rich Text editor: replacing the inner HTML gives exactly one new toolbar', async () => {
+		setNote('```plantuml\nA -> B\n```\n');
+		const { controller, flush } = setupWithActions();
+		controller.update();
+		await flush();
+		const block = document.querySelector('.joplin-plantuml') as HTMLElement;
+		const pre = block.querySelector('pre')?.outerHTML || '';
+		block.innerHTML = `${pre}<div class="joplin-plantuml-output" aria-busy="true"><span class="joplin-plantuml-status"></span></div>`;
+		controller.update();
+		await flush();
+		expect(block.querySelectorAll(':scope > .joplin-plantuml-toolbar')).toHaveLength(1);
 	});
 });
 

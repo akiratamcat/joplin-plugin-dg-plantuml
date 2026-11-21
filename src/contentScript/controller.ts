@@ -8,6 +8,7 @@ import { RenderEngine, RenderResult } from './engine';
 import { PreparedSource, prepareSource, splitLines, toUserLine } from './preamble';
 import { PresetConfig, ViewerConfig } from './viewerConfig';
 import { Translator } from '../i18n/gettext';
+import { buildToolbar, DiagramActions, TOOLBAR_CLASS } from './toolbar';
 import { parseInfo } from '../shared/fence';
 
 export const BLOCK_SELECTOR = '.joplin-plantuml';
@@ -29,6 +30,8 @@ interface Job {
 	key: string;
 	prepared: PreparedSource;
 	engineDark: boolean;
+	/** The diagram uses dark colours (design 8.5). */
+	diagramDark: boolean;
 }
 
 export interface ControllerDeps {
@@ -44,6 +47,8 @@ export interface ControllerDeps {
 	setTimer?: (fn: () => void, ms: number) => unknown;
 	clearTimer?: (handle: unknown) => void;
 	logError?: (...args: unknown[]) => void;
+	/** Toolbar actions (design 11). Without them there is no toolbar. */
+	actions?: DiagramActions;
 }
 
 /**
@@ -191,7 +196,7 @@ export class ViewerController {
 			settingsVersion: config.settingsVersion,
 			engineVersion: this.deps.engine.version,
 		});
-		return { el, index, source, key, prepared, engineDark: preset.engineDark };
+		return { el, index, source, key, prepared, engineDark: preset.engineDark, diagramDark };
 	}
 
 	private statusText(): string {
@@ -216,6 +221,7 @@ export class ViewerController {
 			status.className = 'joplin-plantuml-status';
 			out.replaceChildren(status);
 		}
+		this.removeToolbar(el);
 		status.textContent = text;
 		out.setAttribute('aria-busy', 'true');
 	}
@@ -226,10 +232,20 @@ export class ViewerController {
 	}
 
 	/** Shows the previous diagram at the same position, dimmed (design 7.3). */
+	private removeToolbar(el: HTMLElement): void {
+		el.querySelectorAll(`:scope > .${TOOLBAR_CLASS}`).forEach((bar) => bar.remove());
+		const out = el.querySelector(OUTPUT_SELECTOR);
+		if (out) {
+			out.removeAttribute('role');
+			out.removeAttribute('aria-label');
+		}
+	}
+
 	private showPrevious(job: Job): boolean {
 		const prev = this.previousFor(job);
 		if (!prev) return false;
 		const out = this.output(job.el);
+		this.removeToolbar(job.el);
 		out.replaceChildren(this.staleNode(prev.svg));
 		this.fit(out);
 		out.setAttribute('aria-busy', 'true');
@@ -335,9 +351,16 @@ export class ViewerController {
 		const out = this.output(job.el);
 		out.removeAttribute('aria-busy');
 		out.setAttribute(STATE_ATTR, view.kind === 'svg' ? 'done' : 'error');
+		this.removeToolbar(job.el);
 		if (view.kind === 'svg') {
 			out.innerHTML = view.svg;
+			// The diagram as a whole, for screen readers. Links inside stay reachable.
+			out.setAttribute('role', 'figure');
+			out.setAttribute('aria-label', this.t._('PlantUML diagram'));
 			this.fit(out);
+			if (this.config.showToolbar && this.deps.actions) {
+				job.el.appendChild(buildToolbar(this.deps.doc, this.t, { svg: view.svg, source: job.source, dark: job.diagramDark, index: job.index + 1 }, this.deps.actions));
+			}
 			this.lastGood.set(job.index, { source: job.source, svg: view.svg });
 			if (countDiagrams(job.source) > 1) {
 				out.appendChild(this.note(this.t._('Only the first diagram in this block is shown.')));

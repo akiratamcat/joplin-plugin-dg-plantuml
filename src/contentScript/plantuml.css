@@ -117,3 +117,74 @@
 	text-align: right;
 	user-select: none;
 }
+
+/*
+ * Diagram toolbar (design 11). Shown when the mouse is over the diagram, when
+ * a button has the keyboard focus, or after a tap on the diagram. The buttons
+ * stay in the tab order while hidden, so keyboard users can reach them.
+ */
+.joplin-plantuml {
+	position: relative;
+}
+
+.joplin-plantuml-toolbar {
+	position: absolute;
+	top: 4px;
+	right: 4px;
+	display: flex;
+	gap: 2px;
+	padding: 2px;
+	border-radius: 4px;
+	background: rgba(128, 128, 128, 0.18);
+	opacity: 0;
+	transition: opacity 0.15s;
+	z-index: 1;
+}
+
+.joplin-plantuml:hover > .joplin-plantuml-toolbar,
+.joplin-plantuml-toolbar:focus-within,
+.joplin-plantuml-tools-open > .joplin-plantuml-toolbar {
+	opacity: 1;
+}
+
+.joplin-plantuml-tool {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 28px;
+	height: 28px;
+	padding: 0;
+	border: 1px solid transparent;
+	border-radius: 3px;
+	background: transparent;
+	color: inherit;
+	cursor: pointer;
+}
+
+.joplin-plantuml-tool:hover {
+	background: rgba(128, 128, 128, 0.25);
+}
+
+.joplin-plantuml-tool:focus-visible {
+	outline: 2px solid currentColor;
+	outline-offset: 1px;
+}
+
+/* The text of a button is for screen readers only (aria-label also holds it). */
+.joplin-plantuml-tool-label {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+	clip: rect(0 0 0 0);
+	white-space: nowrap;
+}
+
+/* Links in diagrams ([[link]] in PlantUML). */
+.joplin-plantuml-output svg a {
+	cursor: pointer;
+}
+
+.joplin-plantuml-output svg a:focus-visible {
+	outline: 2px solid currentColor;
+}

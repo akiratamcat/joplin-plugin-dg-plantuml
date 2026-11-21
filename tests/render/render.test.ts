@@ -294,6 +294,88 @@ describe('font size (design 8.7)', () => {
 	});
 });
 
+describe('toolbar and links (design 11)', () => {
+	type Posted = { id: string; message: { type: string; [k: string]: unknown } };
+	const config = buildViewerConfig({});
+
+	test('copy PNG sends a real PNG made with a canvas; the dark style gets a dark background', async () => {
+		let png = '';
+		const run = await renderNote(browser, fence('Alice -> Bob : hi', 'plantuml theme=dark'), {
+			config,
+			afterRender: async (page) => {
+				await page.hover('.joplin-plantuml');
+				await page.click('.joplin-plantuml-tool-copy-png');
+				await page.waitForFunction(() => ((window as unknown as { __messages: Posted[] }).__messages || []).some((m) => m.message.type === 'copyImage'), undefined, { timeout: 10000 });
+				png = await page.evaluate(() => String(((window as unknown as { __messages: Posted[] }).__messages.find((m) => m.message.type === 'copyImage') as Posted).message.dataUrl));
+				// Colour of the top-left pixel of the PNG.
+				const pixel = await page.evaluate((url) => new Promise<number[]>((resolve) => {
+					const img = new Image();
+					img.onload = () => {
+						const c = document.createElement('canvas');
+						c.width = img.width;
+						c.height = img.height;
+						const ctx = c.getContext('2d') as CanvasRenderingContext2D;
+						ctx.drawImage(img, 0, 0);
+						resolve(Array.from(ctx.getImageData(0, 0, 1, 1).data));
+					};
+					img.src = url;
+				}), png);
+				expect(pixel).toEqual([0x18, 0x18, 0x18, 255]);
+			},
+		});
+		expectNoNetwork(run);
+		expect(png).toMatch(/^data:image\/png;base64,[A-Za-z0-9+/]+=*$/);
+	});
+
+	test('the other buttons send the SVG, the source and the position', async () => {
+		const run = await renderNote(browser, `${fence('X')}\n\n${fence('Alice -> Bob : hi')}`, {
+			config,
+			afterRender: async (page) => {
+				const second = (await page.$$('.joplin-plantuml'))[1];
+				await second.hover();
+				for (const name of ['copy-svg', 'save-svg', 'copy-source']) await (await second.$(`.joplin-plantuml-tool-${name}`))?.click();
+			},
+		});
+		const actions = (run.messages as Posted[]).filter((m) => m.message.type !== 'getConfig').map((m) => m.message);
+		expect(actions.map((m) => [m.type, m.what || m.kind, m.index])).toEqual([['copyText', 'svg', undefined], ['saveFile', 'svg', 2], ['copyText', 'source', undefined]]);
+		expect(String(actions[0].text)).toMatch(/^<svg[\s>]/);
+		expect(actions[2].text).toBe('Alice -> Bob : hi');
+	});
+
+	test('a link in a diagram is handed to the main script; the page does not navigate', async () => {
+		const run = await renderNote(browser, fence('Alice -> Bob : [[:/0123456789abcdef0123456789abcdef note]]'), {
+			config,
+			afterRender: async (page) => {
+				await page.click('.joplin-plantuml-output svg a');
+				await page.waitForTimeout(300);
+			},
+		});
+		expect(run.url).toBe('http://render.test/');
+		const links = (run.messages as Posted[]).filter((m) => m.message.type === 'openLink').map((m) => m.message.href);
+		expect(links).toEqual([':/0123456789abcdef0123456789abcdef']);
+	});
+
+	test('a tap on the diagram shows the toolbar; the toolbar is hidden otherwise', async () => {
+		let before = '';
+		let after = '';
+		await renderNote(browser, fence('Alice -> Bob'), {
+			config,
+			afterRender: async (page) => {
+				const opacity = () => page.$eval('.joplin-plantuml-toolbar', (el) => getComputedStyle(el).opacity);
+				await page.mouse.move(0, 0);
+				await page.waitForTimeout(250);
+				before = await opacity();
+				await page.click('.joplin-plantuml-output svg', { position: { x: 5, y: 5 } });
+				await page.mouse.move(0, 0);
+				await page.waitForTimeout(250);
+				after = await opacity();
+			},
+		});
+		expect(before).toBe('0');
+		expect(after).toBe('1');
+	});
+});
+
 describe('the checks themselves', () => {
 	// If these fail, the network checks above could pass without checking anything.
 	test('a request to another site is reported by the CSP', async () => {
