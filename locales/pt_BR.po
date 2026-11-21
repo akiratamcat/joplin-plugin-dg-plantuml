@@ -122,58 +122,62 @@ msgid "Choose a folder to save the diagram in"
 msgstr "Escolha a pasta onde salvar o diagrama"
 
 #: src/settings.ts:100
+msgid "Style for the light theme"
+msgstr "Estilo para o tema claro"
+
+#: src/settings.ts:101
 msgid "Used on a light note viewer. Dark colours on a light page are hard to read."
 msgstr "Usado quando o visualizador de notas é claro. Cores escuras são difíceis de ler em uma página clara."
 
-#: src/settings.ts:109
+#: src/settings.ts:110
 msgid "Style for the dark theme"
 msgstr "Estilo para o tema escuro"
 
-#: src/settings.ts:110
+#: src/settings.ts:111
 msgid "Used on a dark note viewer. Light colours on a dark page are hard to read."
 msgstr "Usado quando o visualizador de notas é escuro. Cores claras são difíceis de ler em uma página escura."
 
-#: src/settings.ts:117
+#: src/settings.ts:118
 msgid "Transparent diagram background"
 msgstr "Fundo do diagrama transparente"
 
-#: src/settings.ts:124
+#: src/settings.ts:125
 msgid "Show the diagram toolbar"
 msgstr "Mostrar a barra de ferramentas do diagrama"
 
-#: src/settings.ts:125
+#: src/settings.ts:126
 msgid "Buttons to copy or save a diagram, shown when the mouse is over it or after a tap on it."
 msgstr "Botões para copiar ou salvar um diagrama, exibidos quando o mouse está sobre ele ou depois de tocar nele."
 
-#: src/settings.ts:132
+#: src/settings.ts:133
 msgid "Match the font size of the note"
 msgstr "Usar o tamanho da fonte da nota"
 
-#: src/settings.ts:133
+#: src/settings.ts:134
 msgid "Uses the font size of the note text as the base font size of diagrams."
 msgstr "Usa o tamanho da fonte do texto da nota como tamanho base dos diagramas."
 
-#: src/settings.ts:143
+#: src/settings.ts:144
 msgid "Minimum font size when scaled down (px)"
 msgstr "Tamanho mínimo da fonte ao reduzir (px)"
 
-#: src/settings.ts:144
+#: src/settings.ts:145
 msgid "Wide diagrams are not scaled down below this font size; they scroll sideways instead. 0: no limit."
 msgstr "Diagramas largos não são reduzidos abaixo deste tamanho de fonte; em vez disso, rolam na horizontal. 0: sem limite."
 
-#: src/settings.ts:151
+#: src/settings.ts:152
 msgid "Highlight PlantUML in the Markdown editor"
 msgstr "Destacar o PlantUML no editor de Markdown"
 
-#: src/settings.ts:152
+#: src/settings.ts:153
 msgid "Colours the PlantUML code in the Markdown editor. A change applies when the note is opened again."
 msgstr "Colore o código do PlantUML no editor de Markdown. Uma alteração vale quando a nota é aberta novamente."
 
-#: src/settings.ts:160
+#: src/settings.ts:161
 msgid "Custom preamble for the light theme"
 msgstr "Preâmbulo personalizado para o tema claro"
 
-#: src/settings.ts:162
+#: src/settings.ts:163
 #. "@startuml" and "\n" are written as they are. "\n" is a backslash followed by the letter n.
 msgid ""
 "Used when the light style is \"Custom\". PlantUML lines added after @startuml. Write \\n"
@@ -182,11 +186,11 @@ msgstr ""
 "Usado quando o estilo do tema claro é \"Personalizado (preâmbulo abaixo)\". Linhas do PlantUML adicionadas após @startuml. Escreva \\n"
 " entre as linhas."
 
-#: src/settings.ts:170
+#: src/settings.ts:171
 msgid "Custom preamble for the dark theme"
 msgstr "Preâmbulo personalizado para o tema escuro"
 
-#: src/settings.ts:172
+#: src/settings.ts:173
 #. "@startuml" and "\n" are written as they are. "\n" is a backslash followed by the letter n.
 msgid ""
 "Used when the dark style is \"Custom\". PlantUML lines added after @startuml. Write \\n"
@@ -195,92 +199,93 @@ msgstr ""
 "Usado quando o estilo do tema escuro é \"Personalizado (preâmbulo abaixo)\". Linhas do PlantUML adicionadas após @startuml. Escreva \\n"
 " entre as linhas."
 
-#: src/settings.ts:180
+#: src/settings.ts:181
 msgid "Font used in diagrams"
 msgstr "Fonte usada nos diagramas"
 
-#: src/settings.ts:181
+#: src/settings.ts:182
 msgid "Name of the font used in diagrams. Empty: the default font."
 msgstr "Nome da fonte usada nos diagramas. Vazio: a fonte padrão."
 
-#: src/settings.ts:189
+#: src/settings.ts:190
 msgid "Other language names"
 msgstr "Outros nomes de linguagem"
 
-#: src/settings.ts:191
+#: src/settings.ts:192
 #. The info string is the text right after the opening fence of a code block, as in ```plantuml. "plantuml" and "puml" are language names and are not translated.
 msgid "Info strings (language names) of code fences that are drawn as PlantUML diagrams. Separate several language names with commas. \"plantuml\" and \"puml\" always work."
 msgstr "Strings de informação (nomes de linguagem) dos blocos de código cercados que são desenhados como diagramas do PlantUML. Separe vários nomes de linguagem com vírgulas. \"plantuml\" e \"puml\" sempre funcionam."
 
-#: src/settings.ts:202
+#: src/settings.ts:203
 msgid "Time limit per diagram (ms)"
 msgstr "Tempo máximo por diagrama (ms)"
 
-#: src/settings.ts:213
+#: src/settings.ts:214
 msgid "Maximum source length (characters)"
 msgstr "Tamanho máximo do código-fonte (caracteres)"
 
-#: src/settings.ts:224
+#: src/settings.ts:225
 msgid "Number of diagrams held in the cache"
 msgstr "Número de diagramas mantidos no cache"
 
-#: src/settings.ts:237
+#: src/settings.ts:239
 msgid "A plugin that renders PlantUML. The PlantUML rendering engine is built in, and the plugin makes no network connections to the outside."
 msgstr "Um plugin que renderiza PlantUML. O mecanismo de renderização do PlantUML é integrado, e o plugin não faz conexões de rede com o exterior."
 
-#: src/settings.ts:35
+#: src/settings.ts:242
+#. Followed by a list of name, version, license and website of each component.
+msgid "Bundled third-party software (full license texts: THIRD_PARTY_NOTICES.md in the plugin package):"
+msgstr "Software de terceiros incluído (textos completos das licenças: THIRD_PARTY_NOTICES.md no pacote do plugin):"
+
+#: src/settings.ts:36
 #. {name} is the name of a built-in PlantUML theme, for example "Cyborg". Theme names are not translated.
 msgid "PlantUML theme: {name}"
 msgstr "Tema do PlantUML: {name}"
 
-#: src/settings.ts:47
+#: src/settings.ts:48
 #. Name of a diagram style. "PlantUML" is not translated.
 msgid "PlantUML standard (light colours, default)"
 msgstr "PlantUML padrão (cores claras, padrão)"
 
-#: src/settings.ts:49
+#: src/settings.ts:50
 #. Name of a diagram style. "Joplin" is not translated.
 msgid "Joplin light (light colours)"
 msgstr "Joplin claro (cores claras)"
 
-#: src/settings.ts:51
-#: src/settings.ts:63
+#: src/settings.ts:52
+#: src/settings.ts:64
 msgid "Custom (preamble below)"
 msgstr "Personalizado (preâmbulo abaixo)"
 
-#: src/settings.ts:59
+#: src/settings.ts:60
 #. Name of a diagram style. "PlantUML" is not translated.
 msgid "PlantUML dark (dark colours, default)"
 msgstr "PlantUML escuro (cores escuras, padrão)"
 
-#: src/settings.ts:61
+#: src/settings.ts:62
 #. Name of a diagram style. "PlantUML" is not translated.
 msgid "PlantUML standard (light colours)"
 msgstr "PlantUML padrão (cores claras)"
 
-#: src/settings.ts:83
+#: src/settings.ts:84
 msgid "Auto (follow Joplin's theme)"
 msgstr "Automático (seguir o tema do Joplin)"
 
-#: src/settings.ts:89
+#: src/settings.ts:90
 msgid "PlantUML diagram theme"
 msgstr "Tema dos diagramas do PlantUML"
 
-#: src/settings.ts:90
+#: src/settings.ts:91
 msgid "When set to \"Auto\", the light or dark style is chosen automatically from the background of the note viewer."
 msgstr "Com \"Automático\", o estilo claro ou escuro é escolhido automaticamente de acordo com o fundo do visualizador de notas."
 
-#: src/settings.ts:99
-msgid "Style for the light theme"
-msgstr "Estilo para o tema claro"
-
-#: src/settings.ts:85
+#: src/settings.ts:86
 #. A value of the setting "Diagram theme".
 msgctxt "Diagram theme"
 msgid "Light"
 msgstr "Claro"
 
-#: src/settings.ts:87
+#: src/settings.ts:88
 #. A value of the setting "Diagram theme".
 msgctxt "Diagram theme"
 msgid "Dark"

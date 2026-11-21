@@ -7,6 +7,7 @@ import { Catalog, ENGLISH, Translator } from './i18n/gettext';
 import { BUILTIN_THEMES, DARK_THEMES, LIGHT_THEMES } from './presets/builtinThemes';
 import { JOPLIN_LIGHT_LINES } from './presets/joplinLight';
 import { hashString } from './shared/hash';
+import { thirdPartyLines } from './thirdParty';
 
 export const SECTION = 'dgPlantuml';
 
@@ -234,7 +235,13 @@ export function settingsSection(t: Translator = ENGLISH) {
 	return {
 		label: 'dg-plantuml',
 		iconName: 'fas fa-project-diagram',
-		description: t._('A plugin that renders PlantUML. The PlantUML rendering engine is built in, and the plugin makes no network connections to the outside.'),
+		description: [
+			t._('A plugin that renders PlantUML. The PlantUML rendering engine is built in, and the plugin makes no network connections to the outside.'),
+			'',
+			// TRANSLATORS: Followed by a list of name, version, license and website of each component.
+			t._('Bundled third-party software (full license texts: THIRD_PARTY_NOTICES.md in the plugin package):'),
+			...thirdPartyLines().map((line) => `• ${line}`),
+		].join('\n'),
 	};
 }
 

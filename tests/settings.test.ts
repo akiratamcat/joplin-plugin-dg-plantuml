@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: MIT
-import { buildViewerConfig, KEYS, parseCustomPreamble, resolvePreset, settingItems, SETTINGS } from '../src/settings';
+import { buildViewerConfig, KEYS, parseCustomPreamble, resolvePreset, settingItems, settingsSection, SETTINGS } from '../src/settings';
 import { CONTEXT_SEPARATOR, Translator } from '../src/i18n/gettext';
 import { DEFAULT_VIEWER_CONFIG, normalizeConfig } from '../src/contentScript/viewerConfig';
+import { THIRD_PARTY } from '../src/thirdParty';
 
 /** Setting values as Joplin returns them, from the defaults of SETTINGS. */
 function defaults(): Record<string, unknown> {
@@ -51,6 +52,13 @@ describe('translations (design 10)', () => {
 		expect(items[KEYS.themeMode].options?.light).toBe('Light'); // untranslated: English
 		expect(items[KEYS.darkPreset].options?.['builtin:cyborg']).toBe('PlantUML のテーマ: Cyborg');
 		expect(items[KEYS.themeMode].value).toBe(SETTINGS[KEYS.themeMode].value);
+	});
+
+	test('the section description lists the bundled third-party software (design 20.4)', () => {
+		const lines = settingsSection().description.split('\n');
+		expect(lines).toContain('• PlantUML (@plantuml/core) 1.2026.10 - MIT - https://plantuml.com/');
+		expect(lines.filter((l) => l.startsWith('• '))).toHaveLength(THIRD_PARTY.length);
+		for (const c of THIRD_PARTY) expect(c.url).toMatch(/^https:\/\//);
 	});
 
 	test('the viewer gets the locale and the catalog; the settings version follows the locale', () => {

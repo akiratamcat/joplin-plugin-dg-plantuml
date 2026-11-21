@@ -88,7 +88,15 @@ Please use the [Issues](https://github.com/akiratamcat/joplin-plugin-dg-plantuml
 
 dg-plantuml is released under the [MIT License](LICENSE).
 
-The plugin package also contains third-party software: the PlantUML engine (MIT), Twemoji graphics (CC-BY 4.0), Open Iconic (MIT) and DOMPurify (Apache-2.0). See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+The plugin package also contains the third-party software below. The full license texts are in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md), which is also included in the plugin package. The same list is shown on the plugin's settings screen in Joplin.
+
+| Name | Version | License | Website |
+| ---- | ------- | ------- | ------- |
+| PlantUML (`@plantuml/core`), the rendering engine | 1.2026.10 | MIT | <https://plantuml.com/> |
+| Twemoji graphics (emoji, inside the engine) | as bundled in PlantUML 1.2026.10 | CC-BY 4.0 | <https://github.com/twitter/twemoji> |
+| Open Iconic (icons, inside the engine) | as bundled in PlantUML 1.2026.10 | MIT | <https://github.com/iconic/open-iconic> |
+| DOMPurify (cleans the SVG output) | 3.4.17 | Apache-2.0 (dual-licensed Apache-2.0 / MPL-2.0) | <https://github.com/cure53/DOMPurify> |
+| regenerator-runtime (inside DOMPurify) | as bundled in DOMPurify 3.4.17 | MIT | <https://github.com/facebook/regenerator> |
 
 Diagrams you make are yours. PlantUML's license says that generated images belong to the author of the diagram source.
 

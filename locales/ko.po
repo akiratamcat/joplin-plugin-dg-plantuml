@@ -121,58 +121,62 @@ msgid "Choose a folder to save the diagram in"
 msgstr "다이어그램을 저장할 폴더를 선택하세요"
 
 #: src/settings.ts:100
+msgid "Style for the light theme"
+msgstr "밝은 테마에서 사용할 스타일"
+
+#: src/settings.ts:101
 msgid "Used on a light note viewer. Dark colours on a light page are hard to read."
 msgstr "노트 뷰어가 밝을 때 사용합니다. 밝은 페이지에서 어두운 색상을 사용하면 읽기 어렵습니다."
 
-#: src/settings.ts:109
+#: src/settings.ts:110
 msgid "Style for the dark theme"
 msgstr "어두운 테마에서 사용할 스타일"
 
-#: src/settings.ts:110
+#: src/settings.ts:111
 msgid "Used on a dark note viewer. Light colours on a dark page are hard to read."
 msgstr "노트 뷰어가 어두울 때 사용합니다. 어두운 페이지에서 밝은 색상을 사용하면 읽기 어렵습니다."
 
-#: src/settings.ts:117
+#: src/settings.ts:118
 msgid "Transparent diagram background"
 msgstr "다이어그램 배경 투명"
 
-#: src/settings.ts:124
+#: src/settings.ts:125
 msgid "Show the diagram toolbar"
 msgstr "다이어그램 도구 모음 표시"
 
-#: src/settings.ts:125
+#: src/settings.ts:126
 msgid "Buttons to copy or save a diagram, shown when the mouse is over it or after a tap on it."
 msgstr "다이어그램을 복사하거나 저장하는 버튼으로, 다이어그램 위에 마우스를 올리거나 다이어그램을 탭하면 표시됩니다."
 
-#: src/settings.ts:132
+#: src/settings.ts:133
 msgid "Match the font size of the note"
 msgstr "다이어그램 글꼴 크기를 노트에 맞추기"
 
-#: src/settings.ts:133
+#: src/settings.ts:134
 msgid "Uses the font size of the note text as the base font size of diagrams."
 msgstr "노트 본문의 글꼴 크기를 다이어그램의 기본 글꼴 크기로 사용합니다."
 
-#: src/settings.ts:143
+#: src/settings.ts:144
 msgid "Minimum font size when scaled down (px)"
 msgstr "축소 표시할 때의 최소 글꼴 크기(px)"
 
-#: src/settings.ts:144
+#: src/settings.ts:145
 msgid "Wide diagrams are not scaled down below this font size; they scroll sideways instead. 0: no limit."
 msgstr "가로로 긴 다이어그램은 이 글꼴 크기보다 작아지도록 축소하지 않고, 대신 가로로 스크롤합니다. 0: 제한 없음."
 
-#: src/settings.ts:151
+#: src/settings.ts:152
 msgid "Highlight PlantUML in the Markdown editor"
 msgstr "Markdown 편집기에서 PlantUML 구문 강조"
 
-#: src/settings.ts:152
+#: src/settings.ts:153
 msgid "Colours the PlantUML code in the Markdown editor. A change applies when the note is opened again."
 msgstr "Markdown 편집기에서 PlantUML 코드에 색을 입힙니다. 변경 사항은 노트를 다시 열 때 적용됩니다."
 
-#: src/settings.ts:160
+#: src/settings.ts:161
 msgid "Custom preamble for the light theme"
 msgstr "밝은 테마의 사용자 지정 프리앰블"
 
-#: src/settings.ts:162
+#: src/settings.ts:163
 #. "@startuml" and "\n" are written as they are. "\n" is a backslash followed by the letter n.
 msgid ""
 "Used when the light style is \"Custom\". PlantUML lines added after @startuml. Write \\n"
@@ -181,11 +185,11 @@ msgstr ""
 "밝은 테마의 스타일이 \"사용자 지정(아래 프리앰블)\"일 때 사용합니다. @startuml 뒤에 추가되는 PlantUML 줄입니다. 줄 사이에는 \\n"
 "을 씁니다."
 
-#: src/settings.ts:170
+#: src/settings.ts:171
 msgid "Custom preamble for the dark theme"
 msgstr "어두운 테마의 사용자 지정 프리앰블"
 
-#: src/settings.ts:172
+#: src/settings.ts:173
 #. "@startuml" and "\n" are written as they are. "\n" is a backslash followed by the letter n.
 msgid ""
 "Used when the dark style is \"Custom\". PlantUML lines added after @startuml. Write \\n"
@@ -194,92 +198,93 @@ msgstr ""
 "어두운 테마의 스타일이 \"사용자 지정(아래 프리앰블)\"일 때 사용합니다. @startuml 뒤에 추가되는 PlantUML 줄입니다. 줄 사이에는 \\n"
 "을 씁니다."
 
-#: src/settings.ts:180
+#: src/settings.ts:181
 msgid "Font used in diagrams"
 msgstr "다이어그램에 사용할 글꼴"
 
-#: src/settings.ts:181
+#: src/settings.ts:182
 msgid "Name of the font used in diagrams. Empty: the default font."
 msgstr "다이어그램에 사용할 글꼴 이름. 비워 두면 기본 글꼴을 사용합니다."
 
-#: src/settings.ts:189
+#: src/settings.ts:190
 msgid "Other language names"
 msgstr "기타 언어 이름"
 
-#: src/settings.ts:191
+#: src/settings.ts:192
 #. The info string is the text right after the opening fence of a code block, as in ```plantuml. "plantuml" and "puml" are language names and are not translated.
 msgid "Info strings (language names) of code fences that are drawn as PlantUML diagrams. Separate several language names with commas. \"plantuml\" and \"puml\" always work."
 msgstr "PlantUML 다이어그램으로 그릴 코드 펜스의 정보 문자열(언어 이름). 쉼표로 구분하여 여러 언어 이름을 지정할 수 있습니다. \"plantuml\"과 \"puml\"은 항상 사용할 수 있습니다."
 
-#: src/settings.ts:202
+#: src/settings.ts:203
 msgid "Time limit per diagram (ms)"
 msgstr "다이어그램당 렌더링 시간 상한(ms)"
 
-#: src/settings.ts:213
+#: src/settings.ts:214
 msgid "Maximum source length (characters)"
 msgstr "소스의 최대 길이(문자 수)"
 
-#: src/settings.ts:224
+#: src/settings.ts:225
 msgid "Number of diagrams held in the cache"
 msgstr "캐시에 보관할 다이어그램 수"
 
-#: src/settings.ts:237
+#: src/settings.ts:239
 msgid "A plugin that renders PlantUML. The PlantUML rendering engine is built in, and the plugin makes no network connections to the outside."
 msgstr "PlantUML을 렌더링하는 플러그인. PlantUML 렌더링 엔진이 내장되어 있으며, 외부와 네트워크 통신을 하지 않습니다."
 
-#: src/settings.ts:35
+#: src/settings.ts:242
+#. Followed by a list of name, version, license and website of each component.
+msgid "Bundled third-party software (full license texts: THIRD_PARTY_NOTICES.md in the plugin package):"
+msgstr "포함된 서드파티 소프트웨어(라이선스 전문은 플러그인 패키지의 THIRD_PARTY_NOTICES.md에 있습니다):"
+
+#: src/settings.ts:36
 #. {name} is the name of a built-in PlantUML theme, for example "Cyborg". Theme names are not translated.
 msgid "PlantUML theme: {name}"
 msgstr "PlantUML 테마: {name}"
 
-#: src/settings.ts:47
+#: src/settings.ts:48
 #. Name of a diagram style. "PlantUML" is not translated.
 msgid "PlantUML standard (light colours, default)"
 msgstr "PlantUML 표준(밝은 색상, 기본값)"
 
-#: src/settings.ts:49
+#: src/settings.ts:50
 #. Name of a diagram style. "Joplin" is not translated.
 msgid "Joplin light (light colours)"
 msgstr "Joplin 밝은 스타일(밝은 색상)"
 
-#: src/settings.ts:51
-#: src/settings.ts:63
+#: src/settings.ts:52
+#: src/settings.ts:64
 msgid "Custom (preamble below)"
 msgstr "사용자 지정(아래 프리앰블)"
 
-#: src/settings.ts:59
+#: src/settings.ts:60
 #. Name of a diagram style. "PlantUML" is not translated.
 msgid "PlantUML dark (dark colours, default)"
 msgstr "PlantUML 어두운 스타일(어두운 색상, 기본값)"
 
-#: src/settings.ts:61
+#: src/settings.ts:62
 #. Name of a diagram style. "PlantUML" is not translated.
 msgid "PlantUML standard (light colours)"
 msgstr "PlantUML 표준(밝은 색상)"
 
-#: src/settings.ts:83
+#: src/settings.ts:84
 msgid "Auto (follow Joplin's theme)"
 msgstr "자동(Joplin 테마에 맞춤)"
 
-#: src/settings.ts:89
+#: src/settings.ts:90
 msgid "PlantUML diagram theme"
 msgstr "PlantUML 다이어그램 테마"
 
-#: src/settings.ts:90
+#: src/settings.ts:91
 msgid "When set to \"Auto\", the light or dark style is chosen automatically from the background of the note viewer."
 msgstr "\"자동\"으로 설정하면 노트 뷰어의 배경에 따라 밝은 스타일 또는 어두운 스타일을 자동으로 선택합니다."
 
-#: src/settings.ts:99
-msgid "Style for the light theme"
-msgstr "밝은 테마에서 사용할 스타일"
-
-#: src/settings.ts:85
+#: src/settings.ts:86
 #. A value of the setting "Diagram theme".
 msgctxt "Diagram theme"
 msgid "Light"
 msgstr "밝음"
 
-#: src/settings.ts:87
+#: src/settings.ts:88
 #. A value of the setting "Diagram theme".
 msgctxt "Diagram theme"
 msgid "Dark"

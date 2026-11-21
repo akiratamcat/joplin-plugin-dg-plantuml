@@ -234,7 +234,7 @@ const pluginConfig = { ...baseConfig, entry: './src/index.ts',
 				},
 				// dg-plantuml: the plugin's license and the third-party notices (design 20.4).
 				{
-					from: '{LICENSE,THIRD_PARTY_NOTICES.md}',
+					from: '{LICENSE,THIRD_PARTY_NOTICES.md,THIRD_PARTY_NOTICES.ja.md}',
 					context: path.resolve(__dirname),
 					to: path.resolve(__dirname, 'dist'),
 				},
