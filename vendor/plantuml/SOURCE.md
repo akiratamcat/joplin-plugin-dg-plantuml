@@ -24,12 +24,12 @@ Do not edit them. To update the engine, follow the steps below.
 
 Not included: `viz-global.js` (Graphviz needs WebAssembly, which the Joplin
 note viewer does not allow; the plugin uses the Smetana layout instead) and
-the demo pages of the package. See `docs/design.md` (4.2, 8.5).
+the demo pages of the package. See `docs/design.ja.md` (4.2, 8.5).
 
 ## Updating
 
 Update the engine only for security fixes or necessary bug fixes
-(`docs/design.md`, D-10).
+(`docs/design.ja.md`, D-10).
 
 1. `npm pack @plantuml/core@<version>` and check that the tarball's sha512
    matches `npm view @plantuml/core@<version> dist.integrity`.

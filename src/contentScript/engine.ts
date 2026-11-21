@@ -19,7 +19,7 @@ export const ENGINE_VERSION = '1.2026.10';
  * next sequence diagram whose participants are not declared can be taken
  * for a class diagram. Rendering any other kind of diagram in between
  * resets it, so every diagram renders the same as in a fresh engine
- * (found with @plantuml/core 1.2026.10; docs/lessons-learned.md).
+ * (found with @plantuml/core 1.2026.10; docs/lessons-learned.ja.md).
  */
 export const RESET_LINES = ['@startuml', 'participant Reset', '@enduml'];
 

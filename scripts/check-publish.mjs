@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// npm run check:publish [branch]  (docs/release.md "Before pushing to GitHub")
+// npm run check:publish [branch]  (docs/release.ja.md, section 0)
 // Checks a branch (default: main) and its whole history before it is pushed
 // to the public repository:
 //   1. author / committer emails are only the allowed ones,

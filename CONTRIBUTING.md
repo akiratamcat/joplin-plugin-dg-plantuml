@@ -6,7 +6,7 @@ Thank you for your interest. Bug reports, ideas, translations and pull requests 
 
 - For bugs and requests, please open an [issue](https://github.com/akiratamcat/joplin-plugin-dg-plantuml/issues) first.
 - For security problems, do not open a public issue. See [SECURITY.md](SECURITY.md).
-- The design is described in [docs/design.md](docs/design.md) (in Japanese).
+- The design is described in [docs/design.ja.md](docs/design.ja.md) (in Japanese).
 
 ## Development environment
 
