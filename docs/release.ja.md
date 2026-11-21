@@ -22,7 +22,7 @@
 
 1. `main` が最新で、作業中のファイルがないことを確かめる。
 2. `npm audit` を実行し、配布物に含まれる依存パッケージに脆弱性がないことを確かめる。
-3. `CHANGELOG.md` と `CHANGELOG.ja.md` の `[Unreleased]` を `[X.Y.Z] - YYYY-MM-DD` に変える。利用者に影響する変更（設定、図の見た目、対応する図）を必ず書く。2つのファイルの内容をそろえる（リリースノートには英語版の `CHANGELOG.md` が使われる）。
+3. `CHANGELOG.md` と `CHANGELOG.ja.md` の `[Unreleased]` を `[X.Y.Z] - YYYY-MM-DD` に変える。利用者に影響する変更（設定、図の見た目、対応する図）を必ず書く。2つのファイルの内容をそろえる（リリースノートは、前半が `CHANGELOG.md`、後半が `CHANGELOG.ja.md` から作られる）。
 4. 版数を上げる（設計書 21.2節）。`package.json` と `src/manifest.json` の `version` を同じ値にする。
 5. エンジンを更新した場合は、`vendor/plantuml/SOURCE.md` の「Updating」の手順をすべて済ませたことを確かめる（ライセンス、版数を書く場所、内蔵テーマの一覧、テスト）。
 6. エンジンや DOMPurify を更新した場合は、`src/thirdParty.ts`（設定画面に出す一覧）と、`README.md`・`README.ja.md` の同梱ソフトウェアの表の版数を直し、`npm run notices` で `THIRD_PARTY_NOTICES.md` と `THIRD_PARTY_NOTICES.ja.md` を作り直す。`npm run licenses:check`（`npm test` から自動で実行される）は、これらの直し忘れと、許可していないライセンスの依存パッケージを検出する。
@@ -39,7 +39,7 @@
 ## 3. 公開
 
 1. `main` にマージし、タグ `vX.Y.Z` を作って push する。
-2. リリース用のワークフロー（`.github/workflows/release.yml`）が、検査とビルドを行い、GitHub Releases にリリースを作る。`.jpl`、`LICENSE`、`THIRD_PARTY_NOTICES.md`、`THIRD_PARTY_NOTICES.ja.md` が添付され、リリースノートの先頭に「描画エンジン内蔵・外部通信なし」の定型文が入る。
+2. リリース用のワークフロー（`.github/workflows/release.yml`）が、検査とビルドを行い、GitHub Releases にリリースを作る。`.jpl`、`LICENSE`、`THIRD_PARTY_NOTICES.md`、`THIRD_PARTY_NOTICES.ja.md` が添付され、リリースノートは英語と日本語の二部構成で、それぞれの先頭に「描画エンジン内蔵・外部通信なし」の定型文が入る。
 3. npm への公開は、公開用のアカウントと Trusted Publishing の設定ができてから有効にする（リポジトリの変数 `NPM_PUBLISH` を `true` にする）。
 
 ## 4. 公開後

@@ -28,7 +28,7 @@
     "updateVersion": "webpack --env joplin-plugin-config=updateVersion",
     "update": "npm install -g generator-joplin && yo joplin --node-package-manager npm --update --force",
     "test": "npm run test:unit && npm run test:render",
-    "test:unit": "npm run i18n:compile && npm run i18n:check && npm run licenses:check && jest",
+    "test:unit": "npm run i18n:compile && npm run i18n:check && npm run licenses:check && npm run readme:check && jest",
     "test:render": "npm run dist && jest -c jest.render.config.js",
     "lint": "eslint src tests",
     "typecheck": "npm run i18n:compile && tsc --noEmit -p tsconfig.json",
@@ -37,7 +37,9 @@
     "i18n:check": "node scripts/i18n-check.mjs",
     "check:publish": "node scripts/check-publish.mjs",
     "notices": "node scripts/notices.mjs",
-    "licenses:check": "node scripts/check-licenses.mjs"
+    "licenses:check": "node scripts/check-licenses.mjs",
+    "readme": "node scripts/readme.mjs",
+    "readme:check": "node scripts/readme.mjs --check"
   },
   "dependencies": {
     "dompurify": "3.4.17"
