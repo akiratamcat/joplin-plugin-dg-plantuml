@@ -18,12 +18,12 @@ msgid_plural "The source has {count} characters. The limit is {limit}."
 msgstr[0] "소스가 {count}자입니다. 상한은 {limit}자입니다."
 
 #: src/contentScript/controller.ts:198
-msgid "Rendering…"
-msgstr "렌더링 중…"
+msgid "Rendering..."
+msgstr "렌더링 중..."
 
 #: src/contentScript/controller.ts:198
-msgid "Loading the PlantUML engine…"
-msgstr "PlantUML 엔진을 불러오는 중…"
+msgid "Loading the PlantUML engine..."
+msgstr "PlantUML 엔진을 불러오는 중..."
 
 #: src/contentScript/controller.ts:295
 msgid "Could not load the PlantUML engine."
@@ -114,11 +114,11 @@ msgstr ""
 "을 씁니다."
 
 #: src/settings.ts:162
-msgid "Diagram font"
-msgstr "다이어그램 글꼴"
+msgid "Font used in diagrams"
+msgstr "다이어그램에 사용할 글꼴"
 
 #: src/settings.ts:163
-msgid "Font name for diagrams. Empty: the default font."
+msgid "Name of the font used in diagrams. Empty: the default font."
 msgstr "다이어그램에 사용할 글꼴 이름. 비워 두면 기본 글꼴을 사용합니다."
 
 #: src/settings.ts:171
@@ -126,9 +126,9 @@ msgid "Other language names"
 msgstr "기타 언어 이름"
 
 #: src/settings.ts:173
-#. "plantuml" and "puml" are language names of code blocks and are not translated.
-msgid "Code block languages that are also drawn as PlantUML, separated by commas. \"plantuml\" and \"puml\" always work."
-msgstr "PlantUML로도 그릴 코드 블록 언어 이름(쉼표로 구분). \"plantuml\"과 \"puml\"은 항상 사용할 수 있습니다."
+#. The info string is the text right after the opening fence of a code block, as in ```plantuml. "plantuml" and "puml" are language names and are not translated.
+msgid "Info strings (language names) of code fences that are drawn as PlantUML diagrams. Separate several language names with commas. \"plantuml\" and \"puml\" always work."
+msgstr "PlantUML 다이어그램으로 그릴 코드 펜스의 정보 문자열(언어 이름). 쉼표로 구분하여 여러 언어 이름을 지정할 수 있습니다. \"plantuml\"과 \"puml\"은 항상 사용할 수 있습니다."
 
 #: src/settings.ts:184
 msgid "Time limit per diagram (ms)"
@@ -139,12 +139,12 @@ msgid "Maximum source length (characters)"
 msgstr "소스의 최대 길이(문자 수)"
 
 #: src/settings.ts:206
-msgid "Number of diagrams kept in the cache"
+msgid "Number of diagrams held in the cache"
 msgstr "캐시에 보관할 다이어그램 수"
 
 #: src/settings.ts:219
-msgid "PlantUML diagrams, rendered by the engine bundled in this plugin. No network access."
-msgstr "이 플러그인에 내장된 엔진으로 그리는 PlantUML 다이어그램. 네트워크에 접속하지 않습니다."
+msgid "A plugin that renders PlantUML. The PlantUML rendering engine is built in, and the plugin makes no network connections to the outside."
+msgstr "PlantUML을 렌더링하는 플러그인. PlantUML 렌더링 엔진이 내장되어 있으며, 외부와 네트워크 통신을 하지 않습니다."
 
 #: src/settings.ts:33
 #. {name} is the name of a built-in PlantUML theme, for example "Cyborg". Theme names are not translated.
@@ -181,12 +181,12 @@ msgid "Auto (follow Joplin's theme)"
 msgstr "자동(Joplin 테마에 맞춤)"
 
 #: src/settings.ts:87
-msgid "Diagram theme"
-msgstr "다이어그램 테마"
+msgid "PlantUML diagram theme"
+msgstr "PlantUML 다이어그램 테마"
 
 #: src/settings.ts:88
-msgid "Auto chooses the light or dark style from the background of the note viewer."
-msgstr "자동은 노트 뷰어의 배경에 따라 밝은 스타일 또는 어두운 스타일을 선택합니다."
+msgid "When set to \"Auto\", the light or dark style is chosen automatically from the background of the note viewer."
+msgstr "\"자동\"으로 설정하면 노트 뷰어의 배경에 따라 밝은 스타일 또는 어두운 스타일을 자동으로 선택합니다."
 
 #: src/settings.ts:97
 msgid "Style for the light theme"

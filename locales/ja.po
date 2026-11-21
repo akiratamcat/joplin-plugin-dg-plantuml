@@ -18,12 +18,12 @@ msgid_plural "The source has {count} characters. The limit is {limit}."
 msgstr[0] "ソースは {count} 文字です。上限は {limit} 文字です。"
 
 #: src/contentScript/controller.ts:198
-msgid "Rendering…"
-msgstr "描画中…"
+msgid "Rendering..."
+msgstr "描画中..."
 
 #: src/contentScript/controller.ts:198
-msgid "Loading the PlantUML engine…"
-msgstr "PlantUML のエンジンを読み込み中…"
+msgid "Loading the PlantUML engine..."
+msgstr "PlantUML のエンジンを読み込み中..."
 
 #: src/contentScript/controller.ts:295
 msgid "Could not load the PlantUML engine."
@@ -114,21 +114,21 @@ msgstr ""
 " と書きます。"
 
 #: src/settings.ts:162
-msgid "Diagram font"
-msgstr "図のフォント"
+msgid "Font used in diagrams"
+msgstr "図で使用するフォント"
 
 #: src/settings.ts:163
-msgid "Font name for diagrams. Empty: the default font."
-msgstr "図に使うフォントの名前。空のときは既定のフォントになります。"
+msgid "Name of the font used in diagrams. Empty: the default font."
+msgstr "図で使用するフォントの名前。空のときは既定のフォントになります。"
 
 #: src/settings.ts:171
 msgid "Other language names"
 msgstr "ほかの言語名"
 
 #: src/settings.ts:173
-#. "plantuml" and "puml" are language names of code blocks and are not translated.
-msgid "Code block languages that are also drawn as PlantUML, separated by commas. \"plantuml\" and \"puml\" always work."
-msgstr "PlantUML の図として描くコードブロックの言語名（カンマ区切り）。\"plantuml\" と \"puml\" は常に使えます。"
+#. The info string is the text right after the opening fence of a code block, as in ```plantuml. "plantuml" and "puml" are language names and are not translated.
+msgid "Info strings (language names) of code fences that are drawn as PlantUML diagrams. Separate several language names with commas. \"plantuml\" and \"puml\" always work."
+msgstr "PlantUML の図として描くコードフェンスの情報文字列（言語名）。カンマ区切りで複数の言語名を指定可能。\"plantuml\" と \"puml\" は常に使えます。"
 
 #: src/settings.ts:184
 msgid "Time limit per diagram (ms)"
@@ -139,12 +139,12 @@ msgid "Maximum source length (characters)"
 msgstr "ソースの最大文字数"
 
 #: src/settings.ts:206
-msgid "Number of diagrams kept in the cache"
-msgstr "キャッシュに残す図の数"
+msgid "Number of diagrams held in the cache"
+msgstr "キャッシュに保持する図の数"
 
 #: src/settings.ts:219
-msgid "PlantUML diagrams, rendered by the engine bundled in this plugin. No network access."
-msgstr "このプラグインに内蔵したエンジンで描く PlantUML の図。ネットワーク通信は行いません。"
+msgid "A plugin that renders PlantUML. The PlantUML rendering engine is built in, and the plugin makes no network connections to the outside."
+msgstr "PlantUML を描画するプラグイン。PlantUML の描画エンジンは内蔵しており、外部とのネットワーク通信は行いません。"
 
 #: src/settings.ts:33
 #. {name} is the name of a built-in PlantUML theme, for example "Cyborg". Theme names are not translated.
@@ -181,12 +181,12 @@ msgid "Auto (follow Joplin's theme)"
 msgstr "自動（Joplin のテーマに合わせる）"
 
 #: src/settings.ts:87
-msgid "Diagram theme"
-msgstr "図のテーマ"
+msgid "PlantUML diagram theme"
+msgstr "PlantUML の図のテーマ"
 
 #: src/settings.ts:88
-msgid "Auto chooses the light or dark style from the background of the note viewer."
-msgstr "自動では、ノートのビューアーの背景から、明るいスタイルか暗いスタイルかを選びます。"
+msgid "When set to \"Auto\", the light or dark style is chosen automatically from the background of the note viewer."
+msgstr "「自動」と設定すると、ノートのビューアーの背景から、明るいスタイルか暗いスタイルかを自動的に設定します。"
 
 #: src/settings.ts:97
 msgid "Style for the light theme"

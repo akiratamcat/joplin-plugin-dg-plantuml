@@ -19,11 +19,11 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: src/contentScript/controller.ts:198
-msgid "Rendering…"
+msgid "Rendering..."
 msgstr ""
 
 #: src/contentScript/controller.ts:198
-msgid "Loading the PlantUML engine…"
+msgid "Loading the PlantUML engine..."
 msgstr ""
 
 #: src/contentScript/controller.ts:295
@@ -111,11 +111,11 @@ msgid ""
 msgstr ""
 
 #: src/settings.ts:162
-msgid "Diagram font"
+msgid "Font used in diagrams"
 msgstr ""
 
 #: src/settings.ts:163
-msgid "Font name for diagrams. Empty: the default font."
+msgid "Name of the font used in diagrams. Empty: the default font."
 msgstr ""
 
 #: src/settings.ts:171
@@ -123,8 +123,8 @@ msgid "Other language names"
 msgstr ""
 
 #: src/settings.ts:173
-#. "plantuml" and "puml" are language names of code blocks and are not translated.
-msgid "Code block languages that are also drawn as PlantUML, separated by commas. \"plantuml\" and \"puml\" always work."
+#. The info string is the text right after the opening fence of a code block, as in ```plantuml. "plantuml" and "puml" are language names and are not translated.
+msgid "Info strings (language names) of code fences that are drawn as PlantUML diagrams. Separate several language names with commas. \"plantuml\" and \"puml\" always work."
 msgstr ""
 
 #: src/settings.ts:184
@@ -136,11 +136,11 @@ msgid "Maximum source length (characters)"
 msgstr ""
 
 #: src/settings.ts:206
-msgid "Number of diagrams kept in the cache"
+msgid "Number of diagrams held in the cache"
 msgstr ""
 
 #: src/settings.ts:219
-msgid "PlantUML diagrams, rendered by the engine bundled in this plugin. No network access."
+msgid "A plugin that renders PlantUML. The PlantUML rendering engine is built in, and the plugin makes no network connections to the outside."
 msgstr ""
 
 #: src/settings.ts:33
@@ -178,11 +178,11 @@ msgid "Auto (follow Joplin's theme)"
 msgstr ""
 
 #: src/settings.ts:87
-msgid "Diagram theme"
+msgid "PlantUML diagram theme"
 msgstr ""
 
 #: src/settings.ts:88
-msgid "Auto chooses the light or dark style from the background of the note viewer."
+msgid "When set to \"Auto\", the light or dark style is chosen automatically from the background of the note viewer."
 msgstr ""
 
 #: src/settings.ts:97

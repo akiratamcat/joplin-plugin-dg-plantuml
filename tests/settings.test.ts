@@ -41,12 +41,12 @@ describe('SETTINGS', () => {
 describe('translations (design 10)', () => {
 	test('labels, descriptions and option names use the translator', () => {
 		const t = new Translator('ja', {
-			'Diagram theme': ['図のテーマ'],
+			'PlantUML diagram theme': ['PlantUML の図のテーマ'],
 			[`Diagram theme${CONTEXT_SEPARATOR}Dark`]: ['ダーク'],
 			'PlantUML theme: {name}': ['PlantUML のテーマ: {name}'],
 		});
 		const items = settingItems(t);
-		expect(items[KEYS.themeMode].label).toBe('図のテーマ');
+		expect(items[KEYS.themeMode].label).toBe('PlantUML の図のテーマ');
 		expect(items[KEYS.themeMode].options?.dark).toBe('ダーク');
 		expect(items[KEYS.themeMode].options?.light).toBe('Light'); // untranslated: English
 		expect(items[KEYS.darkPreset].options?.['builtin:cyborg']).toBe('PlantUML のテーマ: Cyborg');

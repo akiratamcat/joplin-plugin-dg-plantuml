@@ -18,12 +18,12 @@ msgid_plural "The source has {count} characters. The limit is {limit}."
 msgstr[0] "源代码有 {count} 个字符。上限为 {limit} 个字符。"
 
 #: src/contentScript/controller.ts:198
-msgid "Rendering…"
-msgstr "正在渲染…"
+msgid "Rendering..."
+msgstr "正在渲染..."
 
 #: src/contentScript/controller.ts:198
-msgid "Loading the PlantUML engine…"
-msgstr "正在加载 PlantUML 引擎…"
+msgid "Loading the PlantUML engine..."
+msgstr "正在加载 PlantUML 引擎..."
 
 #: src/contentScript/controller.ts:295
 msgid "Could not load the PlantUML engine."
@@ -114,11 +114,11 @@ msgstr ""
 "。"
 
 #: src/settings.ts:162
-msgid "Diagram font"
-msgstr "图表字体"
+msgid "Font used in diagrams"
+msgstr "图表使用的字体"
 
 #: src/settings.ts:163
-msgid "Font name for diagrams. Empty: the default font."
+msgid "Name of the font used in diagrams. Empty: the default font."
 msgstr "图表使用的字体名称。留空则使用默认字体。"
 
 #: src/settings.ts:171
@@ -126,9 +126,9 @@ msgid "Other language names"
 msgstr "其他语言名称"
 
 #: src/settings.ts:173
-#. "plantuml" and "puml" are language names of code blocks and are not translated.
-msgid "Code block languages that are also drawn as PlantUML, separated by commas. \"plantuml\" and \"puml\" always work."
-msgstr "同样作为 PlantUML 绘制的代码块语言名称，以逗号分隔。\"plantuml\" 和 \"puml\" 始终有效。"
+#. The info string is the text right after the opening fence of a code block, as in ```plantuml. "plantuml" and "puml" are language names and are not translated.
+msgid "Info strings (language names) of code fences that are drawn as PlantUML diagrams. Separate several language names with commas. \"plantuml\" and \"puml\" always work."
+msgstr "作为 PlantUML 图表绘制的代码围栏的信息字符串（语言名称）。可用逗号分隔指定多个语言名称。\"plantuml\" 和 \"puml\" 始终有效。"
 
 #: src/settings.ts:184
 msgid "Time limit per diagram (ms)"
@@ -139,12 +139,12 @@ msgid "Maximum source length (characters)"
 msgstr "源代码的最大长度（字符）"
 
 #: src/settings.ts:206
-msgid "Number of diagrams kept in the cache"
-msgstr "缓存中保留的图表数量"
+msgid "Number of diagrams held in the cache"
+msgstr "缓存中保存的图表数量"
 
 #: src/settings.ts:219
-msgid "PlantUML diagrams, rendered by the engine bundled in this plugin. No network access."
-msgstr "使用本插件内置的引擎渲染 PlantUML 图表。不进行任何网络访问。"
+msgid "A plugin that renders PlantUML. The PlantUML rendering engine is built in, and the plugin makes no network connections to the outside."
+msgstr "渲染 PlantUML 的插件。内置 PlantUML 渲染引擎，不与外部进行任何网络通信。"
 
 #: src/settings.ts:33
 #. {name} is the name of a built-in PlantUML theme, for example "Cyborg". Theme names are not translated.
@@ -181,12 +181,12 @@ msgid "Auto (follow Joplin's theme)"
 msgstr "自动（跟随 Joplin 的主题）"
 
 #: src/settings.ts:87
-msgid "Diagram theme"
-msgstr "图表主题"
+msgid "PlantUML diagram theme"
+msgstr "PlantUML 图表主题"
 
 #: src/settings.ts:88
-msgid "Auto chooses the light or dark style from the background of the note viewer."
-msgstr "自动模式会根据笔记查看器的背景选择浅色或深色样式。"
+msgid "When set to \"Auto\", the light or dark style is chosen automatically from the background of the note viewer."
+msgstr "设为“自动”时，会根据笔记查看器的背景自动选择浅色或深色样式。"
 
 #: src/settings.ts:97
 msgid "Style for the light theme"

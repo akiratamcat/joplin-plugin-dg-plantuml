@@ -19,12 +19,12 @@ msgstr[0] "O código-fonte tem {count} caractere. O limite é {limit}."
 msgstr[1] "O código-fonte tem {count} caracteres. O limite é {limit}."
 
 #: src/contentScript/controller.ts:198
-msgid "Rendering…"
-msgstr "Renderizando…"
+msgid "Rendering..."
+msgstr "Renderizando..."
 
 #: src/contentScript/controller.ts:198
-msgid "Loading the PlantUML engine…"
-msgstr "Carregando o mecanismo do PlantUML…"
+msgid "Loading the PlantUML engine..."
+msgstr "Carregando o mecanismo do PlantUML..."
 
 #: src/contentScript/controller.ts:295
 msgid "Could not load the PlantUML engine."
@@ -115,21 +115,21 @@ msgstr ""
 " entre as linhas."
 
 #: src/settings.ts:162
-msgid "Diagram font"
-msgstr "Fonte dos diagramas"
+msgid "Font used in diagrams"
+msgstr "Fonte usada nos diagramas"
 
 #: src/settings.ts:163
-msgid "Font name for diagrams. Empty: the default font."
-msgstr "Nome da fonte dos diagramas. Vazio: a fonte padrão."
+msgid "Name of the font used in diagrams. Empty: the default font."
+msgstr "Nome da fonte usada nos diagramas. Vazio: a fonte padrão."
 
 #: src/settings.ts:171
 msgid "Other language names"
 msgstr "Outros nomes de linguagem"
 
 #: src/settings.ts:173
-#. "plantuml" and "puml" are language names of code blocks and are not translated.
-msgid "Code block languages that are also drawn as PlantUML, separated by commas. \"plantuml\" and \"puml\" always work."
-msgstr "Linguagens de blocos de código que também são desenhadas como PlantUML, separadas por vírgulas. \"plantuml\" e \"puml\" sempre funcionam."
+#. The info string is the text right after the opening fence of a code block, as in ```plantuml. "plantuml" and "puml" are language names and are not translated.
+msgid "Info strings (language names) of code fences that are drawn as PlantUML diagrams. Separate several language names with commas. \"plantuml\" and \"puml\" always work."
+msgstr "Strings de informação (nomes de linguagem) dos blocos de código cercados que são desenhados como diagramas do PlantUML. Separe vários nomes de linguagem com vírgulas. \"plantuml\" e \"puml\" sempre funcionam."
 
 #: src/settings.ts:184
 msgid "Time limit per diagram (ms)"
@@ -140,12 +140,12 @@ msgid "Maximum source length (characters)"
 msgstr "Tamanho máximo do código-fonte (caracteres)"
 
 #: src/settings.ts:206
-msgid "Number of diagrams kept in the cache"
+msgid "Number of diagrams held in the cache"
 msgstr "Número de diagramas mantidos no cache"
 
 #: src/settings.ts:219
-msgid "PlantUML diagrams, rendered by the engine bundled in this plugin. No network access."
-msgstr "Diagramas do PlantUML, renderizados pelo mecanismo incluído neste plugin. Sem acesso à rede."
+msgid "A plugin that renders PlantUML. The PlantUML rendering engine is built in, and the plugin makes no network connections to the outside."
+msgstr "Um plugin que renderiza PlantUML. O mecanismo de renderização do PlantUML é integrado, e o plugin não faz conexões de rede com o exterior."
 
 #: src/settings.ts:33
 #. {name} is the name of a built-in PlantUML theme, for example "Cyborg". Theme names are not translated.
@@ -182,12 +182,12 @@ msgid "Auto (follow Joplin's theme)"
 msgstr "Automático (seguir o tema do Joplin)"
 
 #: src/settings.ts:87
-msgid "Diagram theme"
-msgstr "Tema dos diagramas"
+msgid "PlantUML diagram theme"
+msgstr "Tema dos diagramas do PlantUML"
 
 #: src/settings.ts:88
-msgid "Auto chooses the light or dark style from the background of the note viewer."
-msgstr "O modo automático escolhe o estilo claro ou escuro de acordo com o fundo do visualizador de notas."
+msgid "When set to \"Auto\", the light or dark style is chosen automatically from the background of the note viewer."
+msgstr "Com \"Automático\", o estilo claro ou escuro é escolhido automaticamente de acordo com o fundo do visualizador de notas."
 
 #: src/settings.ts:97
 msgid "Style for the light theme"

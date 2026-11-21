@@ -84,8 +84,8 @@ export function settingItems(t: Translator = ENGLISH): Record<string, SettingIte
 				// TRANSLATORS: A value of the setting "Diagram theme".
 				dark: t.pgettext('Diagram theme', 'Dark'),
 			},
-			label: t._('Diagram theme'),
-			description: t._('Auto chooses the light or dark style from the background of the note viewer.'),
+			label: t._('PlantUML diagram theme'),
+			description: t._('When set to "Auto", the light or dark style is chosen automatically from the background of the note viewer.'),
 		},
 		[KEYS.lightPreset]: {
 			section: SECTION,
@@ -159,8 +159,8 @@ export function settingItems(t: Translator = ENGLISH): Record<string, SettingIte
 			advanced: true,
 			type: SettingItemType.String,
 			value: d.fontFamily,
-			label: t._('Diagram font'),
-			description: t._('Font name for diagrams. Empty: the default font.'),
+			label: t._('Font used in diagrams'),
+			description: t._('Name of the font used in diagrams. Empty: the default font.'),
 		},
 		[KEYS.fenceAliases]: {
 			section: SECTION,
@@ -169,8 +169,8 @@ export function settingItems(t: Translator = ENGLISH): Record<string, SettingIte
 			type: SettingItemType.String,
 			value: '',
 			label: t._('Other language names'),
-			// TRANSLATORS: "plantuml" and "puml" are language names of code blocks and are not translated.
-			description: t._('Code block languages that are also drawn as PlantUML, separated by commas. "plantuml" and "puml" always work.'),
+			// TRANSLATORS: The info string is the text right after the opening fence of a code block, as in ```plantuml. "plantuml" and "puml" are language names and are not translated.
+			description: t._('Info strings (language names) of code fences that are drawn as PlantUML diagrams. Separate several language names with commas. "plantuml" and "puml" always work.'),
 		},
 		[KEYS.renderTimeoutMs]: {
 			section: SECTION,
@@ -203,7 +203,7 @@ export function settingItems(t: Translator = ENGLISH): Record<string, SettingIte
 			minimum: 1,
 			maximum: 10000,
 			step: 1,
-			label: t._('Number of diagrams kept in the cache'),
+			label: t._('Number of diagrams held in the cache'),
 		},
 	};
 }
@@ -216,7 +216,7 @@ export function settingsSection(t: Translator = ENGLISH) {
 	return {
 		label: 'dg-plantuml',
 		iconName: 'fas fa-project-diagram',
-		description: t._('PlantUML diagrams, rendered by the engine bundled in this plugin. No network access.'),
+		description: t._('A plugin that renders PlantUML. The PlantUML rendering engine is built in, and the plugin makes no network connections to the outside.'),
 	};
 }
 

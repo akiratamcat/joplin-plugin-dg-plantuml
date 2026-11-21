@@ -195,7 +195,7 @@ export class ViewerController {
 	}
 
 	private statusText(): string {
-		return this.engineReady ? this.t._('Rendering…') : this.t._('Loading the PlantUML engine…');
+		return this.engineReady ? this.t._('Rendering...') : this.t._('Loading the PlantUML engine...');
 	}
 
 	private output(el: HTMLElement): HTMLElement {
