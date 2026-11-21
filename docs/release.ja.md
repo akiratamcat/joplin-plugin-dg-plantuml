@@ -16,6 +16,7 @@
    - Secret scanning と Push protection（公開リポジトリでは無料。秘密の情報を含む push を GitHub が止める）
    - Private vulnerability reporting（`SECURITY.md` の案内先。設計書 21.1節）
    - Dependabot alerts
+   - `main` の保護（プルリクエストからだけマージでき、CI が通らないとマージできない）と「Automatically delete head branches」（設計書 21.2節のブランチの運用）
 
 ## 1. 準備
 
