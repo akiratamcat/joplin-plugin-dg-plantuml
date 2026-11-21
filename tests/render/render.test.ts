@@ -390,6 +390,14 @@ describe('the checks themselves', () => {
 });
 
 describe('built files (static check)', () => {
+	test('every license comment kept in the built viewer is in THIRD_PARTY_NOTICES.md (design 20.4)', () => {
+		const kept = fs.readFileSync(path.join(DIST, 'viewer.js.LICENSE.txt'), 'utf8');
+		const notices = fs.readFileSync(path.join(DIST, '..', 'THIRD_PARTY_NOTICES.md'), 'utf8');
+		const names = (kept.match(/\/\*!\s*(?:@license\s+)?([A-Za-z][\w.-]*)/g) || []).map((m) => m.replace(/\/\*!\s*(@license\s+)?/, ''));
+		expect(names).toEqual(['DOMPurify', 'regenerator-runtime']);
+		for (const name of names) expect(notices).toContain(`## ${name}`);
+	});
+
 	test.each(['LICENSE', 'THIRD_PARTY_NOTICES.md', 'contentScript/engine/LICENSE'])('the package includes %s', (file) => {
 		const built = fs.readFileSync(path.join(DIST, '..', file), 'utf8');
 		const source = fs.readFileSync(path.join(DIST, '..', '..', file === 'contentScript/engine/LICENSE' ? 'vendor/plantuml/LICENSE' : file), 'utf8');
