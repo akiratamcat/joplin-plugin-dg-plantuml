@@ -24,15 +24,38 @@ Do not edit them. To update the engine, follow the steps below.
 
 Not included: `viz-global.js` (Graphviz needs WebAssembly, which the Joplin
 note viewer does not allow; the plugin uses the Smetana layout instead) and
-the demo pages of the package. See `docs/design.md` (4.2, 8.5).
+the demo pages of the package. See `docs/design.ja.md` (4.2, 8.5).
 
 ## Updating
 
 Update the engine only for security fixes or necessary bug fixes
-(`docs/design.md`, D-10).
+(`docs/design.ja.md`, D-10).
 
 1. `npm pack @plantuml/core@<version>` and check that the tarball's sha512
    matches `npm view @plantuml/core@<version> dist.integrity`.
-2. Check that the license is still MIT.
-3. Copy the files listed above, update this file (version, integrity, SHA-256).
-4. Run the tests. If the visual snapshots change, release as a MINOR version.
+2. Check that the license is still MIT, and whether the package bundles any
+   new third-party data (like the Twemoji and Open Iconic data today).
+3. Copy the files listed above (byte for byte; `.gitattributes` keeps Git from
+   changing their line endings) and update this file: version, tarball,
+   integrity, SHA-256, retrieval date.
+4. Update the version in the other places. `npm run licenses:check` fails
+   until all of them match this file:
+   - `ENGINE_VERSION` in `src/contentScript/engine.ts` (part of the cache key),
+   - the versions in `src/thirdParty.ts` (shown on the settings screen),
+   - the component tables in `README.md` and `README.ja.md`,
+   - then run `npm run notices` to rebuild `THIRD_PARTY_NOTICES.md` and
+     `THIRD_PARTY_NOTICES.ja.md`.
+5. If `themes.js` changed, regenerate `BUILTIN_THEMES` in
+   `src/presets/builtinThemes.ts` (`tests/presets.test.ts` shows the
+   difference). For a new theme, check its readability in the theme gallery
+   (`tests/render/themeGallery.probe.ts`), record it in
+   `tests/manual/theme-review.ja.md`, and update `LIGHT_THEMES` / `DARK_THEMES`.
+6. Run `npm test`. The saved engine output in `tests/fixtures/engine` (error
+   and crash SVGs) may need to be saved again from the new engine if its
+   error format changed. The rendering tests "the sequence diagram after
+   class-like diagrams is a sequence diagram" and "no engine state leaks"
+   show whether the `RESET_LINES` workaround in `engine.ts` still works (see
+   `docs/lessons-learned.ja.md`).
+7. Try the plugin in Joplin (the manual tests of design 16.3), and write the
+   change in `CHANGELOG.md` / `CHANGELOG.ja.md`. If diagrams look different,
+   release as a MINOR version (design 21.2).

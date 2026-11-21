@@ -1,6 +1,6 @@
 # dg-plantuml stage 2 test note
 
-For the manual tests M-04, M-05 and M-12 (design 16.3). See stage2-manual-tests.md.
+For the manual tests M-04, M-05 and M-12 (design 16.3). See stage2-manual-tests.ja.md.
 
 ## 1. Sequence with a note
 

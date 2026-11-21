@@ -1,12 +1,14 @@
 # Security policy
 
+[日本語](SECURITY.ja.md)
+
 ## Reporting a vulnerability
 
 Please do not report security problems in public issues.
 
 Use GitHub's private vulnerability reporting instead:
 open the repository's **Security** tab and choose **Report a vulnerability**
-(https://github.com/akiratamcat/joplin-plugin-dg-plantuml/security/advisories/new).
+(<https://github.com/akiratamcat/joplin-plugin-dg-plantuml/security/advisories/new>).
 
 Please include:
 
@@ -14,7 +16,7 @@ Please include:
 - a PlantUML source or note that shows the problem, and
 - what happens and what you expected.
 
-The report is visible only to you and the maintainer. You will get an answer on GitHub.
+The report is visible only to you and the maintainer. You will get an answer on GitHub. English or Japanese is fine.
 
 ## Scope
 

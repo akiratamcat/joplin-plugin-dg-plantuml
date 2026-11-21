@@ -2,15 +2,20 @@
 // npm run licenses:check (design 20.4):
 //   1. every package that can end up in the plugin (the non-dev packages of
 //      package-lock.json) has a license from the allowlist,
-//   2. THIRD_PARTY_NOTICES.md is what npm run notices makes now (so a new
-//      version of DOMPurify or of the engine is not forgotten),
+//   2. THIRD_PARTY_NOTICES.md and THIRD_PARTY_NOTICES.ja.md are what npm run
+//      notices makes now (so a new version of DOMPurify or of the engine is
+//      not forgotten),
 //   3. the engine version is the same in vendor/plantuml/SOURCE.md and in
-//      src/contentScript/engine.ts (part of the cache key).
+//      src/contentScript/engine.ts (part of the cache key),
+//   4. the versions in src/thirdParty.ts (shown on the settings screen) are
+//      the current ones,
+//   5. the tables of bundled software in README.md and README.ja.md show the
+//      engine and DOMPurify versions.
 // The PlantUML engine is not an npm dependency; its license is checked by
 // hand when it is updated (design 20.3, vendor/plantuml/SOURCE.md).
 import fs from 'node:fs';
 import path from 'node:path';
-import { buildNotices, engineVersion, NOTICES_FILE, ROOT } from './notices.mjs';
+import { buildNotices, buildNoticesJa, NOTICES_FILE, NOTICES_FILE_JA, ROOT, versions } from './notices.mjs';
 
 /** Licenses allowed in the plugin package (design 20.4). An "A OR B" expression needs one allowed choice. */
 const ALLOWED = ['MIT', 'ISC', 'BSD-2-Clause', 'BSD-3-Clause', '0BSD', 'Apache-2.0', 'MPL-2.0'];
@@ -32,14 +37,31 @@ for (const [name, info] of shipped) {
 	else console.log(`${label}: ${info.license}`);
 }
 
-// 2. THIRD_PARTY_NOTICES.md is up to date.
-const committed = fs.readFileSync(NOTICES_FILE, 'utf8').replace(/\r\n/g, '\n');
-if (committed !== buildNotices()) problems.push('THIRD_PARTY_NOTICES.md is out of date: run npm run notices');
+// 2. THIRD_PARTY_NOTICES.md and THIRD_PARTY_NOTICES.ja.md are up to date.
+for (const [file, build] of [[NOTICES_FILE, buildNotices], [NOTICES_FILE_JA, buildNoticesJa]]) {
+	const committed = fs.existsSync(file) ? fs.readFileSync(file, 'utf8').replace(/\r\n/g, '\n') : '';
+	if (committed !== build()) problems.push(`${path.basename(file)} is out of date: run npm run notices`);
+}
 
 // 3. Engine version in SOURCE.md and engine.ts.
+const { engine, dompurify } = versions();
 const source = fs.readFileSync(path.join(ROOT, 'src', 'contentScript', 'engine.ts'), 'utf8');
 const m = /ENGINE_VERSION = '([^']+)'/.exec(source);
-if (!m || m[1] !== engineVersion()) problems.push(`engine version differs: SOURCE.md ${engineVersion()}, engine.ts ${m ? m[1] : 'not found'}`);
+if (!m || m[1] !== engine) problems.push(`engine version differs: SOURCE.md ${engine}, engine.ts ${m ? m[1] : 'not found'}`);
+
+// 4. Versions shown on the settings screen (src/thirdParty.ts, in the order of THIRD_PARTY).
+const thirdParty = fs.readFileSync(path.join(ROOT, 'src', 'thirdParty.ts'), 'utf8');
+const shown = [...thirdParty.matchAll(/version: '([^']*)'/g)].map((x) => x[1]);
+const expected = [engine, `in PlantUML ${engine}`, `in PlantUML ${engine}`, dompurify, `in DOMPurify ${dompurify}`];
+if (shown.join(', ') !== expected.join(', ')) problems.push(`src/thirdParty.ts versions are out of date: ${shown.join(', ')} (expected: ${expected.join(', ')})`);
+
+// 5. Component tables of the READMEs (the engine and DOMPurify rows).
+for (const readme of ['README.md', 'README.ja.md']) {
+	const text = fs.readFileSync(path.join(ROOT, readme), 'utf8');
+	for (const v of [engine, dompurify]) {
+		if (!text.includes(`| ${v} |`)) problems.push(`${readme}: version ${v} is not in the table of bundled software`);
+	}
+}
 
 if (problems.length) {
 	for (const p of problems) console.error(`problem: ${p}`);

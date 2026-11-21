@@ -398,7 +398,7 @@ describe('built files (static check)', () => {
 		for (const name of names) expect(notices).toContain(`## ${name}`);
 	});
 
-	test.each(['LICENSE', 'THIRD_PARTY_NOTICES.md', 'contentScript/engine/LICENSE'])('the package includes %s', (file) => {
+	test.each(['LICENSE', 'THIRD_PARTY_NOTICES.md', 'THIRD_PARTY_NOTICES.ja.md', 'contentScript/engine/LICENSE'])('the package includes %s', (file) => {
 		const built = fs.readFileSync(path.join(DIST, '..', file), 'utf8');
 		const source = fs.readFileSync(path.join(DIST, '..', '..', file === 'contentScript/engine/LICENSE' ? 'vendor/plantuml/LICENSE' : file), 'utf8');
 		expect(built).toBe(source);

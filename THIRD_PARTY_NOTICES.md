@@ -1,15 +1,17 @@
 # Third-party notices
 
+[日本語](THIRD_PARTY_NOTICES.ja.md)
+
 dg-plantuml (MIT License, see `LICENSE`) bundles the third-party software
 below in its plugin package (`.jpl`). Their licenses and notices follow.
 
-| Component | Version | License | Where |
-| --------- | ------- | ------- | ----- |
-| PlantUML (`@plantuml/core`) | 1.2026.10 | MIT | `engine/plantuml.js`, `engine/themes.js` |
-| Twemoji graphics (in `@plantuml/core`) | as bundled in 1.2026.10 | CC-BY 4.0 | `engine/emoji.js` |
-| Open Iconic (in `@plantuml/core`) | as bundled in 1.2026.10 | MIT | `engine/openiconic.js` |
-| DOMPurify | 3.4.17 | Apache-2.0 OR MPL-2.0 (used under Apache-2.0) | `viewer.js` |
-| regenerator-runtime (inside DOMPurify) | as bundled in DOMPurify 3.4.17 | MIT | `viewer.js` |
+| Component | Version | License | Website | Where |
+| --------- | ------- | ------- | ------- | ----- |
+| PlantUML (`@plantuml/core`) | 1.2026.10 | MIT | <https://plantuml.com/> | `engine/plantuml.js`, `engine/themes.js` |
+| Twemoji graphics (in `@plantuml/core`) | as bundled in 1.2026.10 | CC-BY 4.0 | <https://github.com/twitter/twemoji> | `engine/emoji.js` |
+| Open Iconic (in `@plantuml/core`) | as bundled in 1.2026.10 | MIT | <https://github.com/iconic/open-iconic> | `engine/openiconic.js` |
+| DOMPurify | 3.4.17 | Apache-2.0 OR MPL-2.0 (used under Apache-2.0) | <https://github.com/cure53/DOMPurify> | `viewer.js` |
+| regenerator-runtime (inside DOMPurify) | as bundled in DOMPurify 3.4.17 | MIT | <https://github.com/facebook/regenerator> | `viewer.js` |
 
 ---
 

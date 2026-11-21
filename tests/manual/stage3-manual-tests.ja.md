@@ -48,7 +48,7 @@ Joplin の表示言語は、設定 → 全般（アプリケーション）→�
 
 ## 日本語の訳の確認
 
-[ja-translation-review.md](ja-translation-review.md) の表で、44個の訳を確かめる。A の手順で日本語の画面を見ながら確かめると、実際の表示で判断できる。
+[ja-translation-review.ja.md](ja-translation-review.ja.md) の表で、44個の訳を確かめる。A の手順で日本語の画面を見ながら確かめると、実際の表示で判断できる。
 
 ---
 
@@ -60,4 +60,4 @@ Joplin の表示言語は、設定 → 全般（アプリケーション）→�
 | M-13 B   | 英語                                                 | OK              |      |
 | M-13 C   | 中国語（簡体字、できれば繁体字）                     | OK              |      |
 | M-13 D   | 翻訳がない言語は英語                                 | OK              |      |
-| 訳の確認 | ja-translation-review.md に記入                      |                 |      |
+| 訳の確認 | ja-translation-review.ja.md に記入                      |                 |      |

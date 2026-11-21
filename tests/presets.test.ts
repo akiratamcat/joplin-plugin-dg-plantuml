@@ -21,8 +21,8 @@ describe('built-in themes', () => {
 		expect(BUILTIN_THEMES).toEqual(expected);
 	});
 
-	test('only the themes checked as readable are offered, as recorded in theme-review.md', () => {
-		const review = fs.readFileSync(path.join(__dirname, 'manual', 'theme-review.md'), 'utf8');
+	test('only the themes checked as readable are offered, as recorded in theme-review.ja.md', () => {
+		const review = fs.readFileSync(path.join(__dirname, 'manual', 'theme-review.ja.md'), 'utf8');
 		const ok = (column: number) => review.split('\n')
 			.map((line) => line.split('|').map((c) => c.trim()))
 			.filter((cells) => cells.length >= 7 && /^\d+$/.test(cells[1]) && cells[column] === 'OK')

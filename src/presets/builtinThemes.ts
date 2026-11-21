@@ -53,7 +53,7 @@ export const BUILTIN_THEMES: Record<string, string> = {
  * readable only on one kind of page (for example white lines that vanish on a
  * light page), so the owner checked each one in a gallery of real renderings
  * (tests/render/themeGallery.probe.ts) and chose the readable ones
- * (tests/manual/theme-review.md, 2026-11-21). Themes unreadable on both are
+ * (tests/manual/theme-review.ja.md, 2026-11-21). Themes unreadable on both are
  * not offered at all.
  */
 export const LIGHT_THEMES: string[] = [

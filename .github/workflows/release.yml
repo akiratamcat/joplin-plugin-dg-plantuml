@@ -1,4 +1,4 @@
-# Release (design 21.4, docs/release.md): runs on a version tag.
+# Release (design 21.4, docs/release.ja.md): runs on a version tag.
 name: Release
 
 on:
@@ -40,7 +40,7 @@ jobs:
             --title "$GITHUB_REF_NAME" \
             --notes-file release-notes.md \
             publish/io.github.akiratamcat.dg-plantuml.jpl \
-            LICENSE THIRD_PARTY_NOTICES.md
+            LICENSE THIRD_PARTY_NOTICES.md THIRD_PARTY_NOTICES.ja.md
 
   npm:
     name: npm

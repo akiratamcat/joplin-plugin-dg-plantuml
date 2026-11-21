@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
-// Small, fast, non-cryptographic string hash (cyrb53) used for cache keys and
-// the `data-plantuml-key` attribute. It needs no Node.js `crypto`, so it works
-// in the Markdown-it renderer, the viewer and tests alike.
+// Small, fast, non-cryptographic string hash (cyrb53) used for the viewer's
+// cache keys (cache.ts) and the settings version (settings.ts). It needs no
+// Node.js `crypto`, so it works in the main script, the viewer and tests alike.
 
 export function hashString(text: string, seed = 0): string {
 	let h1 = 0xdeadbeef ^ seed;

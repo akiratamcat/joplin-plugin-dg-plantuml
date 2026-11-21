@@ -1,6 +1,6 @@
 # dg-plantuml stage 4 test note
 
-For the manual test M-07 (design 16.3) and the coloured error excerpt. See stage4-manual-tests.md.
+For the manual test M-07 (design 16.3) and the coloured error excerpt. See stage4-manual-tests.ja.md.
 
 ## 1. All kinds of tokens (sequence diagram)
 

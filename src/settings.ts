@@ -7,6 +7,7 @@ import { Catalog, ENGLISH, Translator } from './i18n/gettext';
 import { BUILTIN_THEMES, DARK_THEMES, LIGHT_THEMES } from './presets/builtinThemes';
 import { JOPLIN_LIGHT_LINES } from './presets/joplinLight';
 import { hashString } from './shared/hash';
+import { THIRD_PARTY, thirdPartyLine } from './thirdParty';
 
 export const SECTION = 'dgPlantuml';
 
@@ -26,6 +27,7 @@ export const KEYS = {
 	renderTimeoutMs: 'plantuml.renderTimeoutMs',
 	maxSourceLength: 'plantuml.maxSourceLength',
 	cacheSize: 'plantuml.cacheSize',
+	thirdParty: 'plantuml.thirdParty',
 } as const;
 
 function builtinOptions(t: Translator, names: string[]): Record<string, string> {
@@ -222,6 +224,20 @@ export function settingItems(t: Translator = ENGLISH): Record<string, SettingIte
 			maximum: 10000,
 			step: 1,
 			label: t._('Number of diagrams held in the cache'),
+		},
+		// Last, so that it is at the bottom of the screen (above the advanced
+		// settings). Joplin has no text-only setting, so the list of bundled
+		// software is a drop-down list: one line per component when opened.
+		// The value is not used.
+		[KEYS.thirdParty]: {
+			section: SECTION,
+			public: true,
+			type: SettingItemType.String,
+			isEnum: true,
+			value: THIRD_PARTY[0].id,
+			options: Object.fromEntries(THIRD_PARTY.map((c) => [c.id, thirdPartyLine(c)])),
+			label: t._('Bundled third-party software'),
+			description: t._('Open the list to see the name, version, license and website of each component. Choosing an item changes nothing. The full license texts are in THIRD_PARTY_NOTICES.md in the plugin package.'),
 		},
 	};
 }
