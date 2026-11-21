@@ -31,15 +31,15 @@ const BUILTIN_OPTIONS: Record<string, string> = Object.fromEntries(
 
 /** Preset IDs offered for each theme (design 8.4). Built-in themes are offered for both. */
 export const LIGHT_PRESETS: Record<string, string> = {
-	'plantuml-default': 'PlantUML default',
-	'joplin-light': 'Joplin light',
+	'plantuml-default': 'PlantUML standard (light colours, default)',
+	'joplin-light': 'Joplin light (light colours)',
 	...BUILTIN_OPTIONS,
 	custom: 'Custom (preamble below)',
 };
 
 export const DARK_PRESETS: Record<string, string> = {
-	'plantuml-dark': 'PlantUML dark',
-	'plantuml-default': 'PlantUML default',
+	'plantuml-dark': 'PlantUML dark (dark colours, default)',
+	'plantuml-default': 'PlantUML standard (light colours)',
 	...BUILTIN_OPTIONS,
 	custom: 'Custom (preamble below)',
 };
@@ -65,6 +65,7 @@ export const SETTINGS: Record<string, SettingItem> = {
 		value: 'plantuml-default',
 		options: LIGHT_PRESETS,
 		label: 'Style for the light theme',
+		description: 'Used on a light note viewer. Dark colours on a light page are hard to read.',
 	},
 	[KEYS.darkPreset]: {
 		section: SECTION,
@@ -74,6 +75,7 @@ export const SETTINGS: Record<string, SettingItem> = {
 		value: 'plantuml-dark',
 		options: DARK_PRESETS,
 		label: 'Style for the dark theme',
+		description: 'Used on a dark note viewer. Light colours on a dark page are hard to read.',
 	},
 	[KEYS.transparentBackground]: {
 		section: SECTION,

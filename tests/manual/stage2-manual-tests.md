@@ -2,12 +2,12 @@
 
 設計書 16.3節の手動テストのうち、段階2（テーマと文字サイズ、設定画面）で確かめる3項目の手順。
 
-| 項目 | 内容 |
-| ---- | ---- |
-| 対象 | `publish/io.github.akiratamcat.dg-plantuml.jpl`（`npm run dist` で作る） |
-| 環境 | Joplin の最新の安定版（Windows） |
-| テスト用のノート | [stage2-note.md](stage2-note.md)。新しいノートに貼り付ける |
-| 所要時間 | 全体で約 30分 |
+| 項目             | 内容                                                                     |
+| ---------------- | ------------------------------------------------------------------------ |
+| 対象             | `publish/io.github.akiratamcat.dg-plantuml.jpl`（`npm run dist` で作る） |
+| 環境             | Joplin の最新の安定版（Windows）                                         |
+| テスト用のノート | [stage2-note.md](stage2-note.md)。新しいノートに貼り付ける               |
+| 所要時間         | 全体で約 30分                                                            |
 
 - 設定は、設定 → プラグイン →「dg-plantuml」にある。詳細設定の項目は「詳細設定を表示」で出る。
 - 設定を変えると、ノートに戻ったときに図が描き直される（段階2 の手順1 で確認済み）。
@@ -90,16 +90,16 @@
 
 M-04 と M-05 で確かめた項目（Diagram theme、Light / Dark のスタイル、文字サイズの2項目）以外を確かめる。
 
-| # | 設定 | 操作 | 確認すること |
-| - | ---- | ---- | ------------ |
-| 1 | Custom preamble for the light theme | Light のスタイルを Custom にし、`skinparam ArrowColor #FF0000\nskinparam ParticipantBackgroundColor #FFE0E0` を入れる | 矢印が赤、シーケンス図の参加者が薄いピンクになる |
-| 2 | Transparent diagram background | 1 の続き。プリアンブルの末尾に `\nskinparam backgroundColor #FFF0C0` を足す。この設定を切る、入れる | 切ると図の背景が淡い黄色になり、入れると透明に戻る |
-| 3 | Custom preamble for the dark theme | Joplin を Dark 系にし、Dark のスタイルを Custom にして、`skinparam ArrowColor #00FF00` を入れる | 矢印が緑になる |
-| 4 | Diagram font | `Courier New` を入れる | 1〜6 のフォントが Courier New になる（4 のマインドマップと 5 の JSON も） |
-| 5 | Other language names | `uml` を入れる | 9 が図として表示される。消すと普通のコードブロックに戻る |
-| 6 | Maximum source length | 1000 にする | 6 が「The diagram is too large.」のエラーになり、ほかの図は表示される |
-| 7 | Time limit per diagram | 1000 にする | 図が今までどおり表示される（普通の図は 1 秒もかからない） |
-| 8 | Number of diagrams kept in the cache | 1 にする | 図が今までどおり表示される。ノートを切り替えて戻ると、少し遅れて描き直されることがある |
+| #   | 設定                                 | 操作                                                                                                                  | 確認すること                                                                           |
+| --- | ------------------------------------ | --------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| 1   | Custom preamble for the light theme  | Light のスタイルを Custom にし、`skinparam ArrowColor #FF0000\nskinparam ParticipantBackgroundColor #FFE0E0` を入れる | 矢印が赤、シーケンス図の参加者が薄いピンクになる                                       |
+| 2   | Transparent diagram background       | 1 の続き。プリアンブルの末尾に `\nskinparam backgroundColor #FFF0C0` を足す。この設定を切る、入れる                   | 切ると図の背景が淡い黄色になり、入れると透明に戻る                                     |
+| 3   | Custom preamble for the dark theme   | Joplin を Dark 系にし、Dark のスタイルを Custom にして、`skinparam ArrowColor #00FF00` を入れる                       | 矢印が緑になる                                                                         |
+| 4   | Diagram font                         | `Courier New` を入れる                                                                                                | 1〜6 のフォントが Courier New になる（4 のマインドマップと 5 の JSON も）              |
+| 5   | Other language names                 | `uml` を入れる                                                                                                        | 9 が図として表示される。消すと普通のコードブロックに戻る                               |
+| 6   | Maximum source length                | 1000 にする                                                                                                           | 6 が「The diagram is too large.」のエラーになり、ほかの図は表示される                  |
+| 7   | Time limit per diagram               | 1000 にする                                                                                                           | 図が今までどおり表示される（普通の図は 1 秒もかからない）                              |
+| 8   | Number of diagrams kept in the cache | 1 にする                                                                                                              | 図が今までどおり表示される。ノートを切り替えて戻ると、少し遅れて描き直されることがある |
 
 後片付け：変えた設定をすべて既定に戻す（スタイル、プリアンブル、フォント、言語名、上限の数値）。
 
@@ -107,13 +107,27 @@ M-04 と M-05 で確かめた項目（Diagram theme、Light / Dark のスタイ�
 
 ## 結果の記録
 
-| # | 確認すること | 結果（OK / NG） | メモ |
-| - | ------------ | --------------- | ---- |
-| M-04 A | Auto で Light / Dark に追従、7 のオプションと背景 | | |
-| M-04 B | Light / Dark に固定したときの見た目と背景 | | |
-| M-04 C | Joplin light の見た目 | | |
-| M-04 D | 内蔵テーマ（Cerulean、Cyborg ほか） | | |
-| M-05 A | 横に長い図の縮小と横スクロール、ペインの幅への追従 | | |
-| M-05 B | 最小の文字サイズ（0、16） | | |
-| M-05 C | 本文の文字サイズに合わせる、8 の図の中の指定が優先 | | |
-| M-12 1〜8 | 上の表のとおり | | |
+| #         | 確認すること                                       | 結果（OK / NG） | メモ                                                                                                  |
+| --------- | -------------------------------------------------- | --------------- | ----------------------------------------------------------------------------------------------------- |
+| M-04 A    | Auto で Light / Dark に追従、7 のオプションと背景  | NG              | Lightモードは問題ない。Darkモードは背景が透明で図形が見えない。                                       |
+| M-04 B    | Light / Dark に固定したときの見た目と背景          | NG              | Lightモードは問題ない。Darkモードは背景が透明で図形が見えない。                                       |
+| M-04 C    | Joplin light の見た目                              | OK              |                                                                                                       |
+| M-04 D    | 内蔵テーマ（Cerulean、Cyborg ほか）                | NG              | Cerulean は 2. Class diagram の丸C が文字も背景も白くて読めない。  他のテーマでも読めないものがある。 |
+| M-05 A    | 横に長い図の縮小と横スクロール、ペインの幅への追従 | OK              |                                                                                                       |
+| M-05 B    | 最小の文字サイズ（0、16）                          | OK              |                                                                                                       |
+| M-05 C    | 本文の文字サイズに合わせる、8 の図の中の指定が優先 | OK              |                                                                                                       |
+| M-12 1〜8 | 上の表のとおり                                     | NG              | M-12-2 , M-12-3 が意図通りにならない。（私の設定ミス？）                                              |
+
+### 再テスト（2026-11-21）
+
+最初のテストの NG のうち、M-04 A・B と M-12 の 2・3 は、プラグインの不具合ではなかった。「Style for the dark theme」が「PlantUML default」（PlantUML 標準の Light の配色）になっていたため、Dark 系のテーマで暗いページに黒い線で描かれていた。「PlantUML dark」に直して確かめ直した。
+
+| # | 結果（OK / NG） | メモ |
+| - | --------------- | ---- |
+| M-04 A | OK | Joplin が「暗い」で、1 と 7 の `theme=dark` が Dark の見た目になる。7 の `theme=light`・`theme=none` に白い背景が敷かれる |
+| M-04 B | OK | Diagram theme が Dark・Joplin が「明るい」：Dark の見た目に暗い背景。Diagram theme が Light・Joplin が「暗い」：Light 用のスタイル（Joplin light）に白い背景 |
+| M-04 D | NG のまま | Cerulean のクラス図の「C」の丸が白い。プラグインを通さずエンジン単体でも同じで、テーマ自体の配色。扱いは別に決める |
+| M-12 2 | OK | Light 用を Custom（`skinparam backgroundColor #FFF0C0`）にし、背景の透明を切ると淡い黄色、入れると透明 |
+| M-12 3 | OK | Joplin が「暗い」で、Dark 用を Custom（`skinparam ArrowColor #00FF00`）にすると矢印が緑 |
+
+対策：「PlantUML default」と「PlantUML dark」は名前が似ていて取り違えやすいため、選択肢の表示名を見直す。

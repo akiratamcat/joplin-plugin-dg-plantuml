@@ -23,6 +23,14 @@ describe('SETTINGS', () => {
 		}
 	});
 
+	test('the default style of each theme is marked as default, and only that one', () => {
+		for (const key of [KEYS.lightPreset, KEYS.darkPreset]) {
+			const item = SETTINGS[key];
+			const marked = Object.entries(item.options || {}).filter(([, label]) => /\bdefault\)$/.test(label)).map(([id]) => id);
+			expect(marked).toEqual([item.value]);
+		}
+	});
+
 	test('the default settings give the viewer defaults (design 9, D-08)', () => {
 		const config = buildViewerConfig(defaults());
 		expect({ ...config, settingsVersion: '' }).toEqual({ ...DEFAULT_VIEWER_CONFIG, settingsVersion: '' });
