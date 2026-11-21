@@ -54,11 +54,15 @@ describe('translations (design 10)', () => {
 		expect(items[KEYS.themeMode].value).toBe(SETTINGS[KEYS.themeMode].value);
 	});
 
-	test('the section description lists the bundled third-party software (design 20.4)', () => {
-		const lines = settingsSection().description.split('\n');
-		expect(lines).toContain('• PlantUML (@plantuml/core) 1.2026.10 - MIT - https://plantuml.com/');
-		expect(lines.filter((l) => l.startsWith('• '))).toHaveLength(THIRD_PARTY.length);
+	test('the bundled third-party software is the last item, one option per component (design 20.4)', () => {
+		const keys = Object.keys(SETTINGS);
+		expect(keys[keys.length - 1]).toBe(KEYS.thirdParty);
+		const item = SETTINGS[KEYS.thirdParty];
+		expect(item.advanced).toBeFalsy();
+		expect(Object.keys(item.options || {})).toEqual(THIRD_PARTY.map((c) => c.id));
+		expect(item.options?.plantuml).toBe('PlantUML (@plantuml/core) 1.2026.10 - MIT - https://plantuml.com/');
 		for (const c of THIRD_PARTY) expect(c.url).toMatch(/^https:\/\//);
+		expect(settingsSection().description).not.toMatch(/third-party/i);
 	});
 
 	test('the viewer gets the locale and the catalog; the settings version follows the locale', () => {
