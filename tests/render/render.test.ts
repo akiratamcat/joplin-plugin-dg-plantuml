@@ -5,6 +5,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { Browser } from 'playwright-core';
 import { countPatterns, FORBIDDEN_PATTERNS } from '../helpers/networkPatterns';
+import { buildViewerConfig, KEYS } from '../../src/settings';
 import { DIST, launchBrowser, PageRun, renderNote } from './renderPage';
 
 interface DiagramCase {
@@ -138,11 +139,149 @@ describe('theme', () => {
 
 	test('dark page: auto uses the dark output', async () => {
 		const light = await renderNote(browser, note);
-		const dark = await renderNote(browser, note, { bg: 'rgb(29, 32, 36)', fg: '#dddddd' });
+		const dark = await renderNote(browser, note, { colors: { bg: 'rgb(29, 32, 36)', fg: '#dddddd' } });
 		expectNoNetwork(dark);
 		expect(dark.blocks.map((b) => backdrop(b.classes))).toEqual([null, null, 'light', 'light']);
 		expect(dark.blocks[0].svgMarkup).toBe(light.blocks[1].svgMarkup); // auto on dark = theme=dark
 		expect(dark.blocks[2].svgMarkup).toBe(light.blocks[0].svgMarkup); // theme=light = auto on light
+	});
+});
+
+describe('settings from the main script (getConfig)', () => {
+	const note = fence('Alice -> Bob : x');
+
+	test('the viewer uses the settings it gets', async () => {
+		const defaults = await renderNote(browser, note);
+		const darkTheme = await renderNote(browser, `${fence('Alice -> Bob : x', 'plantuml theme=dark')}`);
+		const config = buildViewerConfig({ [KEYS.themeMode]: 'dark', [KEYS.lightPreset]: 'plantuml-default', [KEYS.darkPreset]: 'plantuml-dark' });
+		const run = await renderNote(browser, note, { config });
+		expectNoNetwork(run);
+		// themeMode=dark on a light page: the dark output, with a backdrop.
+		expect(run.blocks[0].svgMarkup).toBe(darkTheme.blocks[0].svgMarkup);
+		expect(run.blocks[0].svgMarkup).not.toBe(defaults.blocks[0].svgMarkup);
+		expect(run.blocks[0].classes).toContain('joplin-plantuml-backdrop-dark');
+		expect(run.settingsVersion).toBe(config.settingsVersion);
+		expect(run.messages).toContainEqual({ id: 'dgPlantumlMarkdownIt', message: { type: 'getConfig' } });
+		expect(run.console.filter((m) => /could not get the settings/.test(m))).toEqual([]);
+	});
+
+	test('a custom preamble is used', async () => {
+		const config = buildViewerConfig({ [KEYS.lightPreset]: 'custom', [KEYS.lightCustomPreamble]: 'skinparam ParticipantBackgroundColor #FF0000' });
+		const run = await renderNote(browser, note, { config });
+		expect(run.blocks[0].svgMarkup).toMatch(/fill="#FF0000"/i);
+	});
+
+	test('preset joplin-light: Joplin colours, meaningful colours kept', async () => {
+		const config = buildViewerConfig({ [KEYS.lightPreset]: 'joplin-light' });
+		const activity = fence('start\n:Step;\nstop');
+		const cls = fence('class Customer\ninterface Payable');
+		const run = await renderNote(browser, `${note}\n\n${activity}\n\n${cls}`, { config });
+		expectNoNetwork(run);
+		expect(run.blocks.map((b) => b.state)).toEqual(['done', 'done', 'done']);
+		expect(run.blocks[0].svgMarkup).toMatch(/fill="#32373F"/); // text colour
+		expect(run.blocks[0].svgMarkup).toMatch(/fill="#F4F5F6"/); // participants
+		expect(run.blocks[1].svgMarkup).toMatch(/fill="#222222"/); // start node stays filled
+		expect(run.blocks[2].svgMarkup).toMatch(/fill="#ADD1B2"/); // class icon colour
+	});
+
+	test('"transparent background" wins over a background in the preset', async () => {
+		const custom = { [KEYS.lightPreset]: 'custom', [KEYS.lightCustomPreamble]: 'skinparam backgroundColor #FFAAAA' };
+		const on = await renderNote(browser, note, { config: buildViewerConfig({ ...custom, [KEYS.transparentBackground]: true }) });
+		const off = await renderNote(browser, note, { config: buildViewerConfig({ ...custom, [KEYS.transparentBackground]: false }) });
+		// The viewer writes the size into the style, so the browser may write the colour as rgb().
+		const pink = /#FFAAAA|rgb\(255, 170, 170\)/i;
+		expect(on.blocks[0].svgMarkup).not.toMatch(pink);
+		expect(off.blocks[0].svgMarkup).toMatch(pink);
+	});
+
+	test('built-in theme (builtin:<name>) for the light and the dark theme', async () => {
+		const defaults = await renderNote(browser, note);
+		for (const [key, colors] of [[KEYS.lightPreset, undefined], [KEYS.darkPreset, { bg: 'rgb(29, 32, 36)', fg: '#dddddd' }]] as const) {
+			const run = await renderNote(browser, note, { config: buildViewerConfig({ [key]: 'builtin:cerulean' }), colors });
+			expectNoNetwork(run);
+			expect(run.blocks[0].state).toBe('done');
+			expect(run.blocks[0].svgMarkup).not.toBe(defaults.blocks[0].svgMarkup);
+		}
+	});
+
+	test('a broken answer falls back to the defaults', async () => {
+		const defaults = await renderNote(browser, note);
+		const run = await renderNote(browser, note, { config: { themeMode: 42, presets: 'x' } });
+		expectNoNetwork(run);
+		expect(run.blocks[0].state).toBe('done');
+		expect(run.blocks[0].svgMarkup).toBe(defaults.blocks[0].svgMarkup);
+	});
+});
+
+describe('font size (design 8.7)', () => {
+	// 24 participants: much wider than the pane.
+	const wide = fence(Array.from({ length: 24 }, (_, i) => `Participant${i} -> Participant${i + 1} : message ${i}`).join('\n'));
+	const narrow = fence('Alice -> Bob : hi');
+	const smallestFont = (svgMarkup: string) => Math.min(...(svgMarkup.match(/font-size="([\d.]+)"/g) || []).map((m) => parseFloat(m.slice(11))));
+
+	test('the base font size follows the note text', async () => {
+		const run = await renderNote(browser, narrow, { bodyFontSize: '20px' });
+		expect(run.blocks[0].svgMarkup).toMatch(/font-size="20"/);
+		const off = await renderNote(browser, narrow, { bodyFontSize: '20px', config: buildViewerConfig({ [KEYS.matchNoteFontSize]: false }) });
+		expect(off.blocks[0].svgMarkup).not.toMatch(/font-size="20"/);
+	});
+
+	test('other diagram types follow the note text too (design 8.5, table of diagram types)', async () => {
+		const sources = [
+			'@startmindmap\n* root\n** child\n@endmindmap',
+			'@startjson\n{"name": "dg"}\n@endjson',
+			"@startgantt\n[Design] lasts 5 days\n@endgantt",
+			'@startwbs\n* Project\n** Design\n@endwbs',
+		];
+		const run = await renderNote(browser, sources.map((s) => fence(s)).join('\n\n'), { bodyFontSize: '20px' });
+		expectNoNetwork(run);
+		for (const b of run.blocks) {
+			expect(b.state).toBe('done');
+			expect(b.svgMarkup).toMatch(/font-size="20"/);
+		}
+	});
+
+	test('error line numbers in other diagram types with a preamble', async () => {
+		const run = await renderNote(browser, [
+			fence('@startmindmap\n* root\nnot a node\n@endmindmap'),
+			// (Broken JSON is not an error for the engine: it draws "Your data does not sound like JSON data".)
+			fence('@startwbs\n* Project\nnot a node\n@endwbs'),
+		].join('\n\n'), { bodyFontSize: '20px' });
+		expect(run.blocks.map((b) => b.state)).toEqual(['error', 'error']);
+		expect(run.blocks[0].errorMessage).toMatch(/^Line 3: /);
+		expect(run.blocks[1].errorMessage).toMatch(/^Line 3: /);
+	});
+
+	test('a narrow diagram keeps its natural size', async () => {
+		const run = await renderNote(browser, narrow);
+		expect(run.blocks[0].scale).toBe(1);
+		expect(run.blocks[0].scrolls).toBe(false);
+	});
+
+	test('a wide diagram is scaled down, but its text stays at least at the minimum size and it scrolls', async () => {
+		const run = await renderNote(browser, wide, { width: 600 });
+		expectNoNetwork(run);
+		const b = run.blocks[0];
+		const scale = b.scale as number;
+		expect(scale).toBeLessThan(1);
+		expect(smallestFont(b.svgMarkup) * scale).toBeGreaterThanOrEqual(11 - 0.05);
+		expect(b.svgWidth as number).toBeGreaterThan(b.outputWidth);
+		expect(b.scrolls).toBe(true);
+	});
+
+	test('minimum 0: the wide diagram fits the pane', async () => {
+		const run = await renderNote(browser, wide, { width: 600, config: buildViewerConfig({ [KEYS.minFontSizePx]: 0 }) });
+		const b = run.blocks[0];
+		expect(Math.abs((b.svgWidth as number) - b.outputWidth)).toBeLessThanOrEqual(1);
+		expect(b.scrolls).toBe(false);
+	});
+
+	test('when the pane gets narrower, the diagram is fitted again', async () => {
+		const config = buildViewerConfig({ [KEYS.minFontSizePx]: 0 });
+		const run = await renderNote(browser, wide, { width: 900, resizeTo: 500, config });
+		const b = run.blocks[0];
+		expect(b.outputWidth).toBeLessThan(500);
+		expect(Math.abs((b.svgWidth as number) - b.outputWidth)).toBeLessThanOrEqual(1);
 	});
 });
 

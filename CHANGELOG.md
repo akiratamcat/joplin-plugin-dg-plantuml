@@ -18,3 +18,7 @@ are always listed.
 - Error box with the line number and the line in question.
 - Cache, debounce and display of the previous diagram while typing.
 - Smetana layout for all diagrams (Graphviz cannot run in Joplin's viewer).
+- Settings screen (Tools → Options → Plugins → dg-plantuml): diagram theme (Auto / Light / Dark), style for the light and the dark theme, transparent background, font size, minimum font size, custom preamble, diagram font, extra language names, time limit, maximum source length, cache size. Changes apply when you return to the note.
+- Styles: PlantUML standard, PlantUML dark, Joplin light, a custom preamble, and the built-in PlantUML themes that are readable on a light or a dark page.
+- The base font size of diagrams follows the note text. Wide diagrams are scaled down to the pane, but not below the minimum font size (11 px by default); then they scroll sideways.
+- Theme, style and font settings also apply to mind maps, WBS, Gantt charts, JSON, YAML, EBNF and regex diagrams.

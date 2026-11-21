@@ -62,6 +62,20 @@ describe('markdownItPlugin', () => {
 		expect(html).toBe('<pre><code class="language-js">let a = 1;\n</code></pre>\n');
 	});
 
+	test('extra language names from the settings', () => {
+		const md = new MarkdownIt();
+		contentScript(null).plugin(md, { settingValue: (key: string) => (key === 'plantuml.fenceAliases' ? 'uml, diagram' : '') });
+		expect(md.render('```uml\nA -> B\n```\n')).toMatch(/joplin-plantuml/);
+		expect(md.render('```Diagram\nA -> B\n```\n')).toMatch(/joplin-plantuml/);
+		expect(md.render('```js\nx\n```\n')).not.toMatch(/joplin-plantuml/);
+	});
+
+	test('a failing settingValue does not break rendering', () => {
+		const md = new MarkdownIt();
+		contentScript(null).plugin(md, { settingValue: () => { throw new Error('no settings'); } });
+		expect(md.render('```plantuml\nA\n```\n')).toMatch(/joplin-plantuml/);
+	});
+
 	test('assets', () => {
 		expect(contentScript(null).assets()).toEqual([{ name: 'plantuml.css' }, { name: 'viewer.js' }]);
 	});

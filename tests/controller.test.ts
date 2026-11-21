@@ -34,7 +34,7 @@ function setNote(markdown: string) {
 	document.body.innerHTML = md.render(markdown);
 }
 
-function setup(config: Partial<ViewerConfig> = {}, dark = false) {
+function setup(config: Partial<ViewerConfig> = {}, dark = false, noteFont = 0) {
 	const engine = new FakeEngine();
 	const timers: { fn: () => void; ms: number }[] = [];
 	const errors: unknown[][] = [];
@@ -44,6 +44,7 @@ function setup(config: Partial<ViewerConfig> = {}, dark = false) {
 		config: { ...DEFAULT_VIEWER_CONFIG, ...config },
 		sanitize: (svg) => svg.replace(/<script[\s\S]*?<\/script>/g, ''),
 		isDark: () => dark,
+		noteFontSize: () => noteFont,
 		setTimer: (fn, ms) => { timers.push({ fn, ms }); return timers.length; },
 		clearTimer: () => { timers.length = 0; },
 		logError: (...args) => { errors.push(args); },
@@ -282,6 +283,51 @@ describe('ViewerController', () => {
 		document.body.innerHTML = '';
 		await flush();
 		expect(engine.calls).toHaveLength(0);
+	});
+
+	test('new settings: the blocks are drawn again with them', async () => {
+		const { engine, controller, flush } = setup();
+		setNote('```plantuml\nA -> B\n```\n');
+		controller.update();
+		await flush();
+		controller.setConfig({ ...DEFAULT_VIEWER_CONFIG, transparentBackground: false, settingsVersion: 'v2' });
+		expect(controller.settingsVersion).toBe('v2');
+		// The previous diagram stays while the block renders again.
+		expect(outputs()[0].querySelector('.joplin-plantuml-stale svg')).not.toBeNull();
+		await flush();
+		expect(engine.calls).toHaveLength(2);
+		expect(engine.calls[1].source).not.toMatch(/backgroundColor transparent/);
+		expect(outputs()[0].querySelector(':scope > svg')).not.toBeNull();
+	});
+
+	test('the same settings again: nothing is drawn again', async () => {
+		const { engine, controller, flush } = setup();
+		setNote('```plantuml\nA -> B\n```\n');
+		controller.update();
+		await flush();
+		controller.setConfig({ ...DEFAULT_VIEWER_CONFIG });
+		await flush();
+		expect(engine.calls).toHaveLength(1);
+	});
+});
+
+describe('font size (design 8.7)', () => {
+	test('the note font size becomes the base font size of the diagram', async () => {
+		setNote('```plantuml\nA -> B\n```\n');
+		const { engine, controller, flush } = setup({}, false, 15);
+		controller.update();
+		await flush();
+		expect(engine.calls[0].source).toMatch(/^skinparam defaultFontSize 15$/m);
+	});
+
+	test('not when the setting is off, or the size is unknown', async () => {
+		for (const [config, font] of [[{ matchNoteFontSize: false }, 15], [{}, 0]] as const) {
+			setNote('```plantuml\nA -> B\n```\n');
+			const { engine, controller, flush } = setup(config, false, font);
+			controller.update();
+			await flush();
+			expect(engine.calls[0].source).not.toMatch(/defaultFontSize/);
+		}
 	});
 });
 

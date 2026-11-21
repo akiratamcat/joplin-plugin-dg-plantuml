@@ -4,7 +4,7 @@
 // Joplin uses for its own code blocks and Mermaid (joplin-editable +
 // pre.joplin-source), so that the Rich Text editor shows and edits the
 // source with Joplin's standard dialog without losing it.
-import { isPlantUmlLanguage, parseInfo } from '../shared/fence';
+import { isPlantUmlLanguage, parseAliases, parseInfo } from '../shared/fence';
 
 /* eslint-disable @typescript-eslint/no-explicit-any -- markdown-it is untyped here */
 
@@ -39,15 +39,33 @@ export function renderBlock(token: FenceToken): string {
 	].join('');
 }
 
+/** Setting with the extra language names (src/settings.ts KEYS.fenceAliases). */
+const ALIASES_KEY = 'plantuml.fenceAliases';
+
+interface PluginOptions {
+	settingValue?: (key: string) => unknown;
+}
+
+/** Extra language names from the settings ("uml, diagram"). Empty when unavailable. */
+export function aliasesFrom(options: PluginOptions | null | undefined): string[] {
+	try {
+		const value = options && typeof options.settingValue === 'function' ? options.settingValue(ALIASES_KEY) : '';
+		return typeof value === 'string' ? parseAliases(value) : [];
+	} catch {
+		return [];
+	}
+}
+
 export default function(_context: unknown) {
 	return {
-		plugin: function(markdownIt: any, _options: unknown) {
+		plugin: function(markdownIt: any, pluginOptions: PluginOptions) {
 			const defaultRender = markdownIt.renderer.rules.fence || function(tokens: any, idx: number, options: any, env: any, self: any) {
 				return self.renderToken(tokens, idx, options, env, self);
 			};
 			markdownIt.renderer.rules.fence = function(tokens: any, idx: number, options: any, env: any, self: any) {
 				const token = tokens[idx];
-				if (!isPlantUmlLanguage(parseInfo(token.info || '').language)) {
+				// Read on every block: the setting can change while Joplin runs.
+				if (!isPlantUmlLanguage(parseInfo(token.info || '').language, aliasesFrom(pluginOptions))) {
 					return defaultRender(tokens, idx, options, env, self);
 				}
 				return renderBlock(token);

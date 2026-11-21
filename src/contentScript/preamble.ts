@@ -6,6 +6,8 @@
 export interface PreambleOptions {
 	/** Lines of the selected style preset (empty for plantuml-default / plantuml-dark). */
 	presetLines: string[];
+	/** Built-in theme of the preset (builtin:<name>). Added as "!theme <name>". */
+	presetTheme?: string;
 	/** Add "skinparam backgroundColor transparent". */
 	transparentBackground: boolean;
 	/** Font name for "skinparam defaultFontName" (empty: not added). */
@@ -40,21 +42,43 @@ function oneLine(value: string): string {
 	return value.replace(/[\r\n]+/g, ' ').trim();
 }
 
+/**
+ * Diagram types other than @startuml that get a preamble (design 8.5, the
+ * table of diagram types). Checked with the engine: none of the preamble lines
+ * gives an error, and the <style> font settings take effect. Types not listed
+ * get nothing: in some (salt, chronology) the settings have no effect, and in
+ * others (ditaa, dot, math...) the content is not PlantUML, so added lines
+ * would break the diagram.
+ */
+export const STYLE_DIAGRAM_TYPES = ['mindmap', 'wbs', 'gantt', 'json', 'yaml', 'ebnf', 'regex'];
+
 /** Builds the preamble lines for a diagram (design 8.5). */
 export function buildPreamble(diagramType: string, source: string, opts: PreambleOptions): string[] {
-	// Diagram types other than @startuml (json, yaml, mindmap, gantt...) take
-	// different style syntax; v1.0 inserts nothing for them (design 8.5).
-	if (diagramType !== 'uml') return [];
+	const uml = diagramType === 'uml';
+	if (!uml && !STYLE_DIAGRAM_TYPES.includes(diagramType)) return [];
 	const lines: string[] = [];
-	if (opts.smetana && !LAYOUT_PRAGMA_RE.test(source)) lines.push('!pragma layout smetana');
+	// Smetana replaces Graphviz, which only @startuml diagrams use.
+	if (uml && opts.smetana && !LAYOUT_PRAGMA_RE.test(source)) lines.push('!pragma layout smetana');
 	if (opts.noStyle) return lines;
+	// Order: the preset (theme, then its lines), then the settings chosen on the
+	// settings screen, which win over the preset ("transparent background"
+	// applies whatever the preset says, design 8.5). The user's own lines in
+	// the diagram come after the preamble and win over everything.
+	if (opts.presetTheme && /^[a-z0-9][a-z0-9-]*$/.test(opts.presetTheme)) lines.push(`!theme ${opts.presetTheme}`);
+	for (const line of opts.presetLines) lines.push(line);
 	if (opts.transparentBackground) lines.push('skinparam backgroundColor transparent');
 	const font = oneLine(opts.fontFamily);
-	if (font) lines.push(`skinparam defaultFontName ${font}`);
-	if (Number.isInteger(opts.fontSizePx) && opts.fontSizePx > 0 && opts.fontSizePx <= 200) {
-		lines.push(`skinparam defaultFontSize ${opts.fontSizePx}`);
+	const size = Number.isInteger(opts.fontSizePx) && opts.fontSizePx > 0 && opts.fontSizePx <= 200 ? opts.fontSizePx : 0;
+	if (uml) {
+		if (font) lines.push(`skinparam defaultFontName ${font}`);
+		if (size) lines.push(`skinparam defaultFontSize ${size}`);
+	} else if (font || size) {
+		// skinparam defaultFont* has no effect in json, yaml and regex; <style> works in all of them.
+		lines.push('<style>', 'root {');
+		if (font) lines.push(`  FontName ${font}`);
+		if (size) lines.push(`  FontSize ${size}`);
+		lines.push('}', '</style>');
 	}
-	for (const line of opts.presetLines) lines.push(line);
 	return lines;
 }
 

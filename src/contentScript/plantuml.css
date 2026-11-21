@@ -19,10 +19,13 @@
 	text-align: right;
 }
 
-/* Fit the width of the pane. The engine writes the size as inline styles. */
+/*
+ * The viewer sets the width and height of each diagram (design 8.7): scaled
+ * down to the pane, but not below the minimum font size. A diagram wider than
+ * the pane scrolls sideways (overflow-x on the output).
+ */
 .joplin-plantuml-output svg {
-	max-width: 100%;
-	height: auto !important;
+	max-width: none;
 }
 
 /*
@@ -32,7 +35,6 @@
  */
 .joplin-plantuml-backdrop-light > .joplin-plantuml-output svg,
 .joplin-plantuml-backdrop-dark > .joplin-plantuml-output svg {
-	max-width: calc(100% - 16px);
 	padding: 8px;
 	border-radius: 4px;
 }

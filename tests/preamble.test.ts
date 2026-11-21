@@ -19,14 +19,14 @@ describe('buildPreamble', () => {
 		expect(buildPreamble('uml', '@startuml\n  !pragma layout elk\n@enduml', base)).toEqual([]);
 	});
 
-	test('style lines in order: background, font, size, preset', () => {
-		const opts = { ...base, transparentBackground: true, fontFamily: 'Noto Sans\nJP', fontSizePx: 16, presetLines: ['skinparam ArrowColor #888'] };
+	test('style lines in order: preset, then the settings that win over it (background, font, size)', () => {
+		const opts = { ...base, transparentBackground: true, fontFamily: 'Noto Sans\nJP', fontSizePx: 16, presetLines: ['skinparam backgroundColor #FFAAAA'] };
 		expect(buildPreamble('uml', '', opts)).toEqual([
 			'!pragma layout smetana',
+			'skinparam backgroundColor #FFAAAA',
 			'skinparam backgroundColor transparent',
 			'skinparam defaultFontName Noto Sans JP',
 			'skinparam defaultFontSize 16',
-			'skinparam ArrowColor #888',
 		]);
 	});
 
@@ -40,9 +40,24 @@ describe('buildPreamble', () => {
 		expect(buildPreamble('uml', '', { ...base, noStyle: true, transparentBackground: true, presetLines: ['x'] })).toEqual(['!pragma layout smetana']);
 	});
 
-	test('other diagram types get no preamble', () => {
-		expect(buildPreamble('json', '', { ...base, transparentBackground: true })).toEqual([]);
-		expect(buildPreamble('mindmap', '', { ...base, transparentBackground: true })).toEqual([]);
+	test('mindmap, json and the other listed types: <style> for the font, no Smetana', () => {
+		const opts = { ...base, transparentBackground: true, fontFamily: 'Noto Sans', fontSizePx: 15, presetTheme: 'cerulean', presetLines: ['x'] };
+		for (const type of ['mindmap', 'wbs', 'gantt', 'json', 'yaml', 'ebnf', 'regex']) {
+			expect(buildPreamble(type, '', opts)).toEqual([
+				'!theme cerulean',
+				'x',
+				'skinparam backgroundColor transparent',
+				'<style>', 'root {', '  FontName Noto Sans', '  FontSize 15', '}', '</style>',
+			]);
+		}
+		expect(buildPreamble('json', '', { ...base, transparentBackground: false })).toEqual([]);
+		expect(buildPreamble('json', '', { ...base, fontSizePx: 15, noStyle: true })).toEqual([]);
+	});
+
+	test('types whose content is not PlantUML, or where settings have no effect, get nothing', () => {
+		for (const type of ['ditaa', 'dot', 'math', 'latex', 'salt', 'chronology', 'creole', 'unknown']) {
+			expect(buildPreamble(type, '', { ...base, transparentBackground: true, fontSizePx: 15 })).toEqual([]);
+		}
 	});
 });
 
@@ -65,10 +80,24 @@ describe('prepareSource', () => {
 		expect(p.startLine).toBe(2);
 	});
 
-	test('other @start types are passed as they are', () => {
+	test('other @start types are passed as they are when there is nothing to add', () => {
 		const p = prepareSource('@startjson\n{"a": 1}\n@endjson', base);
 		expect(p.lines).toEqual(['@startjson', '{"a": 1}', '@endjson']);
 		expect(p).toMatchObject({ diagramType: 'json', inserted: 0 });
+	});
+
+	test('a ditaa diagram is never changed', () => {
+		const source = '@startditaa\n+--+\n|  |\n+--+\n@endditaa';
+		const p = prepareSource(source, { ...base, transparentBackground: true, fontSizePx: 15 });
+		expect(p.lines.join('\n')).toBe(source);
+	});
+
+	test('line numbers in a mind map with a preamble', () => {
+		const p = prepareSource('@startmindmap\n* root\nbad\n@endmindmap', { ...base, fontSizePx: 15 });
+		// engine: 1 @startmindmap, 2-6 <style> block, 7 * root, 8 bad
+		expect(p.inserted).toBe(5);
+		expect(toUserLine(8, p)).toBe(3);
+		expect(toUserLine(4, p)).toBeNull();
 	});
 
 	test('CRLF line endings are normalised', () => {

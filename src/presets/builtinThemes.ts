@@ -1,0 +1,105 @@
+// SPDX-License-Identifier: MIT
+// Built-in PlantUML themes (!theme) in vendor/plantuml/themes.js, with their display names
+// (design 8.4, builtin:<name>). Generated from themes.js; tests/presets.test.ts checks that
+// this list matches the bundled file. "_none_" (an empty theme) is left out.
+export const BUILTIN_THEMES: Record<string, string> = {
+	'amiga': 'Amiga Workbench 1.x',
+	'aws-orange': 'AWS orange',
+	'black-knight': 'Black Knight',
+	'bluegray': 'Blue Gray',
+	'blueprint': 'Blueprint',
+	'carbon-gray': 'Carbon Gray',
+	'cerulean': 'Cerulean',
+	'cerulean-outline': 'Cerulean Outline',
+	'cloudscape-design': 'Cloudscape design',
+	'crt-amber': 'Cathode-ray tube (CRT) amber',
+	'crt-green': 'Cathode-ray tube (CRT) green',
+	'cyborg': 'Cyborg',
+	'cyborg-outline': 'Cyborg Outline',
+	'hacker': 'Hacker',
+	'lightgray': 'Lightgray',
+	'mars': 'Mars',
+	'materia': 'Materia',
+	'materia-outline': 'Materia Outline',
+	'metal': 'Metal',
+	'mimeograph': 'Mimeograph',
+	'minty': 'Minty',
+	'mono': 'Mono',
+	'plain': 'Plain',
+	'reddress-darkblue': 'Reddress Darkblue',
+	'reddress-darkgreen': 'Reddress Darkgreen',
+	'reddress-darkorange': 'Reddress Darkorange',
+	'reddress-darkred': 'Reddress Darkred',
+	'reddress-lightblue': 'Reddress Lightblue',
+	'reddress-lightgreen': 'Reddress Lightgreen',
+	'reddress-lightorange': 'Reddress Lightorange',
+	'reddress-lightred': 'Reddress Lightred',
+	'sandstone': 'Sandstone',
+	'silver': 'Silver',
+	'sketchy': 'Sketchy',
+	'sketchy-outline': 'Sketchy Outline',
+	'spacelab': 'Spacelab',
+	'spacelab-white': 'Spacelab White',
+	'sunlust': 'Sunlust',
+	'superhero': 'Superhero',
+	'superhero-outline': 'Superhero Outline',
+	'toy': 'Toy',
+	'united': 'United',
+	'vibrant': 'Vibrant',
+};
+
+/**
+ * Themes offered for the light theme and for the dark theme. Many themes are
+ * readable only on one kind of page (for example white lines that vanish on a
+ * light page), so the owner checked each one in a gallery of real renderings
+ * (tests/render/themeGallery.probe.ts) and chose the readable ones
+ * (tests/manual/theme-review.md, 2026-11-21). Themes unreadable on both are
+ * not offered at all.
+ */
+export const LIGHT_THEMES: string[] = [
+	'black-knight',
+	'bluegray',
+	'cerulean',
+	'cerulean-outline',
+	'cloudscape-design',
+	'crt-amber',
+	'crt-green',
+	'cyborg',
+	'cyborg-outline',
+	'mars',
+	'materia',
+	'materia-outline',
+	'metal',
+	'mimeograph',
+	'mono',
+	'plain',
+	'reddress-lightblue',
+	'reddress-lightgreen',
+	'reddress-lightorange',
+	'reddress-lightred',
+	'sunlust',
+	'superhero-outline',
+	'toy',
+	'united',
+	'vibrant',
+];
+
+export const DARK_THEMES: string[] = [
+	'amiga',
+	'aws-orange',
+	'bluegray',
+	'blueprint',
+	'carbon-gray',
+	'crt-amber',
+	'crt-green',
+	'cyborg',
+	'cyborg-outline',
+	'hacker',
+	'metal',
+	'mimeograph',
+	'minty',
+	'sandstone',
+	'spacelab',
+	'spacelab-white',
+	'superhero',
+];

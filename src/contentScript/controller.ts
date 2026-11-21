@@ -3,9 +3,10 @@
 // blocks, uses the cache, keeps the previous diagram while a block is being
 // edited, renders one block at a time and shows errors.
 import { cacheKey, LruCache } from './cache';
+import { fitSvg } from './fontSize';
 import { RenderEngine, RenderResult } from './engine';
 import { PreparedSource, prepareSource, splitLines, toUserLine } from './preamble';
-import { ViewerConfig } from './viewerConfig';
+import { PresetConfig, ViewerConfig } from './viewerConfig';
 import { parseInfo } from '../shared/fence';
 
 export const BLOCK_SELECTOR = '.joplin-plantuml';
@@ -37,6 +38,8 @@ export interface ControllerDeps {
 	sanitize: (svg: string) => string;
 	/** True when the viewer background is dark (design 8.2). */
 	isDark: () => boolean;
+	/** Font size of the note text in px, 0 when unknown (design 8.7 (1)). */
+	noteFontSize?: () => number;
 	setTimer?: (fn: () => void, ms: number) => unknown;
 	clearTimer?: (handle: unknown) => void;
 	logError?: (...args: unknown[]) => void;
@@ -64,6 +67,7 @@ export function countDiagrams(source: string): number {
 }
 
 export class ViewerController {
+	private config: ViewerConfig;
 	private readonly cache: LruCache<DiagramView>;
 	private readonly queue: Job[] = [];
 	/** Last successful diagram at each block position. */
@@ -77,10 +81,27 @@ export class ViewerController {
 	private readonly logError: (...args: unknown[]) => void;
 
 	constructor(private readonly deps: ControllerDeps) {
+		this.config = deps.config;
 		this.cache = new LruCache<DiagramView>(deps.config.cacheSize);
 		this.setTimer = deps.setTimer || ((fn, ms) => setTimeout(fn, ms));
 		this.clearTimer = deps.clearTimer || ((h) => clearTimeout(h as ReturnType<typeof setTimeout>));
 		this.logError = deps.logError || ((...args) => console.error('dg-plantuml:', ...args));
+	}
+
+	get settingsVersion(): string {
+		return this.config.settingsVersion;
+	}
+
+	/**
+	 * Uses new settings. When they differ from the current ones, every block
+	 * is drawn again (the cache key contains the settings version, design 7.2).
+	 */
+	setConfig(config: ViewerConfig): void {
+		if (config.settingsVersion === this.config.settingsVersion) return;
+		this.config = config;
+		this.cache.setLimit(config.cacheSize);
+		this.deps.doc.querySelectorAll(`${BLOCK_SELECTOR} > ${OUTPUT_SELECTOR}[${STATE_ATTR}]`).forEach((out) => out.removeAttribute(STATE_ATTR));
+		this.update();
 	}
 
 	/** True when the page has blocks that have not been handled yet. */
@@ -92,23 +113,25 @@ export class ViewerController {
 	update(): void {
 		const blocks = Array.from(this.deps.doc.querySelectorAll<HTMLElement>(BLOCK_SELECTOR));
 		let dark: boolean | null = null;
+		let fontSize: number | null = null;
 		let queued = false;
 		let edited = false;
 		blocks.forEach((el, index) => {
 			if (this.output(el).hasAttribute(STATE_ATTR)) return;
 			if (dark === null) dark = this.deps.isDark();
-			const job = this.makeJob(el, index, dark);
+			if (fontSize === null) fontSize = this.config.matchNoteFontSize && this.deps.noteFontSize ? this.deps.noteFontSize() : 0;
+			const job = this.makeJob(el, index, dark, fontSize);
 			const cached = this.cache.get(job.key);
 			if (cached) {
 				this.show(job, cached);
 				return;
 			}
 			this.output(el).setAttribute(STATE_ATTR, 'pending');
-			if (job.source.length > this.deps.config.maxSourceLength) {
+			if (job.source.length > this.config.maxSourceLength) {
 				const view: DiagramView = {
 					kind: 'error',
 					title: 'The diagram is too large.',
-					message: `The source has ${job.source.length} characters. The limit is ${this.deps.config.maxSourceLength}.`,
+					message: `The source has ${job.source.length} characters. The limit is ${this.config.maxSourceLength}.`,
 					line: null,
 				};
 				this.show(job, view);
@@ -123,21 +146,22 @@ export class ViewerController {
 			this.queue.push(job);
 			queued = true;
 		});
-		if (queued) this.schedule(edited ? this.deps.config.debounceMs : 0);
+		if (queued) this.schedule(edited ? this.config.debounceMs : 0);
 	}
 
-	private makeJob(el: HTMLElement, index: number, dark: boolean): Job {
-		const config = this.deps.config;
+	private makeJob(el: HTMLElement, index: number, dark: boolean, fontSizePx: number): Job {
+		const config = this.config;
 		const pre = el.querySelector('pre.joplin-source');
 		const source = pre ? pre.textContent || '' : '';
 		const options = parseInfo(pre ? pre.getAttribute('data-joplin-language') || '' : '').options;
 		const theme = options.theme || (config.themeMode === 'auto' ? (dark ? 'dark' : 'light') : config.themeMode);
-		const preset = theme === 'none' ? { lines: [], engineDark: false } : config.presets[theme];
+		const preset: PresetConfig = theme === 'none' ? { lines: [], engineDark: false } : config.presets[theme];
 		const prepared = prepareSource(source, {
 			presetLines: preset.lines,
+			presetTheme: preset.theme,
 			transparentBackground: config.transparentBackground,
 			fontFamily: config.fontFamily,
-			fontSizePx: 0,
+			fontSizePx,
 			smetana: true,
 			noStyle: theme === 'none',
 		});
@@ -153,7 +177,7 @@ export class ViewerController {
 			source,
 			theme: `${theme}${preset.engineDark ? '+engine-dark' : ''}`,
 			preamble,
-			baseFontSizePx: 0,
+			baseFontSizePx: fontSizePx,
 			settingsVersion: config.settingsVersion,
 			engineVersion: this.deps.engine.version,
 		});
@@ -197,6 +221,7 @@ export class ViewerController {
 		if (!prev) return false;
 		const out = this.output(job.el);
 		out.replaceChildren(this.staleNode(prev.svg));
+		this.fit(out);
 		out.setAttribute('aria-busy', 'true');
 		return true;
 	}
@@ -260,7 +285,7 @@ export class ViewerController {
 		let result: RenderResult;
 		try {
 			result = await this.deps.engine.renderSvg(job.prepared.lines.join('\n'), {
-				timeoutMs: this.deps.config.renderTimeoutMs,
+				timeoutMs: this.config.renderTimeoutMs,
 				dark: job.engineDark,
 			});
 		} catch (e) {
@@ -292,6 +317,7 @@ export class ViewerController {
 		out.setAttribute(STATE_ATTR, view.kind === 'svg' ? 'done' : 'error');
 		if (view.kind === 'svg') {
 			out.innerHTML = view.svg;
+			this.fit(out);
 			this.lastGood.set(job.index, { source: job.source, svg: view.svg });
 			if (countDiagrams(job.source) > 1) {
 				out.appendChild(this.note('Only the first diagram in this block is shown.'));
@@ -304,6 +330,60 @@ export class ViewerController {
 		const prev = this.previousFor(job);
 		if (prev) nodes.push(this.staleNode(prev.svg));
 		out.replaceChildren(...nodes);
+		this.fit(out);
+	}
+
+	/**
+	 * Sizes the diagrams of an output for the pane width, keeping the minimum
+	 * font size (design 8.7 (2)), and refits them when the pane width changes.
+	 */
+	private fit(out: HTMLElement): void {
+		const svgs = Array.from(out.querySelectorAll<SVGElement>(':scope > svg, :scope > .joplin-plantuml-stale > svg'));
+		if (!svgs.length) return;
+		const view = this.deps.doc.defaultView;
+		for (const svg of svgs) {
+			// The backdrop (8.5) adds padding to the SVG; it takes room from the pane.
+			let extra = 0;
+			if (view) {
+				const cs = view.getComputedStyle(svg);
+				extra = ['paddingLeft', 'paddingRight', 'borderLeftWidth', 'borderRightWidth']
+					.reduce((sum, k) => sum + (parseFloat(cs[k as 'paddingLeft']) || 0), 0);
+			}
+			fitSvg(svg, out.clientWidth - extra, this.config.minFontSizePx);
+		}
+		this.observeResize(out);
+	}
+
+	private resizeObserver: ResizeObserver | null = null;
+	private readonly observed = new Set<HTMLElement>();
+	private readonly widths = new WeakMap<HTMLElement, number>();
+
+	private observeResize(out: HTMLElement): void {
+		const view = this.deps.doc.defaultView as (Window & { ResizeObserver?: typeof ResizeObserver }) | null;
+		if (!view || typeof view.ResizeObserver !== 'function') return;
+		if (!this.resizeObserver) {
+			this.resizeObserver = new view.ResizeObserver((entries) => {
+				for (const entry of entries) {
+					const el = entry.target as HTMLElement;
+					const width = el.clientWidth;
+					if (this.widths.get(el) === width) continue; // only width changes matter
+					this.widths.set(el, width);
+					if (el.isConnected) this.fit(el);
+				}
+			});
+		}
+		// Forget outputs that Joplin removed from the page.
+		for (const el of this.observed) {
+			if (!el.isConnected) {
+				this.resizeObserver.unobserve(el);
+				this.observed.delete(el);
+			}
+		}
+		if (!this.observed.has(out)) {
+			this.observed.add(out);
+			this.widths.set(out, out.clientWidth);
+			this.resizeObserver.observe(out);
+		}
 	}
 
 	private note(text: string): HTMLElement {
