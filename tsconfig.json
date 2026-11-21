@@ -8,6 +8,7 @@
 		"baseUrl": ".",
 		"strict": true,
 		"esModuleInterop": true,
+		"resolveJsonModule": true,
 		"skipLibCheck": true
 	},
 	"exclude": ["node_modules", "dist", "publish", "spike", "vendor", "coverage"]

@@ -7,6 +7,7 @@ import { fitSvg } from './fontSize';
 import { RenderEngine, RenderResult } from './engine';
 import { PreparedSource, prepareSource, splitLines, toUserLine } from './preamble';
 import { PresetConfig, ViewerConfig } from './viewerConfig';
+import { Translator } from '../i18n/gettext';
 import { parseInfo } from '../shared/fence';
 
 export const BLOCK_SELECTOR = '.joplin-plantuml';
@@ -68,6 +69,8 @@ export function countDiagrams(source: string): number {
 
 export class ViewerController {
 	private config: ViewerConfig;
+	/** Messages in the language of the config (design 10.4). */
+	private t: Translator;
 	private readonly cache: LruCache<DiagramView>;
 	private readonly queue: Job[] = [];
 	/** Last successful diagram at each block position. */
@@ -82,6 +85,7 @@ export class ViewerController {
 
 	constructor(private readonly deps: ControllerDeps) {
 		this.config = deps.config;
+		this.t = new Translator(deps.config.locale, deps.config.catalog);
 		this.cache = new LruCache<DiagramView>(deps.config.cacheSize);
 		this.setTimer = deps.setTimer || ((fn, ms) => setTimeout(fn, ms));
 		this.clearTimer = deps.clearTimer || ((h) => clearTimeout(h as ReturnType<typeof setTimeout>));
@@ -99,6 +103,7 @@ export class ViewerController {
 	setConfig(config: ViewerConfig): void {
 		if (config.settingsVersion === this.config.settingsVersion) return;
 		this.config = config;
+		this.t = new Translator(config.locale, config.catalog);
 		this.cache.setLimit(config.cacheSize);
 		this.deps.doc.querySelectorAll(`${BLOCK_SELECTOR} > ${OUTPUT_SELECTOR}[${STATE_ATTR}]`).forEach((out) => out.removeAttribute(STATE_ATTR));
 		this.update();
@@ -130,8 +135,13 @@ export class ViewerController {
 			if (job.source.length > this.config.maxSourceLength) {
 				const view: DiagramView = {
 					kind: 'error',
-					title: 'The diagram is too large.',
-					message: `The source has ${job.source.length} characters. The limit is ${this.config.maxSourceLength}.`,
+					title: this.t._('The diagram is too large.'),
+					message: this.t.ngettext(
+						'The source has {count} character. The limit is {limit}.',
+						'The source has {count} characters. The limit is {limit}.',
+						job.source.length,
+						{ limit: this.config.maxSourceLength },
+					),
 					line: null,
 				};
 				this.show(job, view);
@@ -185,7 +195,7 @@ export class ViewerController {
 	}
 
 	private statusText(): string {
-		return this.engineReady ? 'Rendering…' : 'Loading the PlantUML engine…';
+		return this.engineReady ? this.t._('Rendering…') : this.t._('Loading the PlantUML engine…');
 	}
 
 	private output(el: HTMLElement): HTMLElement {
@@ -280,7 +290,12 @@ export class ViewerController {
 
 	private async render(job: Job): Promise<DiagramView> {
 		if (this.engineFailed !== null) {
-			return { kind: 'error', title: 'Could not load the PlantUML engine.', message: 'See the developer tools console for details.', line: null };
+			return {
+				kind: 'error',
+				title: this.t._('Could not load the PlantUML engine.'),
+				message: this.t._('See the developer tools console for details.'),
+				line: null,
+			};
 		}
 		let result: RenderResult;
 		try {
@@ -297,17 +312,22 @@ export class ViewerController {
 		case 'syntax':
 			return {
 				kind: 'error',
-				title: 'PlantUML error',
+				title: this.t._('PlantUML error'),
 				message: result.message,
 				line: result.line === undefined ? null : toUserLine(result.line, job.prepared),
 			};
 		case 'timeout':
-			return { kind: 'error', title: 'Rendering timed out.', message: result.message, line: null };
+			return {
+				kind: 'error',
+				title: this.t._('Rendering timed out.'),
+				message: this.t._('Rendering took longer than {ms} ms.', { ms: this.config.renderTimeoutMs }),
+				line: null,
+			};
 		case 'crash':
 			this.logError('the PlantUML engine crashed:', result.message);
-			return { kind: 'error', title: 'The PlantUML engine crashed.', message: result.message, line: null };
+			return { kind: 'error', title: this.t._('The PlantUML engine crashed.'), message: result.message, line: null };
 		default:
-			return { kind: 'error', title: 'PlantUML error', message: result.message, line: null };
+			return { kind: 'error', title: this.t._('PlantUML error'), message: result.message, line: null };
 		}
 	}
 
@@ -320,7 +340,7 @@ export class ViewerController {
 			this.fit(out);
 			this.lastGood.set(job.index, { source: job.source, svg: view.svg });
 			if (countDiagrams(job.source) > 1) {
-				out.appendChild(this.note('Only the first diagram in this block is shown.'));
+				out.appendChild(this.note(this.t._('Only the first diagram in this block is shown.')));
 			}
 			return;
 		}
@@ -405,7 +425,8 @@ export class ViewerController {
 		if (view.message || view.line !== null) {
 			const message = doc.createElement('div');
 			message.className = 'joplin-plantuml-error-message';
-			message.textContent = view.line !== null ? `Line ${view.line}: ${view.message}` : view.message;
+			// TRANSLATORS: {line} is a line number in the diagram source, {message} is the error message of PlantUML (in English).
+			message.textContent = view.line !== null ? this.t._('Line {line}: {message}', { line: view.line, message: view.message }) : view.message;
 			box.appendChild(message);
 		}
 		if (view.line !== null) {

@@ -6,3 +6,5 @@ publish/
 coverage/
 # Throwaway spike code lives on the spike/* branches only.
 /spike/
+# Generated from locales/*.po by npm run i18n:compile (design 10.5)
+src/i18n/catalog/
