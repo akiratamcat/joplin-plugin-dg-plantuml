@@ -1,11 +1,13 @@
 # Changelog
 
+[日本語](CHANGELOG.ja.md)
+
 All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project follows [Semantic Versioning](https://semver.org/).
 
 Changes that users notice (settings, the look of diagrams, supported diagrams)
-are always listed.
+are always listed. The Japanese version (`CHANGELOG.ja.md`) has the same content.
 
 ## [Unreleased]
 
@@ -26,3 +28,4 @@ are always listed.
 - Diagram toolbar: copy the diagram as SVG or PNG, save it as an SVG or PNG file in a folder you choose, or copy its PlantUML source. Shown on mouse-over, on keyboard focus or after a tap; it can be turned off.
 - Links in diagrams (`[[link]]`): links to Joplin notes open the note, web links open in the browser. Other kinds of links are not opened.
 - Syntax highlighting of PlantUML code blocks in the Markdown editor, with the colours of the editor's theme; it can be turned off. The line shown in an error box is coloured too.
+- The settings screen lists the bundled third-party software (name, version, license, website). The plugin package also contains the license notices in Japanese (`THIRD_PARTY_NOTICES.ja.md`).

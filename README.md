@@ -34,7 +34,7 @@ This statement covers what the plugin itself does. Joplin's own features, such a
 
 Not yet published. When the first version is released, it can be installed from Joplin's plugin screen (Tools → Options → Plugins on Windows and Linux, Joplin → Settings → Plugins on macOS).
 
-To try a development build, run `npm run dist` and install `publish/io.github.akiratamcat.dg-plantuml.jpl` with "Install from file" on the plugin screen.
+To try a development build, run `npm ci` and `npm run dist` (Node.js 22 or later), and install `publish/io.github.akiratamcat.dg-plantuml.jpl` with "Install from file" on the plugin screen.
 
 Requirements: Joplin 3.1 or later, desktop. Tested with the latest stable version of Joplin.
 
@@ -82,7 +82,7 @@ Other Markdown tools ignore these options, so the notes stay portable.
 
 ## Reporting problems
 
-Please use the [Issues](https://github.com/akiratamcat/joplin-plugin-dg-plantuml/issues) page for bugs, questions and requests. For security problems, see [SECURITY.md](SECURITY.md).
+Please use the [Issues](https://github.com/akiratamcat/joplin-plugin-dg-plantuml/issues) page for bugs, questions and requests. For security problems, see [SECURITY.md](SECURITY.md). To build the plugin or contribute, see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## License
 

@@ -33,7 +33,7 @@
 
 まだ公開していません。最初の版を公開したら、Joplin のプラグインの画面（Windows と Linux はツール → オプション → プラグイン、macOS は Joplin → 設定 → プラグイン）からインストールできるようになります。
 
-開発中の版を試す場合は、`npm run dist` を実行し、プラグインの画面の「ファイルからインストール」で `publish/io.github.akiratamcat.dg-plantuml.jpl` を選びます。
+開発中の版を試す場合は、`npm ci` と `npm run dist` を実行し（Node.js 22 以降が必要）、プラグインの画面の「ファイルからインストール」で `publish/io.github.akiratamcat.dg-plantuml.jpl` を選びます。
 
 動作環境：Joplin 3.1 以降のデスクトップ版。動作確認は Joplin の最新の安定版で行っています。
 
@@ -81,7 +81,7 @@ Alice -> Bob
 
 ## 問題の報告
 
-不具合、質問、要望は [Issues](https://github.com/akiratamcat/joplin-plugin-dg-plantuml/issues) でお知らせください。セキュリティの問題は [SECURITY.md](SECURITY.md) をご覧ください。
+不具合、質問、要望は [Issues](https://github.com/akiratamcat/joplin-plugin-dg-plantuml/issues) でお知らせください。セキュリティの問題は [SECURITY.ja.md](SECURITY.ja.md) をご覧ください。プラグインのビルドや開発への参加については [CONTRIBUTING.ja.md](CONTRIBUTING.ja.md) をご覧ください。
 
 ## ライセンス
 

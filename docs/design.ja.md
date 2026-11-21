@@ -4,7 +4,7 @@
 | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | 文書種別 | 基本設計書（初版ドラフト）                                                                                                                                     |
 | 対象     | Joplin プラグイン「dg-plantuml」（プラグイン ID: `io.github.akiratamcat.dg-plantuml`、npm パッケージ名と GitHub のリポジトリ名: `joplin-plugin-dg-plantuml`。19章 D-01、D-14） |
-| 版       | 0.23                                                                                                                                                           |
+| 版       | 0.24                                                                                                                                                           |
 | 作成日   | 2026-11-18                                                                                                                                                     |
 | 作成方法 | 本書は生成 AI（Anthropic の Claude）を用いて作成し、オーナーが出力を逐次確認して修正・承認している（22章）                                                     |
 | 状態     | レビュー待ち。「要検証」と記した事項は、実装前のスパイク（技術検証）で確定させる（17章）。オーナーが決定すべき事項は 19章にまとめる                            |
@@ -37,6 +37,7 @@
 | 0.22 | 2026-11-21 | 段階3（i18n）の結果を反映し、段階3 を完了とした。翻訳の実装（自作の gettext、11言語の複数形の規則、10.1節）、翻訳の体制と結果（オーナーが日本語の訳を確認し、9個は英語の原文から直した。10.2節）、ロケールの対応表（10.3節）、ビューアへ翻訳の表をまるごと渡すこと（10.4節）、i18n の道具と検査（10.5節）を追記。GitHub に公開する前の確認（`npm run check:publish`、push は `main` だけ）を公開前チェックリストに加えた（21.6節）。モジュール一覧（5.3節）、プロジェクト構成（15章）、テストの件数（16.2節）、段階3 の進め方と結果（18章）を更新 |
 | 0.23 | 2026-11-21 | 段階4（UI の仕上げ）の結果を反映し、段階4 を完了とした。図のツールバー（5つのボタン、メインスクリプトによるコピーと保存、フォルダを選ぶ保存、PNG の背景）、リンクの扱い（ビューアで受け止めて `openItem` で開く。開いてよいリンクの制限）、アクセシビリティを追記（11章）。構文ハイライトの実装（字句解析、エディターのテーマの色を使う方法、エラーの抜粋の色分け。7.7節）、設定の2項目（9章）、ライセンスの検査と通知ファイルの生成（20.4節）を追記。V-11 は確認不要とした（17章）。モジュール一覧（5.3節）、プロジェクト構成（15章）、テストの件数（16.2節）、段階4 の進め方と結果（18章）を更新 |
 ` で改行を表す）と V-10（設定を変えると Joplin がビューアを描き直すので、すぐに反映される）を確認済みとした（17章）。モジュール一覧（5.3節）、プロジェクト構成（15章）、段階2 の進め方と結果（18章）を追記
+| 0.24 | 2026-11-21 | 生成 AI を使わない人が引き継げるように整備した（オーナーの依頼による）。`docs/` の文書を日本語版と分かる名前（`*.ja.md`）に変えた（15章）。リポジトリの直下の文書に日本語版（`CHANGELOG.ja.md`、`CONTRIBUTING.ja.md`、`SECURITY.ja.md`、`THIRD_PARTY_NOTICES.ja.md`）を加えた。`LICENSE` は法的な文面なので英語の原文だけにする（15章、21.1節）。同梱する外部のソフトウェアの名称・バージョン・ライセンス・公式サイトを、README の表と設定画面の説明文にも載せる（`src/thirdParty.ts`。5.3節、20.4節）。`npm run licenses:check` は、日本語版のライセンス表示、`src/thirdParty.ts` の版数、README の表の版数も検査する（20.4節）。コードのコメントを見直し、古くなった記述を直した。手順書（`CONTRIBUTING.md`、`vendor/plantuml/SOURCE.md` のエンジンの更新手順、`docs/release.ja.md`）を最新化した |
 
 ---
 
@@ -304,6 +305,7 @@ end
 | --------------------------------------- | ------------------ | ---------------------------------------------------------------------------------------------- |
 | `src/index.ts`                          | サンドボックス     | 起動処理、設定登録、コンテンツスクリプト登録、メッセージ応答（コマンドやメニューは登録しない） |
 | `src/settings.ts`                       | サンドボックス     | 設定項目の定義と既定値、ビューア用の設定の組み立て（`buildViewerConfig`）、プリセットの解決（0.21）                                                               |
+| `src/thirdParty.ts` | サンドボックス | 同梱する外部のソフトウェアの名称・バージョン・ライセンス・公式サイトの一覧。設定画面の dg-plantuml の節の説明文に表示する（20.4節。0.24） |
 | `src/i18n/`                             | 両方               | gettext 実装、ロケール解決（`gettext.ts`）、翻訳カタログ（`catalog/catalogs.json`。PO から生成。0.22）                                                       |
 | `src/contentScript/markdownItPlugin.ts` | レンダラー         | fence の検出と HTML 出力、アセット宣言                                                         |
 | `src/contentScript/viewer.ts`           | ビューア           | ビューアスクリプトの入口。部品を組み立て、イベントと `MutationObserver` で描画を始める（0.19） |
@@ -899,6 +901,7 @@ joplin-plugin-dg-plantuml/
 │  ├─ actions.ts
 │  ├─ manifest.json
 │  ├─ settings.ts
+│  ├─ thirdParty.ts    … 同梱する外部のソフトウェアの一覧（設定画面に表示する。0.24）
 │  ├─ shared/
 │  │  ├─ fence.ts
 │  │  ├─ hash.ts
@@ -954,11 +957,11 @@ joplin-plugin-dg-plantuml/
 ├─ package.json
 ├─ README.md              … 英語。npm と Joplin 公式プラグイン一覧に表示される
 ├─ README.ja.md           … 日本語
-├─ CHANGELOG.md           … 変更履歴（21.2節）
-├─ CONTRIBUTING.md        … 開発環境、ビルド、翻訳の手順、貢献物が MIT ライセンスになることの案内、生成 AI の利用の規則（22.2節）
-├─ SECURITY.md            … 脆弱性の報告方法（GitHub の非公開の脆弱性報告を使う。19章 D-16）
-├─ LICENSE                … 本プラグインの MIT ライセンス
-└─ THIRD_PARTY_NOTICES.md … 同梱する外部コードのライセンス表示（20.4節）
+├─ CHANGELOG.md           … 変更履歴（21.2節）。日本語版は CHANGELOG.ja.md（0.24）
+├─ CONTRIBUTING.md        … 開発環境、ビルド、コマンドの一覧、翻訳の手順、貢献物が MIT ライセンスになることの案内、生成 AI の利用の規則（22.2節）。日本語版は CONTRIBUTING.ja.md（0.24）
+├─ SECURITY.md            … 脆弱性の報告方法（GitHub の非公開の脆弱性報告を使う。19章 D-16）。日本語版は SECURITY.ja.md（0.24）
+├─ LICENSE                … 本プラグインの MIT ライセンス。法的な文面なので英語の原文だけを置く（0.24）
+└─ THIRD_PARTY_NOTICES.md … 同梱する外部コードのライセンス表示（20.4節）。日本語版は THIRD_PARTY_NOTICES.ja.md（0.24）
 ```
 
 `manifest.json` の主な値（仮。URL は、GitHub のリポジトリ `https://github.com/akiratamcat/joplin-plugin-dg-plantuml` を作成する前提の値）:
@@ -993,7 +996,7 @@ joplin-plugin-dg-plantuml/
   "keywords": ["joplin-plugin", "plantuml"],
   "author": "akira tamcat",
   "repository": { "type": "git", "url": "https://github.com/akiratamcat/joplin-plugin-dg-plantuml.git" },
-  "files": ["publish", "README.md", "LICENSE", "THIRD_PARTY_NOTICES.md"]
+  "files": ["publish", "README.md", "LICENSE", "THIRD_PARTY_NOTICES.md", "THIRD_PARTY_NOTICES.ja.md"]
 }
 ```
 
@@ -1012,7 +1015,7 @@ joplin-plugin-dg-plantuml/
 - ビューアスクリプト（`viewer.ts`）は、ノートビューアが `<script>` で読み込む普通のスクリプトとしてビルドする（`webpack.viewer.js`。`target: 'web'`）。プラグインジェネレーターの `extraScripts` は CommonJS の形でビルドするため、Markdown-it プラグインには使えるが、ビューアスクリプトには使えない。エンジンの `import()` を webpack に変えさせないため、このビルドだけ TypeScript の `module` を `es2020`（`moduleResolution` は `node`）にする。`webpack.config.js` への変更は、この設定を読み込む1行にとどめる（0.19）。`.jpl` と、その情報を書いた `.json` は `publish/` に出力される（プラグインジェネレーターの標準）。
 - エンジンのファイルは、ビルドで圧縮し直さず、取得したものをそのまま `.jpl` に入れる。プラグインジェネレーターの webpack の設定は、コピーしただけの JS ファイルも Terser で圧縮するため、コピーの設定に `info: { minimized: true }` を付けて圧縮を止める（段階C の試作で確認。圧縮し直すと `plantuml.js` の中身が変わり、取得元のファイルと同じであることを確かめられなくなる）。
 - 同じ `.jpl` を、GitHub Releases の添付ファイルと npm パッケージの両方で配布する（21.4節）。
-- `.jpl` には `LICENSE` と `THIRD_PARTY_NOTICES.md`、エンジンのライセンス文も含める（20章）。
+- `.jpl` には `LICENSE` と `THIRD_PARTY_NOTICES.md`（日本語版の `THIRD_PARTY_NOTICES.ja.md` も。0.24）、エンジンのライセンス文も含める（20章）。
 - パッケージサイズはビルドのたびに記録する（13章、19章 D-11）。
 
 ### 15.2 名前の大文字・小文字
@@ -1349,8 +1352,13 @@ PlantUML はライセンスごとに別の版を配布しており、ライセ�
 - README に「ライセンス」の節を設け、本プラグインが MIT ライセンスであることと、同梱する外部コードのライセンスを案内する。
 - CI で依存パッケージのライセンスを検査し、許可リスト（MIT、BSD、ISC、Apache-2.0、MPL-2.0 など）にないライセンスが配布物に入ったらビルドを失敗させる。エンジンは許可リストとは別に、20.3節の基準で個別に確認する。
 - **実装**（0.23。段階4）: `npm run notices`（`scripts/notices.mjs`）が、エンジンと DOMPurify のライセンス文から `THIRD_PARTY_NOTICES.md` を作る（webpack のライセンスプラグインは使わず、同梱するものが少ないので手で書いた生成スクリプトにした）。`npm run licenses:check`（`scripts/check-licenses.mjs`）が、`package-lock.json` の開発用でないパッケージのライセンスが許可リスト（MIT、ISC、BSD-2-Clause、BSD-3-Clause、0BSD、Apache-2.0、MPL-2.0。「A OR B」は片方が許可されていればよい）にあること、`THIRD_PARTY_NOTICES.md` が今作り直したものと一致すること、エンジンの版が `SOURCE.md` とコード（`ENGINE_VERSION`）で一致することを確かめる。単体テストの前に自動で実行するので、CI でも実行される。描画テストでは、ビルドしたビューアに残るライセンスの表示（`viewer.js.LICENSE.txt`）がすべて `THIRD_PARTY_NOTICES.md` に載っていることを確かめる。
-- エンジンや依存パッケージを更新するときは、ライセンスが変わっていないかを確認する（19章 D-10 の更新手順に含める）。
-- GitHub Releases の添付ファイルと npm パッケージにも `LICENSE` と `THIRD_PARTY_NOTICES.md` を含める（21.4節）。どちらもエンジンの再配布にあたるため。
+- **利用者への表示**（0.24）: プラグインの利用者が、同梱する外部のソフトウェアの名称、バージョン、ライセンスの種類、公式サイトを確かめられるようにする。次の3か所に載せる。
+  - Joplin の設定画面の dg-plantuml の節の説明文（`src/thirdParty.ts` の一覧。「同梱している外部のソフトウェア」の見出しだけを翻訳し、名称などは翻訳しない）
+  - `README.md` と `README.ja.md` の「ライセンス」の節の表（npm と Joplin 公式プラグイン一覧にも表示される）
+  - `THIRD_PARTY_NOTICES.md` と `THIRD_PARTY_NOTICES.ja.md` の表（「Website」「公式サイト」の列を加えた）。日本語版は見出しと表だけを日本語にし、ライセンスの文面は原文（英語）のまま載せる。どちらも `npm run notices` が作る
+- `npm run licenses:check` は、0.24 から次も確かめる: `THIRD_PARTY_NOTICES.ja.md` が今作り直したものと一致すること、`src/thirdParty.ts` の版数がエンジン（`SOURCE.md`）と DOMPurify の今の版と一致すること、README の2つの表にエンジンと DOMPurify の版数があること。
+- エンジンや依存パッケージを更新するときは、ライセンスが変わっていないかを確認する（19章 D-10 の更新手順に含める。手順は `vendor/plantuml/SOURCE.md` の「Updating」）。
+- GitHub Releases の添付ファイルと npm パッケージにも `LICENSE` と `THIRD_PARTY_NOTICES.md`（日本語版も）を含める（21.4節）。どちらもエンジンの再配布にあたるため。
 - エンジンを git にコミットする場合（19章 D-15 (a)）は、`vendor/plantuml/` にエンジンのライセンス文と取得元の記録を一緒に置く。公開リポジトリ自体もエンジンの再配布になるため。
 
 ---
@@ -1366,7 +1374,7 @@ PlantUML はライセンスごとに別の版を配布しており、ライセ�
 | 公開範囲             | 公開（public）。MIT ライセンスのオープンソースとして公開し、Joplin 公式プラグイン一覧からもリンクされる                          |
 | リポジトリ名         | `joplin-plugin-dg-plantuml`。npm パッケージ名と同じ（15.2節、19章 D-01、D-14）                                                                          |
 | 既定ブランチ         | `main`（ローカルのリポジトリも `main` にそろえ済み）                                                                             |
-| 公開する文書         | `README.md`（英語）、`README.ja.md`、`CHANGELOG.md`、`CONTRIBUTING.md`、`SECURITY.md`、`LICENSE`、`THIRD_PARTY_NOTICES.md`、本書 |
+| 公開する文書         | `README.md`（英語）、`README.ja.md`、`CHANGELOG.md`、`CONTRIBUTING.md`、`SECURITY.md`、`THIRD_PARTY_NOTICES.md` とそれぞれの日本語版（`*.ja.md`。0.24）、`LICENSE`（英語のみ）、`docs/` の文書（日本語のみ。本書を含む） |
 | 公開しないもの       | `dist/`、`publish/`、`node_modules/`、生成した翻訳カタログ（`src/i18n/catalog/`）。`.gitignore` で除外する                       |
 | Issue テンプレート   | 不具合報告（Joplin の版、OS、PlantUML のソース、スクリーンショット）、機能要望、翻訳                                             |
 | 利用者からの連絡     | メールではなく GitHub で受け付ける（19章 D-16）。不具合・要望・質問は Issues、脆弱性の報告は GitHub の非公開の脆弱性報告（Private vulnerability reporting。リポジトリの設定で有効にする）を使う。README と `SECURITY.md` にそう案内し、メールアドレスは載せない |
@@ -1403,11 +1411,11 @@ PlantUML はライセンスごとに別の版を配布しており、ライセ�
 
 詳しい手順は `docs/release.ja.md` に書く。流れは次のとおり。
 
-1. `CHANGELOG.md` を更新し、版数を上げる（21.2節）。
+1. `CHANGELOG.md` と `CHANGELOG.ja.md` を更新し、版数を上げる（21.2節）。
 2. `main` にマージし、タグ `vX.Y.Z` を push する。
 3. タグをきっかけに、GitHub Actions のリリース用ワークフローが次を行う。
    1. CI と同じ検査とビルドを行う。
-   2. GitHub Releases にリリースを作成し、`.jpl`、`LICENSE`、`THIRD_PARTY_NOTICES.md` を添付する。リリースノートは、21.7節の定型文を先頭に置き、その後に `CHANGELOG.md` の該当部分を続けて作る。
+   2. GitHub Releases にリリースを作成し、`.jpl`、`LICENSE`、`THIRD_PARTY_NOTICES.md`、`THIRD_PARTY_NOTICES.ja.md` を添付する。リリースノートは、21.7節の定型文を先頭に置き、その後に `CHANGELOG.md` の該当部分を続けて作る。
    3. npm に公開する。公開には、個人のものとは別に新しく作る公開用の npm アカウントを使う（19章 D-16。アカウント名は `akiratamcat`）。認証には npm の Trusted Publishing（GitHub Actions の OIDC）を使い、使えない場合はリポジトリのシークレットに保存したトークンを使う。
 4. Joplin 公式プラグイン一覧に反映されたことと、Joplin のプラグイン画面から新しい版に更新できることを確認する。
 
@@ -1443,7 +1451,7 @@ Joplin 公式プラグイン一覧は、npm に公開されたプラグインを
 - 要検証事項 V-16 の結果を反映済み
 - `manifest.json` と `package.json` の URL が、実際に作成した GitHub のリポジトリと一致している
 - `README.md` に、使えない図や機能（19章 D-03 の結果、PlantUML エンジンのライセンスの版による制限）が書かれている
-- `LICENSE`、`THIRD_PARTY_NOTICES.md` が最新で、`.jpl`、GitHub Releases、npm パッケージのすべてに含まれている
+- `LICENSE`、`THIRD_PARTY_NOTICES.md`、`THIRD_PARTY_NOTICES.ja.md` が最新で、`.jpl`、GitHub Releases、npm パッケージのすべてに含まれている
 - リポジトリとコミット履歴に秘密情報や個人情報が含まれていない（`npm run check:publish` が OK になる。push するのは `main` だけで、試作のブランチは push しない。手順は `docs/release.ja.md` の「GitHub に push する前」）
 - 16.3節の手動テストを、環境ごとに決めた範囲（Windows と macOS はフルテスト、Linux はスモークテスト）で行い、結果を `docs/release.ja.md` に記録した
 - `README.md` と `README.ja.md` に生成 AI の利用が明記されている（22.3節）
