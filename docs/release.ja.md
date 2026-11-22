@@ -1,6 +1,6 @@
 # リリース手順
 
-設計書 21.4節の手順の詳細。GitHub のリポジトリと npm の公開用アカウントができるまでは、この手順はまだ使えない（設計書 18章の段階0.5）。
+設計書 21.4節の手順の詳細。GitHub のリポジトリ（2026-11-21）と npm の公開用アカウント `akiratamcat` はできている。v1.0.0 は 2026-11-22 に公開した。npm への最初の公開は手で行い、2回目の版から GitHub Actions で公開する（下の「3. 公開」）。
 
 ## 0. GitHub に push する前（毎回）
 
@@ -40,7 +40,45 @@
 
 1. `main` にマージし、タグ `vX.Y.Z` を作って push する。
 2. リリース用のワークフロー（`.github/workflows/release.yml`）が、検査とビルドを行い、GitHub Releases にリリースを作る。`.jpl`、`LICENSE`、`THIRD_PARTY_NOTICES.md`、`THIRD_PARTY_NOTICES.ja.md` が添付され、リリースノートは英語と日本語の二部構成で、それぞれの先頭に「描画エンジン内蔵・外部通信なし」の定型文が入る。
-3. npm への公開は、公開用のアカウントと Trusted Publishing の設定ができてから有効にする（リポジトリの変数 `NPM_PUBLISH` を `true` にする）。
+3. リポジトリの変数 `NPM_PUBLISH` が `true` のとき、続けて同じワークフローが npm に公開する。認証には npm の Trusted Publishing（GitHub Actions の OIDC）を使うので、npm のトークンを GitHub に保存しない。`NPM_PUBLISH` が `true` でないときは npm には公開せず、下の「3.2 手で npm に公開する」で公開する。
+4. 公開できたことを `npm view joplin-plugin-dg-plantuml version` で確かめる。
+
+### 3.1 Trusted Publishing の最初の設定（v1.0.0 の次の版で1回だけ）
+
+v1.0.0 は手で公開した（3.2）。Trusted Publishing は、npm のパッケージの設定画面で登録するため、パッケージを一度公開してからでないと登録できない。また、**登録してから2日以内に1回も公開しないと、その設定は無効になり、編集もできなくなる**（2026-11-22 に npm の文書で確認）。そのため、次の版のタグを push する当日に、次の順で行う。
+
+1. npmjs.com に `akiratamcat` でログインし、パッケージ `joplin-plugin-dg-plantuml` の Settings を開く。Trusted publishing（Trusted Publisher）で GitHub Actions を選び、次を入れる。大文字・小文字も区別される。保存の時点では npm は内容を確かめず、間違いは公開のときに初めて分かる。
+
+   | 項目 | 値 |
+   | ---- | -- |
+   | Organization or user | `akiratamcat` |
+   | Repository | `joplin-plugin-dg-plantuml` |
+   | Workflow filename | `release.yml`（パスは書かない） |
+   | Environment name | 空のまま |
+   | 許可する操作 | `npm publish` も許可する（2026-09-03 より後に作った設定は、既定では `npm stage publish` だけが許可される） |
+
+2. GitHub のリポジトリの Settings → Secrets and variables → Actions → Variables で、変数 `NPM_PUBLISH` を `true` にする（または `gh variable set NPM_PUBLISH --body true`）。
+3. いつもどおりタグを push する（上の 1.）。リリース用のワークフローの `npm` のジョブが成功し、`npm view joplin-plugin-dg-plantuml version` が新しい版になることを確かめる。
+4. 設定を間違えた場合や、2日を過ぎて無効になった場合は、その設定を削除して作り直す（npm の設定は編集できない）。
+
+ワークフローの `npm` のジョブの条件（npm の文書による。2026-11-22 時点）: `permissions` に `id-token: write`、npm の CLI 11.5.1 以降（ジョブの中で `npm install -g npm@latest` する）、Node.js 22.14.0 以降、`package.json` の `repository.url` が GitHub のリポジトリと一致すること。Trusted Publishing では provenance（どのソースとワークフローから作ったかの証明）が自動で付く。
+
+### 3.2 手で npm に公開する
+
+v1.0.0 の最初の公開で使った手順。`npm` のジョブが失敗したときも、この手順で公開する（タグは作り直さない）。npm のアカウントは2段階認証を「ログインと公開の両方」で有効にしているので、公開のときに認証を求められる。生成 AI からは認証の操作ができないため、オーナーが自分のターミナルで行う。
+
+1. `npm whoami` が `akiratamcat` になる（ならなければ `npm login`）。
+2. `git switch main`、`git pull` の後、`git describe --tags` が公開する版のタグ（例：`v1.0.0`）になる。作業中のファイルがない。
+3. `npm ci`、`npm run dist` を実行する。`npm ci` で出る `npm warn deprecated` は、開発用の道具の古い部品についての注意で、公開する中身には関係しない。
+4. `npm pack --dry-run` で、名前と版数（`joplin-plugin-dg-plantuml@X.Y.Z`）と、ファイルが8つ（`LICENSE`、`README.md`、`README.ja.md`、`THIRD_PARTY_NOTICES.md`、`THIRD_PARTY_NOTICES.ja.md`、`package.json`、`publish/` の `.jpl` と `.json`）であることを確かめる。
+5. `npm publish --access public` を実行し、表示された URL をブラウザで開いて2段階認証を行う。**一度公開した版数は、取り消しても同じ番号では二度と公開できない。**
+6. 数分後に `npm view joplin-plugin-dg-plantuml version` が新しい版になる。
+
+v1.0.0 の公開のときに分かったこと（2026-11-22）:
+
+- 新しい名前で初めて公開すると、npm は先に仮の版 `0.0.0-stage` を作り、約2分後に 1.0.0 が出た。`latest` は 1.0.0 になる。`0.0.0-stage` は残るが、Joplin のプラグイン一覧は `latest` を使うので問題はない。
+- npm のアカウントのメールアドレス（gmail）は、パッケージの管理者の情報として公開される。
+- `repository.url` の書き方を npm が自動で直した警告が出たので、`npm pkg fix` で `git+https://…` の形に直した。
 
 ## 4. 公開後
 

@@ -4,7 +4,7 @@
 | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | 文書種別 | 基本設計書（初版ドラフト）                                                                                                                                     |
 | 対象     | Joplin プラグイン「dg-plantuml」（プラグイン ID: `io.github.akiratamcat.dg-plantuml`、npm パッケージ名と GitHub のリポジトリ名: `joplin-plugin-dg-plantuml`。19章 D-01、D-14） |
-| 版       | 0.29                                                                                                                                                           |
+| 版       | 0.30                                                                                                                                                           |
 | 作成日   | 2026-11-18                                                                                                                                                     |
 | 作成方法 | 本書は生成 AI（Anthropic の Claude）を用いて作成し、オーナーが出力を逐次確認して修正・承認している（22章）                                                     |
 | 状態     | レビュー待ち。「要検証」と記した事項は、実装前のスパイク（技術検証）で確定させる（17章）。オーナーが決定すべき事項は 19章にまとめる                            |
@@ -42,6 +42,7 @@
 | 0.27 | 2026-11-21 | GitHub のリポジトリのページと Releases に、英語と日本語の両方を載せる（オーナーの依頼による）。GitHub は `README.md` だけを表示し、タブを言語ごとに分けることはできないため、`README.md` を前半が英語、後半が日本語の構成にした。後半は `README.ja.md` から `npm run readme`（`scripts/readme.mjs`）で作り、`npm run readme:check` で一致を検査する。リリースノートも、前半が英語（定型文と `CHANGELOG.md`）、後半が日本語（定型文と `CHANGELOG.ja.md`）の二部構成にした（21.4節、21.7節） |
 | 0.28 | 2026-11-21 | v1.0.0 のリリースに向けて、手動テストの手順書 `tests/manual/release-manual-tests.ja.md` を作った。M-01〜M-16 の手順と、環境ごとの記録の表をまとめ、生成 AI を使わずに進められるようにした。図のツールバーとリンク（M-10、M-11）の確認用のノート `release-links-note.md` を加えた。開発環境のない PC では、GitHub Actions の CI の成果物から `.jpl` を入手する（16.3節） |
 | 0.29 | 2026-11-22 | v1.0.0 の準備（オーナーの決定）。v1.0.0 から npm にも公開する。アイコンの図案と置き場所を決め（15章）、スクリーンショットは Light・Dark の図と設定画面の3枚とした（21.5節）。Joplin の manifest の `icons` と `screenshots` の形式を公式の文書で確認し直した（V-16） |
+| 0.30 | 2026-11-22 | v1.0.0 を公開した（タグ v1.0.0、GitHub Releases、npm）。npm への最初の公開はオーナーが手で行い、Trusted Publishing は次の版の直前に登録することにした（登録から2日で無効になるため。21.4節）。`package.json` の `repository.url` を npm の形式（`git+https://…`）に直した（15章） |
 
 ---
 
@@ -1000,7 +1001,7 @@ joplin-plugin-dg-plantuml/
   "license": "MIT",
   "keywords": ["joplin-plugin", "plantuml"],
   "author": "akira tamcat",
-  "repository": { "type": "git", "url": "https://github.com/akiratamcat/joplin-plugin-dg-plantuml.git" },
+  "repository": { "type": "git", "url": "git+https://github.com/akiratamcat/joplin-plugin-dg-plantuml.git" },
   "files": ["publish", "README.md", "LICENSE", "THIRD_PARTY_NOTICES.md", "THIRD_PARTY_NOTICES.ja.md"]
 }
 ```
@@ -1429,7 +1430,7 @@ PlantUML はライセンスごとに別の版を配布しており、ライセ�
 3. タグをきっかけに、GitHub Actions のリリース用ワークフローが次を行う。
    1. CI と同じ検査とビルドを行う。
    2. GitHub Releases にリリースを作成し、`.jpl`、`LICENSE`、`THIRD_PARTY_NOTICES.md`、`THIRD_PARTY_NOTICES.ja.md` を添付する。リリースノートは英語と日本語の二部構成とし、前半は 21.7節の英語の定型文と `CHANGELOG.md` の該当部分、後半は日本語の定型文と `CHANGELOG.ja.md` の該当部分で作る（0.27）。
-   3. npm に公開する。公開には、個人のものとは別に新しく作る公開用の npm アカウントを使う（19章 D-16。アカウント名は `akiratamcat`）。認証には npm の Trusted Publishing（GitHub Actions の OIDC）を使い、使えない場合はリポジトリのシークレットに保存したトークンを使う。
+   3. npm に公開する。公開には、個人のものとは別に新しく作る公開用の npm アカウントを使う（19章 D-16。アカウント名は `akiratamcat`）。認証には npm の Trusted Publishing（GitHub Actions の OIDC）を使い、使えない場合はリポジトリのシークレットに保存したトークンを使う。Trusted Publishing はパッケージを一度公開しないと登録できないため、v1.0.0 はオーナーが手で（2段階認証で）公開した（0.30。2026-11-22）。Trusted Publishing は、登録から2日以内に使わないと無効になるので、次の版のタグを push する当日に登録し、リポジトリの変数 `NPM_PUBLISH` を `true` にする。手順は `docs/release.ja.md` の 3.1節と 3.2節。
 4. Joplin 公式プラグイン一覧に反映されたことと、Joplin のプラグイン画面から新しい版に更新できることを確認する。
 
 リリース前に、`.jpl` を手元の Joplin に手動でインストールし、16.3節の手動テストを行う。手動テストに合格するまでタグを push しない。

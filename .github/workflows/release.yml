@@ -45,8 +45,9 @@ jobs:
   npm:
     name: npm
     needs: release
-    # Enabled when the publishing account and Trusted Publishing are set up
-    # (repository variable NPM_PUBLISH = true). Design 19 D-16.
+    # Enabled when Trusted Publishing is set up on npmjs.com (repository
+    # variable NPM_PUBLISH = true). v1.0.0 was published to npm by hand; the
+    # setup is done on the day of the next release (docs/release.ja.md 3.1).
     if: vars.NPM_PUBLISH == 'true'
     runs-on: ubuntu-latest
     permissions:
