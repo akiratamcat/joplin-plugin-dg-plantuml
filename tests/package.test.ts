@@ -25,6 +25,17 @@ describe('package metadata', () => {
 		expect(manifest.app_min_version).toBe('3.1');
 	});
 
+	test('manifest icons are PNG files in the repository (paths from the repository root)', () => {
+		expect(Object.keys(manifest.icons).sort()).toEqual(['128', '16', '32', '48']);
+		for (const [size, file] of Object.entries<string>(manifest.icons)) {
+			const data = fs.readFileSync(path.join(root, file));
+			// PNG signature, then the IHDR width and height.
+			expect(data.subarray(1, 4).toString('latin1')).toBe('PNG');
+			expect(data.readUInt32BE(16)).toBe(Number(size));
+			expect(data.readUInt32BE(20)).toBe(Number(size));
+		}
+	});
+
 	test('no e-mail address in public metadata', () => {
 		const text = JSON.stringify({ pkg, manifest });
 		expect(text).not.toMatch(/[\w.+-]+@[\w-]+\.[\w.]+/);

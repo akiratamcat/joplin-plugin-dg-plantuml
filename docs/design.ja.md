@@ -4,7 +4,7 @@
 | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | 文書種別 | 基本設計書（初版ドラフト）                                                                                                                                     |
 | 対象     | Joplin プラグイン「dg-plantuml」（プラグイン ID: `io.github.akiratamcat.dg-plantuml`、npm パッケージ名と GitHub のリポジトリ名: `joplin-plugin-dg-plantuml`。19章 D-01、D-14） |
-| 版       | 0.28                                                                                                                                                           |
+| 版       | 0.29                                                                                                                                                           |
 | 作成日   | 2026-11-18                                                                                                                                                     |
 | 作成方法 | 本書は生成 AI（Anthropic の Claude）を用いて作成し、オーナーが出力を逐次確認して修正・承認している（22章）                                                     |
 | 状態     | レビュー待ち。「要検証」と記した事項は、実装前のスパイク（技術検証）で確定させる（17章）。オーナーが決定すべき事項は 19章にまとめる                            |
@@ -41,6 +41,7 @@
 | 0.26 | 2026-11-21 | GitHub への公開の前に、VS Code のワークスペースのファイルの扱いを決めた（オーナーの決定）。リポジトリの直下の `__joplin-plugin-dg-plantuml__.code-workspace`（フォルダの指定だけで、個人の設定を含まない）は公開する。過去のコミットにあった古いワークスペースのファイル（名前を変える前のものを含む）は、履歴を書き換えて消した（push の前なので影響はない）。`.gitignore` と `npm run check:publish` は、このファイルだけを例外として許す（21.6節） |
 | 0.27 | 2026-11-21 | GitHub のリポジトリのページと Releases に、英語と日本語の両方を載せる（オーナーの依頼による）。GitHub は `README.md` だけを表示し、タブを言語ごとに分けることはできないため、`README.md` を前半が英語、後半が日本語の構成にした。後半は `README.ja.md` から `npm run readme`（`scripts/readme.mjs`）で作り、`npm run readme:check` で一致を検査する。リリースノートも、前半が英語（定型文と `CHANGELOG.md`）、後半が日本語（定型文と `CHANGELOG.ja.md`）の二部構成にした（21.4節、21.7節） |
 | 0.28 | 2026-11-21 | v1.0.0 のリリースに向けて、手動テストの手順書 `tests/manual/release-manual-tests.ja.md` を作った。M-01〜M-16 の手順と、環境ごとの記録の表をまとめ、生成 AI を使わずに進められるようにした。図のツールバーとリンク（M-10、M-11）の確認用のノート `release-links-note.md` を加えた。開発環境のない PC では、GitHub Actions の CI の成果物から `.jpl` を入手する（16.3節） |
+| 0.29 | 2026-11-22 | v1.0.0 の準備（オーナーの決定）。v1.0.0 から npm にも公開する。アイコンの図案と置き場所を決め（15章）、スクリーンショットは Light・Dark の図と設定画面の3枚とした（21.5節）。Joplin の manifest の `icons` と `screenshots` の形式を公式の文書で確認し直した（V-16） |
 
 ---
 
@@ -985,7 +986,7 @@ joplin-plugin-dg-plantuml/
   "categories": ["viewer", "editor"],
   "keywords": ["plantuml", "diagram", "uml"],
   "screenshots": [{ "src": "docs/images/screenshot-light.png", "label": "Sequence diagram (light)" }],
-  "icons": { "128": "icons/icon-128.png" }
+  "icons": { "16": "icons/icon-16.png", "32": "icons/icon-32.png", "48": "icons/icon-48.png", "128": "icons/icon-128.png" }
 }
 ```
 
@@ -1008,7 +1009,8 @@ joplin-plugin-dg-plantuml/
 - npm パッケージ名は小文字だけで、`joplin-plugin-` で始める（npm の規則と、Joplin 公式プラグイン一覧の掲載条件のため。21.5節）。大文字・小文字の扱いは 15.2節の方針による。
 - `manifest.json` と `package.json` の `version` は常に同じ値にする（21.2節）。
 - `author` には `akira tamcat` を入れる（19章 D-16）。`author` などの公開される項目にはメールアドレスを載せない。利用者からの連絡はメールではなく GitHub で受け付ける（21.1節）。
-- `screenshots` と `icons` などの項目名と形式は、公開時点の Joplin の manifest の仕様で確認する（要検証 V-16）。
+- `screenshots` と `icons` などの項目名と形式は、公開時点の Joplin の manifest の仕様で確認する（要検証 V-16）。2026-11-22 に確認した結果は 21.5節のとおり。
+- アイコン（0.29。オーナーの決定）: 青い角丸の四角に、矢印でつながった3つの箱を描いた図案。PlantUML のロゴは使わない。16・32 px は図案だけ、48 px は左下に「P」、128 px は下に「Plant」の文字を入れる。リポジトリの直下の `icons/` に PNG（`icon-16.png` など）と元の SVG（`icon.svg`、`icon-48.svg`、`icon-128.svg`）を置く。PNG は SVG をブラウザで描画して作り、文字も画像にするので、フォントの有無で見た目は変わらない。
 - PlantUML エンジンはバージョンを固定し、更新手順（取得元、検証、キャッシュ版数の更新）を `docs/` に残す。git で管理するかはエンジンのサイズで決める（19章 D-15）。50MB 未満なら `vendor/` にコミットし、50MB 以上ならコミットせず、ビルド時に固定の版をダウンロードしてハッシュ値で照合する。調査の結果、エンジンは約 5MB のため、`vendor/` にコミットする（0.14）。
 - PlantUML エンジンは、セキュリティ修正や必要な不具合修正があるときだけ更新する（19章 D-10）。新しい版が出ても、それだけを理由には更新しない。更新したときは、見た目のスナップショット（16.1節）で図の見た目が変わったかを確かめ、変わった場合は MINOR 以上の版を上げて知らせる（21.2節）。
 
@@ -1448,11 +1450,13 @@ Joplin 公式プラグイン一覧は、npm に公開されたプラグインを
 上の表のうち npm に関する3つの条件は、プラグインジェネレーターの文書で確認した（0.14。V-16）。manifest の形式で確認した主な点は次のとおり（0.14）。
 
 - `categories` に使える値: `appearance`、`developer tools`、`editor`、`files`、`integrations`、`personal knowledge management`、`productivity`、`search`、`tags`、`themes`、`viewer`。本プラグインは `viewer` と `editor` を使う。
-- `icons`: PNG のみ。キーは `16`、`32`、`48`、`128`。
+- `icons`: PNG のみ。キーは `16`、`32`、`48`、`128`。推奨は 48×48。パスはリポジトリのルートからの相対パス（2026-11-22 に確認）。
 - `screenshots`: `src`（リポジトリのルートからのパスまたは URL）と `label`。パスで書く場合は、`repository_url` か `homepage_url` が GitHub のリポジトリを指している必要がある。
 - `promo_tile`（任意）: 440×280 の JPEG または PNG（透過なし）。
 
-一覧で見つけてもらいやすくするため、`categories`、`keywords`、`screenshots`、`icons` を設定する。スクリーンショットは Light と Dark の図を1枚ずつ用意する。
+一覧で見つけてもらいやすくするため、`categories`、`keywords`、`screenshots`、`icons` を設定する。スクリーンショットは Light と Dark の図を1枚ずつと、設定画面の1枚を用意する（0.29。オーナーの決定）。Joplin の表示言語は英語にして撮り、`docs/images/` に置く。
+
+v1.0.0 から npm にも公開し、Joplin 公式プラグイン一覧に載せる（0.29。オーナーの決定）。
 
 ### 21.6 公開前チェックリスト
 

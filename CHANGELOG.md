@@ -11,6 +11,10 @@ are always listed. The Japanese version (`CHANGELOG.ja.md`) has the same content
 
 ## [Unreleased]
 
+## [1.0.0] - 2026-11-22
+
+First public release.
+
 ### Added
 
 - Rendering of `plantuml` and `puml` code blocks in the note viewer and the Rich Text editor, with the bundled PlantUML engine (`@plantuml/core` 1.2026.10). No network access.

@@ -12,8 +12,6 @@ This statement covers what the plugin itself does. Joplin's own features, such a
 
 日本語：[このページの後半](#日本語)（[README.ja.md](README.ja.md) と同じ内容）
 
-> **Status: early development (0.1.x).** The plugin is not yet available in the Joplin plugin repository. All features planned for version 1.0 are implemented; the first release is being prepared.
-
 <!-- Screenshots (light and dark) will be added before the first release (docs/images/). -->
 
 ## Features
@@ -32,9 +30,9 @@ This statement covers what the plugin itself does. Joplin's own features, such a
 
 ## Installation
 
-Not yet published. When the first version is released, it can be installed from Joplin's plugin screen (Tools → Options → Plugins on Windows and Linux, Joplin → Settings → Plugins on macOS).
+Open Joplin's plugin screen (Tools → Options → Plugins on Windows and Linux, Joplin → Settings → Plugins on macOS), search for **dg-plantuml**, and install it.
 
-To try a development build, run `npm ci` and `npm run dist` (Node.js 22 or later), and install `publish/io.github.akiratamcat.dg-plantuml.jpl` with "Install from file" on the plugin screen.
+You can also download the `.jpl` file from [GitHub Releases](https://github.com/akiratamcat/joplin-plugin-dg-plantuml/releases) and install it with "Install from file" on the plugin screen. To build the plugin yourself, see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 Requirements: Joplin 3.1 or later, desktop. Tested with the latest stable version of Joplin.
 
@@ -125,8 +123,6 @@ Issues page.
 
 これは本プラグイン自身の動作についての説明です。Joplin 本体の同期などの機能は含みません。
 
-> **状態：開発の初期段階（0.1.x）です。** Joplin のプラグイン一覧にはまだ公開していません。v1.0 で予定していた機能はすべて実装し、最初の公開の準備をしています。
-
 <!-- 最初のリリースまでに、スクリーンショット（Light と Dark）を docs/images/ に追加する。 -->
 
 ### 機能
@@ -145,9 +141,9 @@ Issues page.
 
 ### インストール
 
-まだ公開していません。最初の版を公開したら、Joplin のプラグインの画面（Windows と Linux はツール → オプション → プラグイン、macOS は Joplin → 設定 → プラグイン）からインストールできるようになります。
+Joplin のプラグインの画面（Windows と Linux はツール → オプション → プラグイン、macOS は Joplin → 設定 → プラグイン）で **dg-plantuml** を検索して、インストールします。
 
-開発中の版を試す場合は、`npm ci` と `npm run dist` を実行し（Node.js 22 以降が必要）、プラグインの画面の「ファイルからインストール」で `publish/io.github.akiratamcat.dg-plantuml.jpl` を選びます。
+[GitHub Releases](https://github.com/akiratamcat/joplin-plugin-dg-plantuml/releases) から `.jpl` のファイルをダウンロードし、プラグインの画面の「ファイルからインストール」でインストールすることもできます。プラグインを自分でビルドする場合は、[CONTRIBUTING.ja.md](CONTRIBUTING.ja.md) をご覧ください。
 
 動作環境：Joplin 3.1 以降のデスクトップ版。動作確認は Joplin の最新の安定版で行っています。
 
