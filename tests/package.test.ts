@@ -36,6 +36,14 @@ describe('package metadata', () => {
 		}
 	});
 
+	test('manifest screenshots are PNG files in the repository, each with a label', () => {
+		expect(manifest.screenshots.length).toBeGreaterThan(0);
+		for (const shot of manifest.screenshots as { src: string; label: string }[]) {
+			expect(shot.label).toBeTruthy();
+			expect(fs.readFileSync(path.join(root, shot.src)).subarray(1, 4).toString('latin1')).toBe('PNG');
+		}
+	});
+
 	test('no e-mail address in public metadata', () => {
 		const text = JSON.stringify({ pkg, manifest });
 		expect(text).not.toMatch(/[\w.+-]+@[\w-]+\.[\w.]+/);

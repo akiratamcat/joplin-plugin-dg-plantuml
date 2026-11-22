@@ -12,7 +12,11 @@ This statement covers what the plugin itself does. Joplin's own features, such a
 
 日本語：[このページの後半](#日本語)（[README.ja.md](README.ja.md) と同じ内容）
 
-<!-- Screenshots (light and dark) will be added before the first release (docs/images/). -->
+| Light theme | Dark theme |
+| ----------- | ---------- |
+| ![A sequence diagram and a class diagram in a note, light theme](docs/images/screenshot-light.png) | ![The same note in the dark theme](docs/images/screenshot-dark.png) |
+
+![The settings screen of dg-plantuml](docs/images/screenshot-settings.png)
 
 ## Features
 
@@ -123,7 +127,13 @@ Issues page.
 
 これは本プラグイン自身の動作についての説明です。Joplin 本体の同期などの機能は含みません。
 
-<!-- 最初のリリースまでに、スクリーンショット（Light と Dark）を docs/images/ に追加する。 -->
+| Light のテーマ | Dark のテーマ |
+| -------------- | ------------- |
+| ![ノートの中のシーケンス図とクラス図（Light のテーマ）](docs/images/screenshot-light.png) | ![同じノートを Dark のテーマで表示したもの](docs/images/screenshot-dark.png) |
+
+![dg-plantuml の設定画面](docs/images/screenshot-settings.png)
+
+画面は英語の表示で撮影しています。
 
 ### 機能
 

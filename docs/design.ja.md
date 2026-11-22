@@ -1454,7 +1454,7 @@ Joplin 公式プラグイン一覧は、npm に公開されたプラグインを
 - `screenshots`: `src`（リポジトリのルートからのパスまたは URL）と `label`。パスで書く場合は、`repository_url` か `homepage_url` が GitHub のリポジトリを指している必要がある。
 - `promo_tile`（任意）: 440×280 の JPEG または PNG（透過なし）。
 
-一覧で見つけてもらいやすくするため、`categories`、`keywords`、`screenshots`、`icons` を設定する。スクリーンショットは Light と Dark の図を1枚ずつと、設定画面の1枚を用意する（0.29。オーナーの決定）。Joplin の表示言語は英語にして撮り、`docs/images/` に置く。
+一覧で見つけてもらいやすくするため、`categories`、`keywords`、`screenshots`、`icons` を設定する。スクリーンショットは Light と Dark の図を1枚ずつと、設定画面の1枚を用意する（0.29。オーナーの決定）。Joplin の表示言語は英語にして撮り、`docs/images/` に置く。ファイルは `screenshot-light.png`、`screenshot-dark.png`、`screenshot-settings.png`。個人のノートブック名などが写らないように、ノートの部分だけを切り出す。README と `manifest.json` の `screenshots` の両方に載せる。
 
 v1.0.0 から npm にも公開し、Joplin 公式プラグイン一覧に載せる（0.29。オーナーの決定）。
 

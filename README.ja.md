@@ -11,7 +11,13 @@
 
 [English README](README.md)
 
-<!-- 最初のリリースまでに、スクリーンショット（Light と Dark）を docs/images/ に追加する。 -->
+| Light のテーマ | Dark のテーマ |
+| -------------- | ------------- |
+| ![ノートの中のシーケンス図とクラス図（Light のテーマ）](docs/images/screenshot-light.png) | ![同じノートを Dark のテーマで表示したもの](docs/images/screenshot-dark.png) |
+
+![dg-plantuml の設定画面](docs/images/screenshot-settings.png)
+
+画面は英語の表示で撮影しています。
 
 ## 機能
 
