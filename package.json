@@ -7,7 +7,7 @@
   "homepage": "https://github.com/akiratamcat/joplin-plugin-dg-plantuml",
   "repository": {
     "type": "git",
-    "url": "https://github.com/akiratamcat/joplin-plugin-dg-plantuml.git"
+    "url": "git+https://github.com/akiratamcat/joplin-plugin-dg-plantuml.git"
   },
   "keywords": [
     "joplin-plugin",
