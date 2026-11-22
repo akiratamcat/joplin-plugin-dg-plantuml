@@ -25,7 +25,7 @@ This statement covers what the plugin itself does. Joplin's own features, such a
 - Keeps the diagram on screen while you type, and caches rendered diagrams.
 - Works with Japanese, Chinese and Korean text.
 - Settings for the diagram theme, styles (including built-in PlantUML themes), font size and more.
-- The settings screen and messages follow Joplin's display language (11 languages).
+- The user interface (settings screen, messages, toolbar and so on) is translated with gettext, and the main languages are already translated. It follows Joplin's display language. Supported languages (11): English, Japanese, Chinese (Simplified and Traditional), Korean, German, French, Spanish, Italian, Portuguese (Brazil) and Russian.
 - A toolbar on each diagram to copy it (SVG or PNG), save it as a file, or copy its source.
 - Links in diagrams open Joplin notes or web pages.
 - Syntax highlighting of PlantUML in the Markdown editor.
@@ -138,7 +138,7 @@ Issues page.
 - 入力中も図を表示したままにし、描画した図をキャッシュします。
 - 日本語・中国語・韓国語の文字を含む図も表示できます。
 - 図のテーマ、スタイル（PlantUML の内蔵テーマを含む）、文字サイズなどを設定できます。
-- 設定画面とメッセージは、Joplin の表示言語に合わせて切り替わります（11言語）。
+- 画面の文字（設定画面、メッセージ、ツールバーなど）は gettext の仕組みで翻訳しており、主要な言語に翻訳済みです。Joplin の表示言語に合わせて切り替わります。対応している言語は、英語、日本語、中国語（簡体字・繁体字）、韓国語、ドイツ語、フランス語、スペイン語、イタリア語、ポルトガル語（ブラジル）、ロシア語の11言語です。
 - 図ごとのツールバーで、図のコピー（SVG・PNG）、ファイルへの保存、ソースのコピーができます。
 - 図の中のリンクから、Joplin のノートやウェブページを開けます。
 - Markdown エディターで、PlantUML のコードを色分けして表示します。
