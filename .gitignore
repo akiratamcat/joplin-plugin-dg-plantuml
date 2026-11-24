@@ -21,8 +21,6 @@ desktop.ini
 .vscode/
 .idea/
 *.code-workspace
-# The shared workspace file of the repository is published (owner decision, 2026-11-21).
-!/__joplin-plugin-dg-plantuml__.code-workspace
 .claude/settings.local.json
 # Test output
 test-results/
