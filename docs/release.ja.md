@@ -61,7 +61,7 @@ v1.0.0 は手で公開した（3.2）。Trusted Publishing は、npm のパッ�
 3. いつもどおりタグを push する（上の 1.）。リリース用のワークフローの `npm` のジョブが成功し、`npm view joplin-plugin-dg-plantuml version` が新しい版になることを確かめる。
 4. 設定を間違えた場合や、2日を過ぎて無効になった場合は、その設定を削除して作り直す（npm の設定は編集できない）。
 
-v1.0.1 に向けて、オーナーが 2026-11-25 に登録した（許可する操作は `npm publish` と `npm stage publish`。状態は「Pending validation」で、2026-11-27 05:08 UTC までに1回公開すると確定する）。その時刻までにタグを push できなかった場合は、上の 4. のとおり削除して、公開する日に作り直す。
+v1.0.1 に向けて、オーナーが 2026-11-25 に登録した（許可する操作は `npm publish` と `npm stage publish`。状態は「Pending validation」で、2026-11-27 05:08 UTC までに1回公開すると確定する）。その時刻までにタグを push できなかった場合は、上の 4. のとおり削除して、公開する日に作り直す。2026-11-26（日本時間）に v1.0.1 をこの設定で公開でき、確定した（npm の設定画面の Status が「Pending validation」でなくなったことを、オーナーが確かめた）。
 
 ワークフローの `npm` のジョブの条件（npm の文書による。2026-11-22 時点）: `permissions` に `id-token: write`、npm の CLI 11.5.1 以降（ジョブの中で `npm install -g npm@latest` する）、Node.js 22.14.0 以降、`package.json` の `repository.url` が GitHub のリポジトリと一致すること。Trusted Publishing では provenance（どのソースとワークフローから作ったかの証明）が自動で付く。
 
@@ -99,3 +99,5 @@ v1.0.0 の公開のときに分かったこと（2026-11-22）:
 | 1.0.0 | 2026-11-23 | Joplin のプラグインの画面 | 公開後の確認（4.） | OK | Joplin 公式プラグイン一覧への掲載（2026-11-22）と、プラグインの画面からのインストールと図の表示を確認 |
 | 1.0.1 | 2026-11-25 | Windows 11、Joplin 3.7.24 | フルテスト（M-01〜M-16）と追加の確認 R101-1・R101-2 | OK | PATCH の版。R101-1：外部を読む CSS を書いた図（`tests/manual/release-1.0.1-note.md`）で `example.com` への通信なし。R101-2：紹介文が英日併記 |
 | 1.0.1 | 2026-11-25 | macOS 27.2.1（Apple silicon）、Joplin 3.7.24 | スモークテストと追加の確認 R101-1・R101-2 | OK | .jpl は CI の成果物（plugin-package） |
+| 1.0.1 | 2026-11-26 | GitHub、npm | 公開（3.、3.1） | OK | PR #21 をマージし、変数 `NPM_PUBLISH` を `true` にして、タグ `v1.0.1` を push した（2026-11-25 15:08 UTC、日本時間 11-26 00:08）。リリース用のワークフローの GitHub のリリースと `npm` のジョブがどちらも成功し、Trusted Publishing の登録が確定した。GitHub Releases に `.jpl`、`LICENSE`、`THIRD_PARTY_NOTICES` の英日が添付された。`npm view` で `latest` が 1.0.1 になり、紹介文が英日併記になった（反映まで数分かかった） |
+| 1.0.1 | 2026-11-26 | Joplin のプラグインの画面 | 公開後の確認（4.） | OK | Joplin 公式プラグイン一覧（joplin/plugins の `manifests.json`）が 2026-11-25 21:57 UTC に 1.0.1 になり、紹介文も英日併記になった（npm への公開から約7時間後）。オーナーが Joplin のプラグインの画面から 1.0.0 を 1.0.1 に更新できることを確かめた |
