@@ -11,6 +11,10 @@ are always listed. The Japanese version (`CHANGELOG.ja.md`) has the same content
 
 ## [Unreleased]
 
+### Changed
+
+- The short description of the plugin (Joplin's plugin list, npm) is now in English and Japanese.
+
 ### Security
 
 - The diagram sanitiser now also checks CSS: only CSS functions that load nothing (such as `rgb()` and `url(#id)`) are kept in `style` attributes, colour and other presentation attributes and `<style>` elements, and `<image>` keeps only `data:` images. Version 1.0.0 was checked and has no such path (the engine validates colours and writes no `<style>`); this is a second line of defence for later engine versions. A new rendering test puts CSS that loads external files into every place where a colour, a font or text can be written.

@@ -983,7 +983,7 @@ joplin-plugin-dg-plantuml/
   "version": "1.0.0",
   "app_min_version": "3.1",
   "name": "dg-plantuml",
-  "description": "Render PlantUML diagrams with a bundled engine. No external server, no network access.",
+  "description": "Render PlantUML diagrams with a bundled engine. No external server, no network access. / PlantUML の図を、描画エンジン内蔵・外部通信なしで表示します。",
   "author": "akira tamcat",
   "homepage_url": "https://github.com/akiratamcat/joplin-plugin-dg-plantuml",
   "repository_url": "https://github.com/akiratamcat/joplin-plugin-dg-plantuml",
@@ -1001,7 +1001,7 @@ joplin-plugin-dg-plantuml/
 {
   "name": "joplin-plugin-dg-plantuml",
   "version": "1.0.0",
-  "description": "Render PlantUML diagrams in Joplin with a bundled engine. No external server, no network access.",
+  "description": "Render PlantUML diagrams in Joplin with a bundled engine. No external server, no network access. / PlantUML の図を、描画エンジン内蔵・外部通信なしで Joplin に表示します。",
   "license": "MIT",
   "keywords": ["joplin-plugin", "plantuml"],
   "author": "akira tamcat",
