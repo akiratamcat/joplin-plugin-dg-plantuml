@@ -11,7 +11,7 @@ are always listed. The Japanese version (`CHANGELOG.ja.md`) has the same content
 
 ## [Unreleased]
 
-## [1.0.1] - 2026-11-25
+## [1.0.1] - 2026-11-26
 
 ### Changed
 
