@@ -2,7 +2,7 @@
 	"manifest_version": 1,
 	"id": "io.github.akiratamcat.dg-plantuml",
 	"app_min_version": "3.1",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"name": "dg-plantuml",
 	"description": "Render PlantUML diagrams with a bundled engine. No external server, no network access. / PlantUML の図を、描画エンジン内蔵・外部通信なしで表示します。",
 	"author": "akira tamcat",

@@ -61,6 +61,8 @@ v1.0.0 は手で公開した（3.2）。Trusted Publishing は、npm のパッ�
 3. いつもどおりタグを push する（上の 1.）。リリース用のワークフローの `npm` のジョブが成功し、`npm view joplin-plugin-dg-plantuml version` が新しい版になることを確かめる。
 4. 設定を間違えた場合や、2日を過ぎて無効になった場合は、その設定を削除して作り直す（npm の設定は編集できない）。
 
+v1.0.1 に向けて、オーナーが 2026-11-25 に登録した（許可する操作は `npm publish` と `npm stage publish`。状態は「Pending validation」で、2026-11-27 05:08 UTC までに1回公開すると確定する）。その時刻までにタグを push できなかった場合は、上の 4. のとおり削除して、公開する日に作り直す。
+
 ワークフローの `npm` のジョブの条件（npm の文書による。2026-11-22 時点）: `permissions` に `id-token: write`、npm の CLI 11.5.1 以降（ジョブの中で `npm install -g npm@latest` する）、Node.js 22.14.0 以降、`package.json` の `repository.url` が GitHub のリポジトリと一致すること。Trusted Publishing では provenance（どのソースとワークフローから作ったかの証明）が自動で付く。
 
 ### 3.2 手で npm に公開する
