@@ -61,6 +61,8 @@ v1.0.0 は手で公開した（3.2）。Trusted Publishing は、npm のパッ�
 3. いつもどおりタグを push する（上の 1.）。リリース用のワークフローの `npm` のジョブが成功し、`npm view joplin-plugin-dg-plantuml version` が新しい版になることを確かめる。
 4. 設定を間違えた場合や、2日を過ぎて無効になった場合は、その設定を削除して作り直す（npm の設定は編集できない）。
 
+v1.0.1 に向けて、オーナーが 2026-11-25 に登録した（許可する操作は `npm publish` と `npm stage publish`。状態は「Pending validation」で、2026-11-27 05:08 UTC までに1回公開すると確定する）。その時刻までにタグを push できなかった場合は、上の 4. のとおり削除して、公開する日に作り直す。
+
 ワークフローの `npm` のジョブの条件（npm の文書による。2026-11-22 時点）: `permissions` に `id-token: write`、npm の CLI 11.5.1 以降（ジョブの中で `npm install -g npm@latest` する）、Node.js 22.14.0 以降、`package.json` の `repository.url` が GitHub のリポジトリと一致すること。Trusted Publishing では provenance（どのソースとワークフローから作ったかの証明）が自動で付く。
 
 ### 3.2 手で npm に公開する
@@ -95,3 +97,5 @@ v1.0.0 の公開のときに分かったこと（2026-11-22）:
 | 1.0.0 | 2026-11-22 | macOS 27.2.1（Apple silicon）、Joplin 3.7.24 | フルテスト | OK | |
 | 1.0.0 | 2026-11-22 | Debian 13.7（amd64）、Joplin 3.7.24 | スモークテスト | OK | |
 | 1.0.0 | 2026-11-23 | Joplin のプラグインの画面 | 公開後の確認（4.） | OK | Joplin 公式プラグイン一覧への掲載（2026-11-22）と、プラグインの画面からのインストールと図の表示を確認 |
+| 1.0.1 | 2026-11-25 | Windows 11、Joplin 3.7.24 | フルテスト（M-01〜M-16）と追加の確認 R101-1・R101-2 | OK | PATCH の版。R101-1：外部を読む CSS を書いた図（`tests/manual/release-1.0.1-note.md`）で `example.com` への通信なし。R101-2：紹介文が英日併記 |
+| 1.0.1 | 2026-11-25 | macOS 27.2.1（Apple silicon）、Joplin 3.7.24 | スモークテストと追加の確認 R101-1・R101-2 | OK | .jpl は CI の成果物（plugin-package） |

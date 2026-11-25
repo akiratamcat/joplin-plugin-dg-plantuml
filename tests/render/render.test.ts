@@ -394,6 +394,12 @@ describe('CSS that loads an external file, in every string the user writes (desi
 		// Most places are still drawn (the engine refuses some of the values).
 		expect(run.blocks.filter((b) => b.svg).length).toBeGreaterThanOrEqual(places.length / 2);
 	});
+
+	test('the 1.0.1 manual test note: diagrams, one error box, no request', async () => {
+		const run = await renderNote(browser, fs.readFileSync(path.join(__dirname, '..', 'manual', 'release-1.0.1-note.md'), 'utf8'));
+		expectNoNetwork(run);
+		expect(run.blocks.map((b) => b.state)).toEqual(['done', 'done', 'done', 'done', 'done', 'error', 'done']);
+	});
 });
 
 describe('the checks themselves', () => {

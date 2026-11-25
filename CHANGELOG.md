@@ -11,6 +11,8 @@ are always listed. The Japanese version (`CHANGELOG.ja.md`) has the same content
 
 ## [Unreleased]
 
+## [1.0.1] - 2026-11-26
+
 ### Changed
 
 - The short description of the plugin (Joplin's plugin list, npm) is now in English and Japanese.
