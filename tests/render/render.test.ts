@@ -4,6 +4,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { Browser } from 'playwright-core';
+import { INJECTION_FORMS, INJECTION_PLACES, injectedSource } from '../helpers/cssInjection';
 import { countPatterns, FORBIDDEN_PATTERNS } from '../helpers/networkPatterns';
 import { buildViewerConfig, KEYS } from '../../src/settings';
 import { Catalog } from '../../src/i18n/gettext';
@@ -373,6 +374,25 @@ describe('toolbar and links (design 11)', () => {
 		});
 		expect(before).toBe('0');
 		expect(after).toBe('1');
+	});
+});
+
+describe('CSS that loads an external file, in every string the user writes (design 12, 1.0.1)', () => {
+	const places = Object.keys(INJECTION_PLACES);
+
+	test.each(INJECTION_FORMS)('no request, and no such CSS left in the SVG (%s)', async (form) => {
+		const run = await renderNote(browser, places.map((p) => fence(injectedSource(p, form))).join('\n\n'));
+		expectNoNetwork(run);
+		expect(run.blocks).toHaveLength(places.length);
+		run.blocks.forEach((b, i) => {
+			// Every block ends as a diagram or as an error box.
+			expect([places[i], b.state]).toEqual([places[i], expect.stringMatching(/^(done|error)$/)]);
+			const css = b.svgMarkup.match(/\s(style|fill|stroke|cursor|mask|filter|clip-path|marker-start|marker-mid|marker-end)="[^"]*"/g) || [];
+			expect([places[i], css.filter((a) => /example\.com|image-set/.test(a))]).toEqual([places[i], []]);
+			expect([places[i], /<style/i.test(b.svgMarkup)]).toEqual([places[i], false]);
+		});
+		// Most places are still drawn (the engine refuses some of the values).
+		expect(run.blocks.filter((b) => b.svg).length).toBeGreaterThanOrEqual(places.length / 2);
 	});
 });
 
